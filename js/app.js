@@ -13,14 +13,10 @@ document.getElementById('locale-btn').onclick = () => {
 /* ─── Page Loaders ─── */
 
 const GAME_GENRES = [
-  { id: 'popular', label: '🔥 Popular', sort: 'popularity' },
-  { id: 'new', label: '🆕 New', sort: 'release-date' },
-  { id: 'rpg', label: '⚔️ RPG', genreSlug: 'role-playing-games' },
-  { id: 'shooter', label: '🔫 Shooter', genreSlug: 'shooter' },
-  { id: 'strategy', label: '🧠 Strategy', genreSlug: 'strategy' },
-  { id: 'racing', label: '🏎️ Racing', genreSlug: 'racing' },
-  { id: 'sports', label: '⚽ Sports', genreSlug: 'sports' },
-  { id: 'horror', label: '👻 Horror', genreSlug: 'horror' },
+  { id: 'topsellers', label: '🔥 Bán chạy' },
+  { id: 'specials', label: '🏷️ Giảm giá' },
+  { id: 'newreleases', label: '🆕 Mới ra' },
+  { id: 'comingsoon', label: '⏳ Sắp ra' },
 ];
 
 const GamesPage = {
@@ -55,12 +51,17 @@ const GamesPage = {
     try {
       const div = document.createElement('div'); div.className = 'card';
       div.style.marginTop = '12px';
-      div.innerHTML = `<div class="section-h"><h2>🎮 Game Picks</h2><a href="https://www.freetogame.com" target="_blank">freetogame ↗</a></div>
+      div.innerHTML = `<div class="section-h"><h2>🎮 Steam Picks</h2><a href="https://store.steampowered.com" target="_blank">steam ↗</a></div>
         <div class="mood-bar" id="gp-bar" style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap"></div>
         <div id="gp-grid"></div>`;
       c.appendChild(div);
       this.renderGenreBar();
-      await this.loadGenreGames('popular');
+      try {
+        const data = await this.fetchSteam();
+        this.renderSteamGrid(data, 'topsellers');
+      } catch (_) {
+        document.getElementById('gp-grid').innerHTML = '<div class="empty" style="padding:16px 0">Steam API unavailable</div>';
+      }
     } catch (_) {}
   },
   renderGenreBar() {
@@ -84,9 +85,9 @@ const GamesPage = {
         b.style.background = 'var(--accent)';
         b.style.color = 'var(--bg)';
         b.style.borderColor = 'var(--accent)';
-        this.loadGenreGames(g.id);
+        this.renderSteamGrid(this._cached || { featured: { items: [] } }, g.id);
       };
-      if (g.id === 'popular') {
+      if (g.id === 'topsellers') {
         b.classList.add('active');
         b.style.background = 'var(--accent)';
         b.style.color = 'var(--bg)';
@@ -95,30 +96,34 @@ const GamesPage = {
       bar.appendChild(b);
     });
   },
-  async loadGenreGames(genreId) {
+  async fetchSteam() {
+    const r = await fetch('https://store.steampowered.com/api/featuredcategories');
+    if (!r.ok) throw new Error('Steam API error');
+    const d = await r.json();
+    this._cached = d;
+    return d;
+  },
+  renderSteamGrid(data, section) {
     const grid = document.getElementById('gp-grid');
     if (!grid) return;
-    grid.innerHTML = '<div class="loading" style="padding:16px 0">Loading games...</div>';
-    try {
-      const genre = GAME_GENRES.find(g => g.id === genreId);
-      let url = 'https://www.freetogame.com/api/games?sort-by=popularity';
-      if (genre.genreSlug) url = `https://www.freetogame.com/api/games?category=${genre.genreSlug}`;
-      else if (genre.sort) url = `https://www.freetogame.com/api/games?sort-by=${genre.sort}`;
-      const r = await fetch(url);
-      if (!r.ok) throw new Error('API error');
-      const games = (await r.json()).slice(0, 10);
-      grid.innerHTML = '';
-      games.forEach(g => {
-        const e = document.createElement('div'); e.className = 'movie-e';
-        e.innerHTML = `<div class="movie-thumb"><img src="${g.thumbnail || ''}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
-          <div class="movie-body"><div class="movie-name">${esc(g.title)}</div>
-          <div class="movie-sub">${g.genre || ''}${g.platform ? ' · ' + esc(g.platform) : ''}${g.release_date ? ' · ' + g.release_date : ''}</div></div>
-          ${g.freetogame_profile_url ? `<a class="wl-btn" href="${g.freetogame_profile_url}" target="_blank" style="text-decoration:none">Play</a>` : ''}`;
-        grid.appendChild(e);
-      });
-    } catch (e) {
-      grid.innerHTML = '<div class="empty" style="padding:16px 0">Failed to load games.</div>';
-    }
+    grid.innerHTML = '';
+    let items = [];
+    if (section === 'topsellers') items = data.top_sellers?.items?.slice(0, 10) || [];
+    else if (section === 'specials') items = data.specials?.items?.slice(0, 10) || [];
+    else if (section === 'newreleases') items = data.new_releases?.items?.slice(0, 10) || [];
+    else if (section === 'comingsoon') items = data.coming_soon?.items?.slice(0, 10) || [];
+    if (!items.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
+    items.forEach(g => {
+      const e = document.createElement('div'); e.className = 'movie-e';
+      const img = g.capsule_small || g.header_image || '';
+      const pct = g.discount_percent ? `${g.discount_percent}%` : '';
+      const price = g.final_price !== undefined ? `$${(g.final_price/100).toFixed(2)}` : '';
+      const orig = g.original_price !== undefined && g.original_price !== g.final_price ? `<s>$${(g.original_price/100).toFixed(2)}</s>` : '';
+      e.innerHTML = `<div class="movie-thumb" style="width:60px;height:60px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
+        <div class="movie-body"><div class="movie-name">${esc(g.name || g.title || '')}</div>
+        <div class="movie-sub">${pct ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">${pct}</span> ` : ''}${orig ? orig + ' ' : ''}${price ? `<span style="font-weight:600">${price}</span>` : '<span style="color:var(--accent)">Free</span>'}</div></div>`;
+      grid.appendChild(e);
+    });
   },
   async loadNews(c) {
     try {
