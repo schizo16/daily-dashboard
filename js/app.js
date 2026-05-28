@@ -656,28 +656,59 @@ const MusicPage = {
 
   playYTPlaylist(listId) {
     document.getElementById('ms-title').textContent = '▶ Playlist';
-    document.getElementById('ms-status').textContent = 'Playing · YouTube';
-    document.getElementById('ms-pause').disabled = true;
+    document.getElementById('ms-status').textContent = 'Loading playlist...';
+    document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-prev').disabled = true;
     document.getElementById('ms-next').disabled = true;
+    document.getElementById('ms-pause').onclick = () => {
+      if (ytPlayer) {
+        const st = ytPlayer.getPlayerState();
+        if (st === 1) { ytPlayer.pauseVideo(); document.getElementById('ms-pause').textContent = '▶ Resume'; }
+        else if (st === 2) { ytPlayer.playVideo(); document.getElementById('ms-pause').textContent = '⏸ Pause'; }
+      }
+    };
     document.getElementById('ms-stop').onclick = () => {
+      if (ytPlayer) ytPlayer.stopVideo();
       document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
       document.getElementById('ms-frame-container').innerHTML = '';
       document.getElementById('ms-title').textContent = 'No track playing';
+      document.getElementById('ms-pause').disabled = true;
       document.getElementById('ms-stop').disabled = true;
       const bar = document.getElementById('music-bar');
       if (bar) bar.remove();
     };
     const container = document.getElementById('ms-frame-container');
-    container.style.cssText = 'margin-bottom:12px';
-    container.innerHTML = `
-      <iframe src="https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1" style="width:100%;height:200px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    container.style.cssText = 'width:0;height:0;overflow:hidden';
+    container.innerHTML = '<div id="yt-player"></div>';
+    if (!window.YT) { const t = document.createElement('script'); t.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(t); }
+
+    const createPlayer = () => {
+      if (document.getElementById('yt-player') && window.YT && window.YT.Player && !ytPlayer) {
+        ytPlayer = new YT.Player('yt-player', {
+          height: '0', width: '0',
+          playerVars: { listType: 'playlist', list: listId, autoplay: 1, controls: 0 },
+          events: {
+            onReady: () => {
+              document.getElementById('ms-title').textContent = '▶ Playlist';
+              document.getElementById('ms-status').textContent = 'Playing · ' + (ytPlayer?.getPlaylist?.()?.length || '?') + ' songs';
+            }
+          }
+        });
+      }
+    };
+    if (window.YT && window.YT.Player) createPlayer();
+    else window.onYouTubeIframeAPIReady = createPlayer;
+    setTimeout(createPlayer, 1500);
+
     this._queue = [];
     this._queueIdx = -1;
     this.showMusicBar('📋 YouTube Playlist', '');
-    const q = document.getElementById('ms-queue');
-    if (q) q.style.display = 'none';
+    const qe = document.getElementById('ms-queue');
+    if (qe) {
+      qe.style.display = '';
+      qe.innerHTML = '<div style="font-size:0.7rem;color:var(--text-2);padding:8px 0">▶ Playing playlist — use YouTube controls or Stop</div>';
+    }
   },
 
   playSpotify(id, type) {
