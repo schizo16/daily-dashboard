@@ -108,11 +108,13 @@
 [data-theme="light"][data-time="afternoon"] .wx-clouds {
   display: block;
   background:
-    radial-gradient(ellipse 120px 35px at 15% 25%, rgba(200,200,220,0.15) 0%, transparent 100%),
-    radial-gradient(ellipse 100px 30px at 45% 35%, rgba(200,200,220,0.12) 0%, transparent 100%),
-    radial-gradient(ellipse 140px 40px at 65% 20%, rgba(200,200,220,0.1) 0%, transparent 100%),
-    radial-gradient(ellipse 80px 25px at 85% 40%, rgba(200,200,220,0.08) 0%, transparent 100%);
-  animation: drift 15s ease-in-out infinite alternate;
+    radial-gradient(ellipse 180px 35px at 10% 18%, rgba(220,225,240,0.12) 0%, rgba(220,225,240,0.05) 40%, transparent 100%),
+    radial-gradient(ellipse 140px 30px at 25% 30%, rgba(220,225,240,0.1) 0%, rgba(220,225,240,0.04) 40%, transparent 100%),
+    radial-gradient(ellipse 200px 40px at 60% 15%, rgba(220,225,240,0.1) 0%, rgba(220,225,240,0.04) 40%, transparent 100%),
+    radial-gradient(ellipse 120px 25px at 75% 35%, rgba(220,225,240,0.08) 0%, rgba(220,225,240,0.03) 40%, transparent 100%),
+    radial-gradient(ellipse 160px 30px at 45% 45%, rgba(220,225,240,0.06) 0%, rgba(220,225,240,0.02) 40%, transparent 100%),
+    radial-gradient(ellipse 100px 20px at 88% 22%, rgba(220,225,240,0.07) 0%, rgba(220,225,240,0.03) 40%, transparent 100%);
+  animation: drift 20s ease-in-out infinite alternate;
 }
 [data-weather="cloudy"] .wx-clouds {
   display: block;
