@@ -292,6 +292,7 @@ function show(page) {
   else if (page === 'games') GamesPage.load(el);
   else if (page === 'watchlist') WatchlistPage.load(el);
   else if (page === 'tools') ToolsPage.load(el);
+  else if (page === 'music') MusicPage.load(el);
   startAutoRefresh(page);
 }
 
@@ -337,6 +338,82 @@ document.getElementById('theme-btn').onclick = () => {
   Storage.setTheme(n);
   document.documentElement.setAttribute('data-theme', n);
   document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
+};
+
+/* ─── Music ─── */
+const STATIONS = [
+  { name: 'Chill Lo-Fi', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🎧' },
+  { name: 'Jazz', url: 'https://ice2.somafm.com/jazzradio-128-mp3', icon: '🎷' },
+  { name: 'Classical', url: 'https://ice1.somafm.com/classical-128-mp3', icon: '🎻' },
+  { name: 'Electronic', url: 'https://ice1.somafm.com/dronezone-128-mp3', icon: '🎛' },
+  { name: 'Ambient', url: 'https://ice1.somafm.com/spacestation-128-mp3', icon: '🌌' },
+  { name: 'Pop', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🎤' },
+];
+
+const MusicPage = {
+  _audio: null, _station: null,
+  load(c) {
+    c.innerHTML = `<div class="card">
+      <div class="section-h"><h2>🎵 Music</h2></div>
+      <div id="music-now" style="text-align:center;padding:24px 0">
+        <div style="font-size:2.5rem;margin-bottom:8px" id="music-icon">🎧</div>
+        <div style="font-size:1rem;font-weight:600;margin-bottom:4px" id="music-title">No station playing</div>
+        <div style="font-size:0.78rem;color:var(--text-2)" id="music-status">Choose a station below</div>
+      </div>
+      <div id="music-controls" style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
+        <button class="btn" id="music-play" disabled>▶ Play</button>
+        <button class="btn" id="music-stop" disabled>⏹ Stop</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="music-stations">
+        ${STATIONS.map(s => `<div class="station-btn" data-url="${s.url}" data-name="${s.name}" data-icon="${s.icon}" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="font-size:1.2rem">${s.icon}</div>
+          <div style="font-size:0.8rem;font-weight:500;margin-top:4px">${s.name}</div>
+        </div>`).join('')}
+      </div>
+      <div style="margin-top:16px;padding:10px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
+        🔗 Or paste audio URL: <input type="url" id="music-url" class="w-inp" style="width:100%;text-transform:none;text-align:left;font-size:0.78rem;margin-top:6px" placeholder="https://example.com/audio.mp3">
+        <button class="btn" id="music-url-btn" style="margin-top:4px;width:100%">Play URL</button>
+      </div>
+    </div>`;
+    this._audio = new Audio();
+    this._audio.volume = 0.7;
+
+    this._audio.onplay = () => { document.getElementById('music-status').textContent = '🔊 Playing...'; document.getElementById('music-play').disabled = true; document.getElementById('music-stop').disabled = false; };
+    this._audio.onpause = () => { document.getElementById('music-status').textContent = '⏸ Paused'; document.getElementById('music-play').disabled = false; };
+    this._audio.onended = () => { document.getElementById('music-status').textContent = '⏹ Stopped'; document.getElementById('music-play').disabled = true; document.getElementById('music-stop').disabled = true; };
+    this._audio.onerror = () => { document.getElementById('music-status').textContent = '❌ Cannot play (CORS or dead link)'; document.getElementById('music-play').disabled = false; };
+
+    document.getElementById('music-play').onclick = () => this._audio.play();
+    document.getElementById('music-stop').onclick = () => { this._audio.pause(); this._audio.currentTime = 0; };
+
+    document.querySelectorAll('.station-btn').forEach(b => {
+      b.onclick = () => {
+        const url = b.dataset.url;
+        const name = b.dataset.name;
+        const icon = b.dataset.icon;
+        this._station = name;
+        document.getElementById('music-icon').textContent = icon;
+        document.getElementById('music-title').textContent = name;
+        document.getElementById('music-status').textContent = '⏳ Loading...';
+        document.getElementById('music-play').disabled = true;
+        this._audio.src = url;
+        this._audio.play().catch(() => {});
+        document.querySelectorAll('.station-btn').forEach(x => x.style.borderColor = 'var(--border)');
+        b.style.borderColor = 'var(--accent)';
+      };
+    });
+
+    document.getElementById('music-url-btn').onclick = () => {
+      const url = document.getElementById('music-url').value.trim();
+      if (!url) return;
+      document.getElementById('music-icon').textContent = '🔗';
+      document.getElementById('music-title').textContent = 'Custom URL';
+      document.getElementById('music-status').textContent = '⏳ Loading...';
+      this._station = null;
+      this._audio.src = url;
+      this._audio.play().catch(() => {});
+    };
+  }
 };
 
 /* ─── Tools ─── */
