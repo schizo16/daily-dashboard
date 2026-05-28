@@ -1,26 +1,6 @@
 const TMDB_KEY = '64cbee95805bc6f398898e585b312a8c';
 const TMDB_IMG = 'https://image.tmdb.org/t/p/w92';
 
-const MOODS = [
-  { id: 'all', label: 'moodAll', genres: '' },
-  { id: 'happy', label: 'moodHappy', genres: '35,10751,16' },
-  { id: 'sad', label: 'moodSad', genres: '18,10749' },
-  { id: 'action', label: 'moodAction', genres: '28,12,53' },
-  { id: 'horror', label: 'moodHorror', genres: '27,9648' },
-  { id: 'scifi', label: 'moodScifi', genres: '878,14' },
-  { id: 'romance', label: 'moodRomance', genres: '10749,10770' },
-];
-
-const TVMOODS = [
-  { id: 'all', label: 'moodAll', genres: '' },
-  { id: 'happy', label: 'moodHappy', genres: '35,10751,16' },
-  { id: 'drama', label: 'moodSad', genres: '18' },
-  { id: 'action', label: 'moodAction', genres: '10759,9648' },
-  { id: 'scifi', label: 'moodScifi', genres: '10765,10764' },
-  { id: 'crime', label: 'Kinh dị', genres: '80,18' },
-  { id: 'romance', label: 'moodRomance', genres: '10749,10766' },
-];
-
 const PERIODS = [
   { id: 'week', label: 'Tuần' },
   { id: 'month', label: 'Tháng' },
@@ -40,14 +20,12 @@ const Movies = {
           <button class="ms-btn active" data-type="movie">🎬 Movies</button>
           <button class="ms-btn" data-type="tv">📺 Series</button>
         </div>
-        <div class="mood-bar" id="ms-period" style="display:flex;gap:2px;margin-bottom:10px;border-bottom:1px solid var(--border)"></div>
-        <div class="mood-bar" id="mood-bar" style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap"></div>
+        <div class="mood-bar" id="ms-period" style="display:flex;gap:2px;margin-bottom:16px;border-bottom:1px solid var(--border)"></div>
         <div id="mg"></div>
         <div id="mw" style="display:none"></div>
       </div>`;
       this._mediaType = 'movie'; this._periodId = 'week'; this._moodId = 'all'; this._gridPage = 1;
       this.renderPeriods();
-      this.renderMoods();
       this.wl(document.getElementById('mw'));
       document.getElementById('wl-tog').onclick = () => {
         const g = document.getElementById('mg'), w = document.getElementById('mw'), b = document.getElementById('wl-tog');
@@ -61,7 +39,6 @@ const Movies = {
           this._mediaType = btn.dataset.type;
           this._gridPage = 1;
           document.getElementById('ms-title').textContent = this._mediaType === 'movie' ? _('trendingMovies') : '📺 TV Series';
-          this.renderMoods();
           this.loadPage();
         };
       });
@@ -89,64 +66,37 @@ const Movies = {
     });
   },
 
-  renderMoods() {
-    const bar = document.getElementById('mood-bar'); if (!bar) return;
-    bar.innerHTML = '';
-    const moods = this._mediaType === 'tv' ? TVMOODS : MOODS;
-    this._moodId = 'all';
-    moods.forEach(m => {
-      const b = document.createElement('button');
-      b.className = 'mood-btn';
-      b.dataset.mood = m.id;
-      b.textContent = _(m.label);
-      b.style.cssText = 'padding:4px 10px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem';
-      if (m.id === 'all') { b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)'; }
-      b.onmouseover = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border-2)'; };
-      b.onmouseout = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border)'; };
-      b.onclick = () => {
-        bar.querySelectorAll('.mood-btn').forEach(x => { x.classList.remove('active'); x.style.background = 'transparent'; x.style.color = 'var(--text-2)'; x.style.borderColor = 'var(--border)'; });
-        b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)';
-        this._moodId = m.id; this._gridPage = 1; this.loadPage();
-      };
-      bar.appendChild(b);
-    });
-  },
-
   async loadPage() {
     const grid = document.getElementById('mg'); if (!grid) return;
     if (this._navEl) { this._navEl.remove(); this._navEl = null; }
     grid.innerHTML = `<div class="loading" style="padding:20px 0">${_('loading')}</div>`;
     try {
       const isMovie = this._mediaType === 'movie';
-      const moods = isMovie ? MOODS : TVMOODS;
-      const mood = moods.find(m => m.id === this._moodId) || moods[0];
       let url;
 
       if (this._periodId === 'top') {
         url = isMovie
           ? `https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`
           : `https://api.themoviedb.org/3/tv/top_rated?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`;
+      } else if (this._periodId === 'week') {
+        url = isMovie
+          ? `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`
+          : `https://api.themoviedb.org/3/trending/tv/week?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`;
       } else {
         const date = new Date();
-        if (this._periodId === 'week') {
-          url = isMovie
-            ? `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`
-            : `https://api.themoviedb.org/3/trending/tv/week?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`;
+        let start, end;
+        if (this._periodId === 'month') {
+          start = new Date(date.getFullYear(), date.getMonth(), 1);
+          end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         } else {
-          let start, end;
-          if (this._periodId === 'month') {
-            start = new Date(date.getFullYear(), date.getMonth(), 1);
-            end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-          } else if (this._periodId === 'year') {
-            start = new Date(date.getFullYear(), 0, 1);
-            end = new Date(date.getFullYear(), 11, 31);
-          }
-          const fmt = d => d.toISOString().split('T')[0];
-          const genreFilter = mood.genres ? `&with_genres=${mood.genres}` : '';
-          const sortBy = this._periodId === 'month' ? 'vote_average.desc&vote_count.gte=100' : 'popularity.desc';
-          const type = isMovie ? 'movie' : 'tv';
-          url = `https://api.themoviedb.org/3/discover/${type}?api_key=${TMDB_KEY}&sort_by=${sortBy}&primary_release_date.gte=${fmt(start)}&primary_release_date.lte=${fmt(end)}${genreFilter}&language=en-US&page=${this._gridPage}`;
-          if (!isMovie) url = `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_KEY}&sort_by=popularity.desc&first_air_date.gte=${fmt(start)}&first_air_date.lte=${fmt(end)}${genreFilter}&language=en-US&page=${this._gridPage}`;
+          start = new Date(date.getFullYear(), 0, 1);
+          end = new Date(date.getFullYear(), 11, 31);
+        }
+        const fmt = d => d.toISOString().split('T')[0];
+        if (isMovie) {
+          url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_KEY}&sort_by=popularity.desc&primary_release_date.gte=${fmt(start)}&primary_release_date.lte=${fmt(end)}&language=en-US&page=${this._gridPage}`;
+        } else {
+          url = `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_KEY}&sort_by=popularity.desc&first_air_date.gte=${fmt(start)}&first_air_date.lte=${fmt(end)}&language=en-US&page=${this._gridPage}`;
         }
       }
 
