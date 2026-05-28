@@ -13,7 +13,17 @@ document.getElementById('locale-btn').onclick = () => {
 /* ─── Page Loaders ─── */
 
 const PROXY = 'https://corsproxy.io/?url=';
-const STEAM_API = 'https://store.steampowered.com/api/featuredcategories';
+function steamApi() {
+  const cc = currentLocale === 'vi' ? 'VN' : 'US';
+  return `https://store.steampowered.com/api/featuredcategories?cc=${cc}&l=${currentLocale === 'vi' ? 'vi' : 'en'}`;
+}
+
+function fmtPrice(price, isVn) {
+  if (price == null) return isVn ? 'Miễn phí' : 'Free';
+  const val = Number(price) / 100;
+  if (isVn) return Math.round(val).toLocaleString('vi-VN') + '₫';
+  return '$' + val.toFixed(2);
+}
 
 const GAME_GENRES = [
   { id: 'topsellers', label: '🔥 Bán chạy', key: 'top_sellers' },
@@ -89,7 +99,7 @@ const GamesPage = {
     });
   },
   async fetchSteam() {
-    const r = await fetch(PROXY + encodeURIComponent(STEAM_API));
+    const r = await fetch(PROXY + encodeURIComponent(steamApi()));
     if (!r.ok) throw new Error('Steam error');
     const d = await r.json();
     window.__steamData = d;
@@ -105,6 +115,7 @@ const GamesPage = {
     if (genre.filter) items = items.filter(genre.filter);
     items = items.slice(0, 10);
     if (!items.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
+    const isVn = currentLocale === 'vi';
     items.forEach(g => {
       const appId = g.id;
       const steamUrl = `https://store.steampowered.com/app/${appId}/`;
@@ -112,11 +123,11 @@ const GamesPage = {
       const img = g.capsule_small || g.header_image || '';
       const pct = g.discount_percent || 0;
       const hasDisc = pct > 0;
-      const finalP = g.final_price !== undefined ? g.final_price / 100 : null;
-      const origP = g.original_price !== undefined ? g.original_price / 100 : null;
+      const finalP = g.final_price;
+      const origP = g.original_price;
       e.innerHTML = `<div class="movie-thumb" style="width:60px;height:34px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
         <div class="movie-body"><div class="movie-name" style="color:var(--text)">${esc(g.name || '')}</div>
-        <div class="movie-sub">${hasDisc ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${origP ? `<s>$${origP.toFixed(2)}</s> ` : ''}${finalP !== null ? `<span style="font-weight:600">$${finalP.toFixed(2)}</span>` : '<span style="color:var(--accent)">Free</span>'}</div></div>`;
+        <div class="movie-sub">${hasDisc ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${(origP !== undefined && origP !== finalP) ? `<s>${fmtPrice(origP, isVn)}</s> ` : ''}${finalP !== undefined ? `<span style="font-weight:600">${fmtPrice(finalP, isVn)}</span>` : (isVn ? 'Miễn phí' : 'Free')}</div></div>`;
       grid.appendChild(e);
     });
   },
