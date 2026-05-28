@@ -67,8 +67,6 @@ const Movies = {
     try {
       c.innerHTML = `<div class="card">
         <div class="section-h"><h2 id="ms-title">${_('trendingMovies')}</h2><button id="wl-tog" class="wl-toggle">${_('navWatchlist')}</button></div>
-        <div style="margin-bottom:12px"><button class="btn" id="m-random-btn" style="width:100%;font-size:0.75rem">🎲 Random Movie</button></div>
-        <div id="m-random" style="margin-bottom:12px;display:none"></div>
         <div id="ms-type" style="display:flex;gap:12px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:6px">
           <button class="ms-btn active" data-type="movie" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:inherit;font-size:0.85rem;color:var(--text);font-weight:600;border-bottom:2px solid var(--accent)">🎬 Movies</button>
           <button class="ms-btn" data-type="tv" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:inherit;font-size:0.85rem;color:var(--text-2);font-weight:400;border-bottom:2px solid transparent">📺 Series</button>
@@ -76,6 +74,8 @@ const Movies = {
         <div id="ms-period" style="display:flex;gap:10px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:6px"></div>
         <div id="mg"></div>
         <div id="mw" style="display:none"></div>
+        <div style="margin-top:12px"><button class="btn" id="m-random-btn" style="width:100%;font-size:0.75rem">🎲 Random Movie</button></div>
+        <div id="m-random" style="display:none"></div>
       </div>`;
       this._mediaType = 'movie'; this._periodId = 'week'; this._moodId = 'all'; this._gridPage = 1;
       this.renderPeriods();
