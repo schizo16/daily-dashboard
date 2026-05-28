@@ -1,54 +1,60 @@
 const AiRadar = {
-  _page: 1,
+  _c: null, _page: 1, _period: 'week',
 
   async load(c) {
-    c.innerHTML = `<div class="loading">${_('loading')}</div>`;
-    try {
-      this._c = c;
-      this._page = 1;
-      await this.loadPage();
-    } catch (e) {
-      c.innerHTML = `<div class="loading error">${_('failed')} <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">${_('retry')}</button></div>`;
-    }
+    this._c = c;
+    this._page = 1;
+    this._period = 'week';
+    await this.loadAll();
   },
 
-  async loadPage() {
+  async loadAll() {
     const c = this._c;
     c.innerHTML = `<div class="loading">${_('loading')}</div>`;
     try {
-      const [repos, stories] = await Promise.all([this.repos(this._page), this.hn()]);
+      const [repos, models, stories] = await Promise.all([
+        this.repos(this._period, this._page),
+        this.models(),
+        this.hn()
+      ]);
       c.innerHTML = '';
-      c.appendChild(this.box(_('trending'), 'github.com/trending', this.rl(repos), this._page));
-      c.appendChild(this.box(_('hackernews'), 'news.ycombinator.com', this.hl(stories), null));
+      c.appendChild(this.box('GitHub Trending', 'github.com/trending', this.repoControls(), this.rl(repos)));
+      c.appendChild(this.box('AI Models', 'huggingface.co/models', null, this.ml(models)));
+      c.appendChild(this.box('HackerNews', 'news.ycombinator.com', null, this.hl(stories)));
     } catch (e) {
-      c.innerHTML = `<div class="loading error">${_('failed')} <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">${_('retry')}</button></div>`;
+      c.innerHTML = `<div class="loading error">${_('failed')} <button class="btn" onclick="AiRadar.load(this._c)">${_('retry')}</button></div>`;
     }
   },
 
-  box(t, l, el, page) {
+  repoControls() {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;gap:4px;margin-bottom:12px';
+    ['week', 'month', 'year'].forEach(p => {
+      const b = document.createElement('button');
+      b.textContent = p === 'week' ? 'Tuần' : p === 'month' ? 'Tháng' : 'Năm';
+      b.style.cssText = `padding:3px 10px;border:1px solid var(--border);border-radius:4px;background:${p === this._period ? 'var(--accent)' : 'transparent'};color:${p === this._period ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem`;
+      b.onclick = async () => {
+        this._period = p; this._page = 1;
+        await this.loadAll();
+      };
+      div.appendChild(b);
+    });
+    return div;
+  },
+
+  box(t, l, controls, el) {
     const d = document.createElement('div'); d.className = 'card';
-    let nav = '';
-    if (page) {
-      nav = `<div style="display:flex;gap:4px;margin-top:12px;justify-content:center;flex-wrap:wrap">${[1,2,3,4,5].map(p =>
-        `<button class="page-btn" data-p="${p}" style="padding:2px 8px;border:1px solid var(--border);border-radius:3px;background:${p === page ? 'var(--accent)' : 'transparent'};color:${p === page ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem">${p}</button>`
-      ).join('')}</div>`;
-    }
     d.innerHTML = `<div class="section-h"><h2>${t}</h2><a href="https://${l}" target="_blank">${l} ↗</a></div>`;
+    if (controls) d.insertBefore(controls, d.querySelector('.section-h').nextSibling);
     d.appendChild(el);
-    if (nav) {
-      d.insertAdjacentHTML('beforeend', nav);
-      d.querySelectorAll('.page-btn').forEach(btn => {
-        btn.onclick = () => {
-          this._page = Number(btn.dataset.p);
-          this.loadPage();
-        };
-      });
-    }
     return d;
   },
 
-  async repos(page) {
-    const d = new Date(); d.setDate(d.getDate() - 7);
+  async repos(period, page) {
+    const d = new Date();
+    if (period === 'week') d.setDate(d.getDate() - 7);
+    else if (period === 'month') d.setMonth(d.getMonth() - 1);
+    else d.setFullYear(d.getFullYear() - 1);
     const r = await fetch(`https://api.github.com/search/repositories?q=created:>${d.toISOString().split('T')[0]}&sort=stars&order=desc&per_page=8&page=${page}`, {
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     });
@@ -56,6 +62,17 @@ const AiRadar = {
     return (await r.json()).items.map(x => ({
       n: x.full_name, u: x.html_url, d: x.description || '', a: x.owner?.avatar_url || '',
       s: x.stargazers_count, f: x.forks_count, l: x.language
+    }));
+  },
+
+  async models() {
+    const r = await fetch('https://huggingface.co/api/models?sort=downloads&direction=-1&limit=10');
+    if (!r.ok) return [];
+    const data = await r.json();
+    return data.map(m => ({
+      n: m.id, u: `https://huggingface.co/${m.id}`,
+      d: (m.pipeline_tag || '') + (m.library_name ? ' · ' + m.library_name : ''),
+      s: m.likes || 0, f: m.downloads || 0
     }));
   },
 
@@ -75,12 +92,27 @@ const AiRadar = {
     const d = document.createElement('div');
     list.forEach((r, i) => {
       const e = document.createElement('div'); e.className = 'entry';
-      e.style.animation = `slideDown 0.3s ease-out both`; e.style.animationDelay = `${0.03 + i * 0.02}s`;
-      const thumb = r.a ? `<div class="entry-thumb"><img src="${this.ea(r.a)}" alt="" loading="lazy"></div>` : `<div class="entry-thumb">📦</div>`;
+      e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${i * 0.025}s`;
+      const thumb = r.a ? `<div class="entry-thumb"><img src="${this.ea(r.a)}" alt="" loading="lazy"></div>` : '<div class="entry-thumb">📦</div>';
       e.innerHTML = `${thumb}<div class="entry-body">
         <div class="entry-title"><a href="${this.ea(r.u)}" target="_blank">${this.eh(r.n)}</a></div>
         ${r.d ? `<div class="entry-desc">${this.eh(r.d)}</div>` : ''}
-        <div class="entry-meta">${r.l ? `<span>${this.eh(r.l)}</span>` : ''}<span>${this.fmt(r.s)} stars</span><span>${this.fmt(r.f)} forks</span></div>
+        <div class="entry-meta">${r.l ? `<span>${this.eh(r.l)}</span>` : ''}<span>⭐ ${this.fmt(r.s)}</span><span>⑂ ${this.fmt(r.f)}</span></div>
+      </div>`;
+      d.appendChild(e);
+    });
+    return d;
+  },
+
+  ml(list) {
+    const d = document.createElement('div');
+    list.forEach((m, i) => {
+      const e = document.createElement('div'); e.className = 'entry';
+      e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${i * 0.025}s`;
+      e.innerHTML = `<div class="entry-thumb">🤖</div><div class="entry-body">
+        <div class="entry-title"><a href="${this.ea(m.u)}" target="_blank">${this.eh(m.n)}</a></div>
+        ${m.d ? `<div class="entry-desc">${this.eh(m.d)}</div>` : ''}
+        <div class="entry-meta"><span>❤️ ${this.fmt(m.s)}</span><span>📥 ${this.fmt(m.f)}</span></div>
       </div>`;
       d.appendChild(e);
     });
@@ -91,7 +123,7 @@ const AiRadar = {
     const d = document.createElement('div');
     list.forEach((s, i) => {
       const e = document.createElement('div'); e.className = 'entry';
-      e.style.animation = `slideDown 0.3s ease-out both`; e.style.animationDelay = `${0.03 + i * 0.02}s`;
+      e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${i * 0.025}s`;
       e.innerHTML = `<div class="entry-thumb">📰</div><div class="entry-body">
         <div class="entry-title"><a href="${this.ea(s.u)}" target="_blank">${this.eh(s.t)}</a></div>
         <div class="entry-meta"><span>${s.p} points</span><span>${s.c} comments</span></div>
