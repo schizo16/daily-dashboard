@@ -676,12 +676,14 @@ const MusicPage = {
     document.getElementById('ms-status').textContent = 'Loading playlist...';
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
-    document.getElementById('ms-frame-container').innerHTML = `
+    // Show playlist in a visible container
+    const container = document.getElementById('ms-frame-container');
+    container.style.cssText = 'margin-bottom:12px';
+    container.innerHTML = `
       <iframe src="https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1" style="width:100%;height:200px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     this._queue = [];
     this._queueIdx = -1;
     this.showMusicBar('📋 YouTube Playlist', '');
-    // Hide queue since we can't get playlist contents
     const q = document.getElementById('ms-queue');
     if (q) q.style.display = 'none';
   },
@@ -701,6 +703,7 @@ const MusicPage = {
       document.getElementById('ms-pause').disabled = true;
       document.getElementById('ms-stop').disabled = true;
       document.getElementById('ms-title').textContent = 'No track playing';
+      document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
       const q = document.getElementById('ms-queue');
       if (q) q.style.display = 'none';
       bar.remove();
