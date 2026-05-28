@@ -97,7 +97,7 @@ const GamesPage = {
     });
   },
   async fetchSteam() {
-    const r = await fetch('https://store.steampowered.com/api/featuredcategories');
+    const r = await fetch('https://api.allorigins.win/raw?url=https://store.steampowered.com/api/featuredcategories');
     if (!r.ok) throw new Error('Steam API error');
     const d = await r.json();
     this._cached = d;
