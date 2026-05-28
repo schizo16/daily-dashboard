@@ -612,25 +612,25 @@ const MusicPage = {
     </div>`;
 
     document.getElementById('ms-play-btn').onclick = () => {
-      const val = document.getElementById('ms-q').value.trim().toLowerCase();
-      if (!val) return;
-      const ytMatch = val.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
-      const spMatch = val.match(/open\.spotify\.com\/(track|playlist)\/([a-zA-Z0-9]+)/);
-      const scMatch = val.match(/soundcloud\.com\/([^\/]+\/[^\/]+)/);
-      const audioMatch = val.match(/\.(mp3|wav|ogg|m4a|flac)(\?|$)/i);
+      const raw = document.getElementById('ms-q').value.trim();
+      if (!raw) return;
+      const lower = raw.toLowerCase();
+      const ytMatch = raw.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
+      const spMatch = raw.match(/open\.spotify\.com\/(track|playlist)\/([a-zA-Z0-9]+)/);
+      const scMatch = raw.match(/soundcloud\.com\/([^\/]+\/[^\/]+)/);
+      const audioMatch = raw.match(/\.(mp3|wav|ogg|m4a|flac)(\?|$)/i);
 
       if (ytMatch) MusicPage.playYT(ytMatch[1]);
       else if (spMatch) MusicPage.playSpotify(spMatch[2], spMatch[1]);
       else if (scMatch) MusicPage.playSoundCloud(scMatch[1]);
-      else if (audioMatch || val.startsWith('http')) MusicPage.playAudio(val);
+      else if (audioMatch || raw.startsWith('http')) MusicPage.playAudio(raw);
       else {
-        // Search local DB first
-        const match = SONG_DB.find(s => s.q.some(k => val.includes(k)));
+        const match = SONG_DB.find(s => s.q.some(k => lower.includes(k)));
         if (match) {
           document.getElementById('ms-q').value = match.t;
           MusicPage.playYT(match.vid);
         } else {
-          window.open('https://music.youtube.com/search?q=' + encodeURIComponent(val), '_blank');
+          window.open('https://music.youtube.com/search?q=' + encodeURIComponent(lower), '_blank');
         }
       }
     };
