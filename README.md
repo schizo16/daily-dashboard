@@ -1,59 +1,80 @@
-# dashboard
+# Atlas
 
-Personal dashboard — AI trending, movie picks, and daily games.
-
-Built with vanilla JavaScript. No frameworks, no build steps, no slop.
+Personal hub — AI trends, movies, games, radio, music, and tools. Built with vanilla JS, no frameworks, no slop.
 
 ```
-┌─ Navigation ─────────────────────────┐
-│  Home  │  Radar  │  Movies  │  Games │
-├──────────────────────────────────────┤
-│                                      │
-│  🔴 GitHub trending repos + HN       │
-│  🎬 TMDB trending movies             │
-│  🎮 Wordle + Movie Quiz              │
-│  🌐 VI / EN                          │
-│  🌙 Dark / Light                     │
-│                                      │
-└──────────────────────────────────────┘
+🏠 Home → ⏰ 🪟 🌤 🔍
+🔴 Radar → GitHub trending + AI Models + HackerNews
+🎬 Movies → TMDB trending + TV Series + time periods
+🎮 Games → Steam deals with ratings & discounts
+📋 Watchlist → saved movies
+📻 Radio → stations from 16 countries
+🎵 Music → YouTube / Spotify / SoundCloud + queue
+🧰 Tools → QR, password, JSON, typing test, downloader
 ```
 
-## Pages
+## Features
 
-- **Home** — landing with quick links
-- **Radar** — top GitHub repos (past 7 days) + HackerNews stories
-- **Movies** — trending movies from TMDB + personal watchlist
-- **Games** — Wordle (daily persistent) + Movie Quiz (5 random questions)
-- **Watchlist** — saved movies
+- **Home** — live clock, weather (auto-detect location), Google smart search, quick notes (auto-save), quick links
+- **Radar** — GitHub trending repos (week/month/year), AI models from HuggingFace, HackerNews
+- **Movies** — TMDB trending + TV series, period filters (week/month/year/top), movie details with poster/rating/cast, Movie News
+- **Games** — Steam deals from CheapShark, 7 categories (top deals, popular, discounts, under $5/$10, top rated, new), ratings + discounts, pagination
+- **Music** — YouTube (audio-only with YT Player API), Spotify embed, SoundCloud embed, direct audio URL, playlist support (YouTube Data API for queue), queue with prev/next, shuffle, loop (off/all/one), seek bar, volume, persistent player bar
+- **Radio** — 16 countries (US, UK, Vietnam, Japan, Korea, China, etc.), browse real stations via Radio Browser API, persistent player bar, volume, now-playing metadata for SomaFM
+- **Tools** — QR code generator, password generator, text counter, random number, Base64 encoder/decoder, JSON formatter/minifier, typing test, color converter, video downloader links
+- **AI Hub** — quick links to ChatGPT, Gemini, Claude, DeepSeek, Groq, Perplexity
+- **i18n** — Vietnamese + English
+- **Auto theme** — light by day, dark by night (manual toggle available)
+- **Dynamic background** — morning/afternoon/evening/night gradients, stars + shooting stars at night, clouds, rain, wind effects based on real weather
+- **Responsive** — mobile hamburger menu, adaptive layouts
 
 ## Setup
 
-1. Clone or download
+1. Clone the repo
 2. Open `index.html` in a browser (or serve with `python3 -m http.server 8080`)
 
-### TMDB API key (optional)
+### API Keys
 
-Movies tab needs a TMDB API key:
+Copy `js/config.example.js` to `js/config.js` and fill in:
 
-1. Register at https://www.themoviedb.org/settings/api
-2. Open `js/movies.js` — API key is already set
+```js
+const CONFIG = {
+  GEMINI_KEY: 'your_gemini_api_key',       // for AI features
+  YT_KEY: 'your_youtube_data_api_v3_key',  // for playlist queue + search
+  TMDB_KEY: 'your_tmdb_api_key',           // for movies (optional)
+};
+```
+
+- **Gemini API key:** https://aistudio.google.com/apikey
+- **YouTube Data API v3:** https://console.cloud.google.com/apis/library/youtube.googleapis.com
+- **TMDB API key:** https://www.themoviedb.org/settings/api
+
+`config.js` is in `.gitignore` and won't be committed.
 
 ## Tech
 
-- Vanilla JS (ES6)
-- Playfair Display + JetBrains Mono (Google Fonts)
-- CSS custom properties (dark/light theme)
-- Hash-based routing
-- localStorage for persistence (theme, locale, watchlist, game state)
-- i18n: Vietnamese + English
+- Vanilla JS (ES6+)
+- YouTube IFrame Player API
+- YouTube Data API v3
+- Spotify / SoundCloud embeds
+- CheapShark API (games)
+- TMDB API (movies)
+- HuggingFace API (AI models)
+- Radio Browser API (radio stations)
+- Open-Meteo API (weather)
+- GitHub Search API (trending repos)
+- HackerNews Firebase API
+- Reddit JSON API (news)
+- LibreTranslate API (translation)
+- Web Speech API (read aloud)
+- CSS custom properties + animations
+- CSS-only hamburger menu (checkbox hack)
+- localStorage persistence
 
 ## Deploy
 
 Any static host works — Cloudflare Pages, Vercel, Netlify:
 
 ```bash
-# Using Cloudflare Pages CLI (wrangler)
-npx wrangler pages deploy . --project-name=daily-dashboard
+npx wrangler pages deploy . --project-name=atlas
 ```
-
-Or just push to GitHub and connect via Cloudflare Dashboard → Pages → Connect Git.
