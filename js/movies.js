@@ -185,8 +185,9 @@ const Movies = {
 
   grd(c, movies, isMovie) {
     c.innerHTML = '';
-    movies.forEach(m => {
+    movies.forEach((m, i) => {
       const e = document.createElement('div'); e.className = 'movie-e'; e.style.cursor = 'pointer';
+      e.style.animation = 'fadeIn 0.3s ease-out both'; e.style.animationDelay = `${i * 0.03}s`;
       const poster = m.p ? `<div class="movie-thumb"><img src="${TMDB_IMG + m.p}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>` : '<div class="movie-thumb" style="font-size:1.2rem">🎬</div>';
       e.innerHTML = `${poster}<div class="movie-body"><div class="movie-name">${esc(m.t)}</div><div class="movie-sub">${m.y}${m.o ? ' · ' + esc(m.o.slice(0, 50)) + '...' : ''} · ${m.r ? m.r.toFixed(1) : 'N/A'}</div></div><button class="wl-btn" data-id="${m.id}">${_('save')}</button>`;
       e.querySelector('.wl-btn').onclick = (ev) => { ev.stopPropagation();
@@ -224,8 +225,9 @@ const Movies = {
       div.style.marginTop = '12px';
       div.innerHTML = `<div class="section-h"><h2>${_('movieNews')}</h2><a href="https://reddit.com/r/movies" target="_blank">r/movies ↗</a></div>`;
       const list = document.createElement('div');
-      posts.forEach(p => {
+      posts.forEach((p, i) => {
         const e = document.createElement('div'); e.className = 'entry';
+        e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${0.03 + i * 0.02}s`;
         e.innerHTML = `<div class="entry-thumb">🎬</div><div class="entry-body"><div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
           <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="read-btn">📖 ${_('readAloud')}</button></div></div>`;
         e.querySelector('.read-btn').onclick = () => showReader(c, p.t, p.t, p.u);

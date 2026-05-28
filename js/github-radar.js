@@ -73,8 +73,9 @@ const AiRadar = {
 
   rl(list) {
     const d = document.createElement('div');
-    list.forEach(r => {
+    list.forEach((r, i) => {
       const e = document.createElement('div'); e.className = 'entry';
+      e.style.animation = `slideDown 0.3s ease-out both`; e.style.animationDelay = `${0.03 + i * 0.02}s`;
       const thumb = r.a ? `<div class="entry-thumb"><img src="${this.ea(r.a)}" alt="" loading="lazy"></div>` : `<div class="entry-thumb">📦</div>`;
       e.innerHTML = `${thumb}<div class="entry-body">
         <div class="entry-title"><a href="${this.ea(r.u)}" target="_blank">${this.eh(r.n)}</a></div>
@@ -88,8 +89,9 @@ const AiRadar = {
 
   hl(list) {
     const d = document.createElement('div');
-    list.forEach(s => {
+    list.forEach((s, i) => {
       const e = document.createElement('div'); e.className = 'entry';
+      e.style.animation = `slideDown 0.3s ease-out both`; e.style.animationDelay = `${0.03 + i * 0.02}s`;
       e.innerHTML = `<div class="entry-thumb">📰</div><div class="entry-body">
         <div class="entry-title"><a href="${this.ea(s.u)}" target="_blank">${this.eh(s.t)}</a></div>
         <div class="entry-meta"><span>${s.p} points</span><span>${s.c} comments</span></div>

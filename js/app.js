@@ -77,8 +77,9 @@ const GamesPage = {
       const deals = await r.json();
       grid.innerHTML = '';
       if (!deals || !deals.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No deals</div>'; return; }
-      deals.slice(0, 15).forEach(g => {
+      deals.slice(0, 15).forEach((g, i) => {
         const e = document.createElement('a'); e.className = 'movie-e';
+        e.style.animation = 'fadeIn 0.3s ease-out both'; e.style.animationDelay = `${i * 0.025}s`;
         e.href = `https://store.steampowered.com/app/${g.steamAppID}/`; e.target = '_blank';
         e.style.cssText = 'text-decoration:none;display:flex;cursor:pointer';
         const img = g.thumb || '';
@@ -124,8 +125,9 @@ const GamesPage = {
       div.style.marginTop = '12px';
       div.innerHTML = `<div class="section-h"><h2>${_('gameNews')}</h2><a href="https://reddit.com/r/gaming" target="_blank">r/gaming ↗</a></div>`;
       const list = document.createElement('div');
-      posts.forEach(p => {
+      posts.forEach((p, i) => {
         const e = document.createElement('div'); e.className = 'entry';
+        e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${0.03 + i * 0.02}s`;
         e.innerHTML = `<div class="entry-thumb">🎮</div><div class="entry-body">
           <div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
           <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="read-btn" data-text="${esc(p.t)}">📖 ${_('readAloud')}</button></div>
@@ -252,8 +254,9 @@ async function loadTechNews(c) {
     div.style.marginTop = '12px';
     div.innerHTML = `<div class="section-h"><h2>${_('techNews')}</h2><a href="https://reddit.com/r/artificial" target="_blank">reddit ↗</a></div>`;
     const list = document.createElement('div');
-    allPosts.forEach(p => {
+    allPosts.forEach((p, i) => {
       const e = document.createElement('div'); e.className = 'entry';
+      e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${0.03 + i * 0.02}s`;
       const icon = p.lang === 'VI' ? '🇻🇳' : '🤖';
       e.innerHTML = `<div class="entry-thumb">${icon}</div><div class="entry-body">
         <div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>

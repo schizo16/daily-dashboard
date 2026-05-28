@@ -109,48 +109,72 @@ body::before {
 
 /* ─── Animations ─── */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeSlide {
-  from { opacity: 0; transform: translateX(-4px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
+/* Page transition */
 .page.active {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .page.active > .card {
-  animation: fadeInUp 0.35s ease-out both;
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.page.active > .card:nth-child(1) { animation-delay: 0.02s; }
-.page.active > .card:nth-child(2) { animation-delay: 0.06s; }
-.page.active > .card:nth-child(3) { animation-delay: 0.1s; }
+.page.active > .card:nth-child(1) { animation-delay: 0.03s; }
+.page.active > .card:nth-child(2) { animation-delay: 0.08s; }
+.page.active > .card:nth-child(3) { animation-delay: 0.13s; }
 
+/* Hero */
 .hero {
-  animation: fadeInUp 0.4s ease-out;
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.hero-links a {
-  animation: fadeSlide 0.4s ease-out both;
-}
-.hero-links a:nth-child(1) { animation-delay: 0.1s; }
-.hero-links a:nth-child(2) { animation-delay: 0.15s; }
-.hero-links a:nth-child(3) { animation-delay: 0.2s; }
-.hero-links a:nth-child(4) { animation-delay: 0.25s; }
+.hero-rule { animation: fadeIn 0.4s ease-out both; }
+.hero h1 { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 0.05s; }
+.hero-tagline { animation: fadeInUp 0.5s ease-out both; animation-delay: 0.1s; }
+.hero-desc { animation: fadeInUp 0.5s ease-out both; animation-delay: 0.15s; }
+.hero-links a { animation: fadeInUp 0.4s ease-out both; }
+.hero-links a:nth-child(1) { animation-delay: 0.2s; }
+.hero-links a:nth-child(2) { animation-delay: 0.25s; }
 
+/* Tiles */
 .tile {
-  transition: all 0.25s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeInUp 0.4s ease-out both;
 }
+.tile:nth-child(1) { animation-delay: 0.1s; }
+.tile:nth-child(2) { animation-delay: 0.15s; }
+.tile:nth-child(3) { animation-delay: 0.2s; }
+.tile:nth-child(4) { animation-delay: 0.25s; }
 .tile:hover {
   border-color: var(--border-2);
   background: var(--surface-2);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+}
+.tile:active {
+  transform: translateY(-1px);
 }
 
+/* Entries */
 .entry { transition: background 0.15s; padding: 14px 0; }
 .entry + .entry { border-top: 1px solid var(--border); }
 .entry:hover {
@@ -159,6 +183,54 @@ body::before {
   border-radius: 2px;
 }
 .entry-title a { transition: color 0.15s; }
+.entry:first-child { animation: slideDown 0.3s ease-out; }
+
+/* Movie entries */
+.movie-e { transition: background 0.15s; }
+.movie-e:active { opacity: 0.8; }
+
+/* Loading skeleton */
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Buttons */
+.btn { transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1); }
+.btn:active { transform: scale(0.97); }
+
+.page-btn, .mood-btn { transition: all 0.12s; }
+.page-btn:active, .mood-btn:active { transform: scale(0.95); }
+
+/* Nav */
+.nav a { transition: color 0.15s; }
+.nav a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 1px; background: var(--accent);
+  transform: scaleX(0); transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav a:hover::after,
+.nav a.active::after { transform: scaleX(1); }
+
+/* Theme toggle */
+.theme-btn-sm {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.theme-btn-sm:hover { transform: rotate(15deg); }
+
+/* Focus ring for keyboard nav */
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Section header links */
+.section-h a { transition: color 0.15s; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-2); }
 
 /* ─── Nav ─── */
 .nav {
