@@ -38,6 +38,7 @@
   opacity: 0;
   display: none;
 }
+[data-time="evening"] .shooting-star,
 [data-time="night"] .shooting-star {
   display: block;
 }
@@ -48,6 +49,7 @@
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
   display: none;
 }
+[data-time="evening"] .stars,
 [data-time="night"] .stars {
   display: block;
   background-image:
