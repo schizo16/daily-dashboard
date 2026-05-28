@@ -1421,15 +1421,35 @@ function initSearch() {
 }
 
 /* ─── Dynamic background ─── */
+let _timeOverride = null;
 function updateTimeBackground() {
   const h = new Date().getHours();
   let period;
-  if (h >= 6 && h < 12) period = 'morning';
+  if (_timeOverride) period = _timeOverride;
+  else if (h >= 6 && h < 12) period = 'morning';
   else if (h >= 12 && h < 18) period = 'afternoon';
   else if (h >= 18 && h < 22) period = 'evening';
   else period = 'night';
   document.documentElement.setAttribute('data-time', period);
 }
+// Debug: click 🌙/☀️ on footer to cycle time
+document.addEventListener('DOMContentLoaded', () => {
+  const cycleBtn = document.createElement('span');
+  cycleBtn.textContent = '🌙';
+  cycleBtn.title = 'Cycle time (debug)';
+  cycleBtn.style.cssText = 'cursor:pointer;font-size:0.65rem;margin-left:6px;opacity:0.4';
+  cycleBtn.onmouseover = () => { cycleBtn.style.opacity = '1'; };
+  cycleBtn.onmouseout = () => { cycleBtn.style.opacity = '0.4'; };
+  const order = [null, 'morning', 'afternoon', 'evening', 'night'];
+  let idx = 0;
+  cycleBtn.onclick = () => {
+    idx = (idx + 1) % order.length;
+    _timeOverride = order[idx];
+    updateTimeBackground();
+    cycleBtn.textContent = order[idx] ? ['🌅','☀️','🌇','🌙'][['morning','afternoon','evening','night'].indexOf(order[idx])] : '🌙';
+  };
+  document.querySelector('.footer .container')?.appendChild(cycleBtn);
+});
 
 /* ─── Home widgets ─── */
 function updateClock() {
