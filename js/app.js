@@ -741,6 +741,24 @@ const MusicPage = {
     nextBtn.disabled = qi < 0 || qi >= q.length - 1;
     prevBtn.onclick = () => { if (qi > 0) this.playFromQueue(qi - 1); };
     nextBtn.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); };
+    document.getElementById('ms-pause').onclick = () => {
+      if (ytPlayer) {
+        if (ytPlayer.getPlayerState() === 1) { ytPlayer.pauseVideo(); document.getElementById('ms-pause').textContent = '▶ Resume'; }
+        else { ytPlayer.playVideo(); document.getElementById('ms-pause').textContent = '⏸ Pause'; }
+      }
+    };
+    document.getElementById('ms-stop').onclick = () => {
+      try { if (ytPlayer) ytPlayer.stopVideo(); } catch {}
+      document.getElementById('ms-pause').disabled = true;
+      document.getElementById('ms-stop').disabled = true;
+      document.getElementById('ms-title').textContent = 'No track playing';
+      document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
+      document.getElementById('ms-frame-container').innerHTML = '';
+      const qq = document.getElementById('ms-queue');
+      if (qq) qq.style.display = 'none';
+      const bar = document.getElementById('music-bar');
+      if (bar) bar.remove();
+    };
     document.getElementById('mb-prev').onclick = () => {
       if (qi > 0) this.playFromQueue(qi - 1);
     };
@@ -843,16 +861,24 @@ const MusicPage = {
       }
     };
     document.getElementById('mb-prev').onclick = () => {
-      if (this._currentIdx > 0) this.play(FEATURED[this._currentIdx - 1].vid);
+      const q2 = (this._queue && this._queue.length > 0) ? this._queue : [];
+      const qi2 = this._queueIdx >= 0 ? this._queueIdx : 0;
+      if (qi2 > 0) this.playFromQueue(qi2 - 1);
     };
     document.getElementById('mb-next').onclick = () => {
-      if (this._currentIdx < FEATURED.length - 1) this.play(FEATURED[this._currentIdx + 1].vid);
+      const q2 = (this._queue && this._queue.length > 0) ? this._queue : [];
+      const qi2 = this._queueIdx >= 0 ? this._queueIdx : 0;
+      if (qi2 < q2.length - 1) this.playFromQueue(qi2 + 1);
     };
     document.getElementById('mb-stop').onclick = () => {
-      if (ytPlayer) ytPlayer.stopVideo();
+      try { if (ytPlayer) ytPlayer.stopVideo(); } catch {}
       document.getElementById('ms-pause').disabled = true;
       document.getElementById('ms-stop').disabled = true;
       document.getElementById('ms-title').textContent = 'No track playing';
+      document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
+      document.getElementById('ms-frame-container').innerHTML = '';
+      const q3 = document.getElementById('ms-queue');
+      if (q3) q3.style.display = 'none';
       bar.remove();
     };
     document.getElementById('mb-vol').oninput = (e) => {
