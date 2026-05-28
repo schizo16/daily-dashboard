@@ -288,6 +288,34 @@ function show(page) {
   else if (page === 'movies') Movies.load(el);
   else if (page === 'games') GamesPage.load(el);
   else if (page === 'watchlist') WatchlistPage.load(el);
+  startAutoRefresh(page);
+}
+
+/* ─── Auto-refresh ─── */
+const REFRESH_INTERVALS = {
+  radar: 5 * 60 * 1000,
+  movies: 30 * 60 * 1000,
+  games: 30 * 60 * 1000,
+};
+let refreshTimers = {};
+
+function startAutoRefresh(page) {
+  stopAutoRefresh();
+  const ms = REFRESH_INTERVALS[page];
+  if (!ms) return;
+  refreshTimers[page] = setTimeout(() => {
+    const el = document.getElementById('page-' + page);
+    if (el && el.classList.contains('active')) {
+      if (page === 'radar') AiRadar.load(el);
+      else if (page === 'movies') Movies.load(el);
+      else if (page === 'games') GamesPage.load(el);
+    }
+  }, ms);
+}
+
+function stopAutoRefresh() {
+  Object.values(refreshTimers).forEach(t => clearTimeout(t));
+  refreshTimers = {};
 }
 
 function route() {
