@@ -12,12 +12,14 @@ document.getElementById('locale-btn').onclick = () => {
 
 /* ─── Page Loaders ─── */
 
+const PROXY = 'https://corsproxy.io/?url=';
+const STEAM_API = 'https://store.steampowered.com/api/featuredcategories';
+
 const GAME_GENRES = [
-  { id: 'deals', label: '🔥 Deals', url: 'https://www.cheapshark.com/api/1.0/deals?pageSize=12&storeID=1&steamRating=80&sortBy=Savings' },
-  { id: 'new', label: '🆕 Mới', url: 'https://www.cheapshark.com/api/1.0/deals?pageSize=12&storeID=1&sortBy=Release&steamRating=60' },
-  { id: 'under5', label: '💵 Dưới $5', url: 'https://www.cheapshark.com/api/1.0/deals?pageSize=12&storeID=1&maxPrice=5&sortBy=Savings' },
-  { id: 'under10', label: '💵 Dưới $10', url: 'https://www.cheapshark.com/api/1.0/deals?pageSize=12&storeID=1&maxPrice=10&sortBy=Savings' },
-  { id: 'rated', label: '⭐ Đánh giá cao', url: 'https://www.cheapshark.com/api/1.0/deals?pageSize=12&storeID=1&steamRating=90&sortBy=Metacritic' },
+  { id: 'topsellers', label: '🔥 Bán chạy', key: 'top_sellers' },
+  { id: 'specials', label: '🏷️ Giảm giá', key: 'specials' },
+  { id: 'newreleases', label: '🆕 Mới ra', key: 'new_releases' },
+  { id: 'comingsoon', label: '⏳ Sắp ra', key: 'coming_soon' },
 ];
 
 const GamesPage = {
@@ -52,12 +54,13 @@ const GamesPage = {
     try {
       const div = document.createElement('div'); div.className = 'card';
       div.style.marginTop = '12px';
-      div.innerHTML = `<div class="section-h"><h2>🎮 Game Deals</h2><a href="https://www.cheapshark.com" target="_blank">cheapshark ↗</a></div>
+      div.innerHTML = `<div class="section-h"><h2>🎮 Steam Store</h2><a href="https://store.steampowered.com" target="_blank">store.steampowered ↗</a></div>
         <div class="mood-bar" id="gp-bar" style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap"></div>
         <div id="gp-grid"></div>`;
       c.appendChild(div);
       this.renderGenreBar();
-      await this.loadDeals('deals');
+      const data = await this.fetchSteam();
+      this.renderGrid(data, 'topsellers');
     } catch (_) {}
   },
   renderGenreBar() {
@@ -77,38 +80,40 @@ const GamesPage = {
         });
         b.classList.add('active');
         b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)';
-        this.loadDeals(g.id);
+        const cached = window.__steamData;
+        if (cached) this.renderGrid(cached, g.id);
       };
-      if (g.id === 'deals') { b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)'; }
+      if (g.id === 'topsellers') { b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)'; }
       bar.appendChild(b);
     });
   },
-  async loadDeals(genreId) {
+  async fetchSteam() {
+    const r = await fetch(PROXY + encodeURIComponent(STEAM_API));
+    if (!r.ok) throw new Error('Steam error');
+    const d = await r.json();
+    window.__steamData = d;
+    return d;
+  },
+  renderGrid(data, section) {
     const grid = document.getElementById('gp-grid');
     if (!grid) return;
-    grid.innerHTML = '<div class="loading" style="padding:16px 0">Loading deals...</div>';
-    try {
-      const genre = GAME_GENRES.find(g => g.id === genreId);
-      if (!genre) return;
-      const r = await fetch(genre.url);
-      if (!r.ok) throw new Error('API error');
-      const deals = await r.json();
-      grid.innerHTML = '';
-      deals.forEach(g => {
-        const e = document.createElement('div'); e.className = 'movie-e';
-        const img = g.thumb || '';
-        const savings = g.savings ? `${Math.round(Number(g.savings))}%` : '';
-        const rating = g.steamRatingText ? `<span style="color:#4ade80">${esc(g.steamRatingText)}</span>` : '';
-        const pct = g.steamRatingPercent ? `${g.steamRatingPercent}%` : '—';
-        e.innerHTML = `<div class="movie-thumb" style="width:60px;height:60px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
-          <div class="movie-body"><div class="movie-name">${esc(g.title || g.external || '')}</div>
-          <div class="movie-sub">${savings ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${savings}</span> ` : ''}$${g.salePrice || '?'} <s>$${g.normalPrice || '?'}</s> · ⭐ ${pct} ${rating}</div></div>`;
-        grid.appendChild(e);
-      });
-      if (!deals.length) grid.innerHTML = '<div class="empty" style="padding:16px 0">No deals found</div>';
-    } catch (e) {
-      grid.innerHTML = '<div class="empty" style="padding:16px 0">Failed to load</div>';
-    }
+    grid.innerHTML = '';
+    const genre = GAME_GENRES.find(g => g.id === section);
+    if (!genre) return;
+    const items = data[genre.key]?.items?.slice(0, 10);
+    if (!items || !items.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
+    items.forEach(g => {
+      const e = document.createElement('div'); e.className = 'movie-e';
+      const img = g.capsule_small || g.header_image || '';
+      const pct = g.discount_percent || 0;
+      const hasDisc = pct > 0;
+      const finalP = g.final_price !== undefined ? g.final_price / 100 : null;
+      const origP = g.original_price !== undefined ? g.original_price / 100 : null;
+      e.innerHTML = `<div class="movie-thumb" style="width:60px;height:34px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
+        <div class="movie-body"><div class="movie-name">${esc(g.name || '')}</div>
+        <div class="movie-sub">${hasDisc ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${origP ? `<s>$${origP.toFixed(2)}</s> ` : ''}${finalP !== null ? `<span style="font-weight:600">$${finalP.toFixed(2)}</span>` : '<span style="color:var(--accent)">Free</span>'}</div></div>`;
+      grid.appendChild(e);
+    });
   },
   async loadNews(c) {
     try {
