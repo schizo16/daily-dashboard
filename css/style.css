@@ -749,8 +749,9 @@ button:focus-visible, a:focus-visible {
   #radio-content { grid-template-columns: 1fr !important; }
 
   /* AI Hub */
-  #chat-panel { width: calc(100% - 20px) !important; right: 10px !important; max-height: 60vh !important; }
-  #ai-panel { width: calc(100% - 20px) !important; right: 10px !important; }
+  #chat-panel { width: calc(100% - 16px) !important; right: 8px !important; bottom: 72px !important; max-height: 50vh !important; border-radius: 8px !important; }
+  #ai-panel { width: calc(100% - 16px) !important; right: 8px !important; bottom: 72px !important; border-radius: 8px !important; }
+  #ai-hub-btn, #chat-btn { width: 38px !important; height: 38px !important; font-size: 1rem !important; bottom: 16px !important; right: 14px !important; }
 
   /* Tools */
   .tool-tile { padding: 10px !important; }
