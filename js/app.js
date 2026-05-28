@@ -338,6 +338,35 @@ document.getElementById('theme-btn').onclick = () => {
   document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
 };
 
+/* ─── Weather ─── */
+async function loadWeather() {
+  const el = document.getElementById('hero-weather');
+  if (!el) return;
+  try {
+    let lat = 21.0285, lon = 105.8542;
+    const saved = Storage.get('weatherLoc');
+    if (saved) { lat = saved.lat; lon = saved.lon; }
+    else if (navigator.geolocation) {
+      try {
+        const pos = await new Promise((ok, err) => navigator.geolocation.getCurrentPosition(ok, err, { timeout: 3000 }));
+        lat = pos.coords.latitude; lon = pos.coords.longitude;
+        Storage.set('weatherLoc', { lat, lon });
+      } catch {}
+    }
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`);
+    if (!r.ok) throw Error();
+    const d = await r.json();
+    const cw = d.current_weather;
+    const temp = Math.round(cw.temperature);
+    const code = cw.weathercode;
+    const icon = ['☀️','🌤','⛅','🌥','☁️','🌧','🌦','⛈','🌨','🌫'][code <= 1 ? 0 : code <= 2 ? 1 : code <= 3 ? 2 : code <= 4 ? 3 : code <= 10 ? 5 : code <= 20 ? 6 : code <= 30 ? 7 : code <= 40 ? 8 : 9];
+    const unit = '°C';
+    el.innerHTML = `${icon} <span class="weather-temp">${temp}${unit}</span>`;
+  } catch {
+    el.innerHTML = '';
+  }
+}
+
 /* ─── Home widgets ─── */
 function updateClock() {
   const now = new Date();
@@ -385,5 +414,6 @@ document.addEventListener('DOMContentLoaded', () => {
   route();
   updateClock();
   setInterval(updateClock, 10000);
+  loadWeather();
   initNotes();
 });
