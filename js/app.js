@@ -1,89 +1,70 @@
 const Games = {
   load(container) {
     container.innerHTML = `
-      <div id="game-selector" style="display:flex;gap:8px;margin-bottom:16px">
-        <button class="tab active" data-game="wordle" style="flex:1">🎯 Wordle</button>
-        <button class="tab" data-game="quiz" style="flex:1">🎬 Movie Quiz</button>
+      <div class="game-selector">
+        <button class="game-tab active" data-game="wordle">Wordle</button>
+        <button class="game-tab" data-game="quiz">Movie Quiz</button>
       </div>
       <div id="game-container"></div>
     `;
-    const gameContainer = document.getElementById('game-container');
-    const currentGame = Storage.get('currentGame', 'wordle');
-    this.switchGame(currentGame, gameContainer);
-
-    document.querySelectorAll('[data-game]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('[data-game]').forEach(b => b.classList.toggle('active', b === btn));
-        Storage.set('currentGame', btn.dataset.game);
-        this.switchGame(btn.dataset.game, gameContainer);
+    const gc = document.getElementById('game-container');
+    const current = Storage.get('currentGame', 'wordle');
+    this.switch(current, gc);
+    document.querySelectorAll('[data-game]').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('[data-game]').forEach(x => x.classList.toggle('active', x === b));
+        Storage.set('currentGame', b.dataset.game);
+        this.switch(b.dataset.game, gc);
       });
     });
   },
-
-  switchGame(game, container) {
-    if (game === 'wordle') Wordle.init(container);
-    else if (game === 'quiz') Quiz.init(container);
+  switch(game, c) {
+    if (game === 'wordle') Wordle.init(c);
+    else if (game === 'quiz') Quiz.init(c);
   }
 };
 
 const App = {
-  currentTab: 'radar',
+  tab: 'radar',
   init() {
     const theme = Storage.getTheme();
     document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+    document.getElementById('theme-toggle').textContent = theme === 'dark' ? '●' : '○';
 
-    const pinnedTab = Storage.getPinnedTab();
-    if (pinnedTab && document.querySelector(`[data-tab="${pinnedTab}"]`)) {
-      this.switchTab(pinnedTab);
-    }
+    const pin = Storage.getPinnedTab();
+    if (pin && document.querySelector(`[data-tab="${pin}"]`)) this.switch(pin);
 
-    document.querySelectorAll('.tab').forEach(btn => {
-      btn.addEventListener('click', () => this.switchTab(btn.dataset.tab));
+    document.querySelectorAll('.tab').forEach(b => {
+      b.addEventListener('click', () => this.switch(b.dataset.tab));
     });
+    document.getElementById('theme-toggle').addEventListener('click', () => this. toggle());
 
-    document.getElementById('theme-toggle').addEventListener('click', () => this.toggleTheme());
-
-    const pinBtn = document.createElement('button');
-    pinBtn.className = 'tab';
-    pinBtn.style.cssText = 'flex:0;padding:6px 12px;margin-top:4px';
-    pinBtn.textContent = '📌';
-    pinBtn.title = 'Pin current tab as default';
-    pinBtn.addEventListener('click', () => {
-      Storage.setPinnedTab(this.currentTab);
-      pinBtn.textContent = '📌 Pinned!';
-      setTimeout(() => { pinBtn.textContent = '📌'; }, 2000);
-    });
-    document.querySelector('.tab-bar').after(pinBtn);
-
-    this.loadCurrentTab();
+    this.load();
   },
 
-  switchTab(tabId) {
-    this.currentTab = tabId;
-    document.querySelectorAll('.tab').forEach(btn => {
-      const isActive = btn.dataset.tab === tabId;
-      btn.classList.toggle('active', isActive);
-      btn.setAttribute('aria-selected', isActive);
+  switch(t) {
+    this.tab = t;
+    document.querySelectorAll('.tab').forEach(b => {
+      b.classList.toggle('active', b.dataset.tab === t);
+      b.setAttribute('aria-selected', b.dataset.tab === t);
     });
-    document.querySelectorAll('.tab-content').forEach(el => {
-      el.classList.toggle('active', el.id === 'tab-' + tabId);
+    document.querySelectorAll('.tab-content').forEach(e => {
+      e.classList.toggle('active', e.id === 'tab-' + t);
     });
-    this.loadCurrentTab();
+    this.load();
   },
 
-  loadCurrentTab() {
-    const tab = this.currentTab;
-    if (tab === 'radar') AiRadar.load(document.getElementById('tab-radar'));
-    else if (tab === 'movies') Movies.load(document.getElementById('tab-movies'));
-    else if (tab === 'games') Games.load(document.getElementById('tab-games'));
+  load() {
+    const t = this.tab;
+    if (t === 'radar') AiRadar.load(document.getElementById('tab-radar'));
+    else if (t === 'movies') Movies.load(document.getElementById('tab-movies'));
+    else if (t === 'games') Games.load(document.getElementById('tab-games'));
   },
 
-  toggleTheme() {
-    const current = Storage.getTheme();
-    const next = current === 'dark' ? 'light' : 'dark';
+  toggle() {
+    const next = Storage.getTheme() === 'dark' ? 'light' : 'dark';
     Storage.setTheme(next);
-    document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    document.getElementById('theme-toggle').textContent = next === 'dark' ? '●' : '○';
   }
 };
 

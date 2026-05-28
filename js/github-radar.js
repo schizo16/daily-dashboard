@@ -1,17 +1,27 @@
 const AiRadar = {
   async load(container) {
-    container.innerHTML = '<div class="loading">Loading AI Radar...</div>';
+    container.innerHTML = '<div class="loading">Loading...</div>';
     try {
       const [repos, stories] = await Promise.all([
         this.fetchGithubTrending(),
         this.fetchHackerNews()
       ]);
       container.innerHTML = '';
-      container.appendChild(this.renderRepos(repos));
-      container.appendChild(this.renderStories(stories));
+      container.appendChild(this.renderSection('Trending Today', 'github.com/trending', this.renderRepos(repos)));
+      container.appendChild(this.renderSection('HackerNews', 'news.ycombinator.com', this.renderStories(stories)));
     } catch (err) {
-      container.innerHTML = `<div class="error">Failed to load. <button onclick="AiRadar.load(this.parentElement.parentElement)" style="background:none;border:1px solid var(--border);border-radius:6px;padding:4px 12px;cursor:pointer;color:var(--accent)">Retry</button></div>`;
+      container.innerHTML = `<div class="error">Failed to load. <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">Retry</button></div>`;
     }
+  },
+
+  renderSection(title, link, content) {
+    const wrapper = document.createElement('div');
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.innerHTML = `<h2>${title}</h2><a class="section-link" href="https://${link}" target="_blank">${link} ↗</a>`;
+    wrapper.appendChild(header);
+    wrapper.appendChild(content);
+    return wrapper;
   },
 
   async fetchGithubTrending() {
@@ -23,10 +33,11 @@ const AiRadar = {
     });
     if (!res.ok) throw new Error('GitHub API returned ' + res.status);
     const data = await res.json();
-    return (data.items || []).map(r => ({
+    return (data.items || []).map((r, i) => ({
+      index: String(i + 1).padStart(2, '0'),
       name: r.full_name,
       url: r.html_url,
-      description: r.description || '(No description)',
+      description: r.description || '',
       stars: r.stargazers_count,
       forks: r.forks_count,
       language: r.language
@@ -37,66 +48,65 @@ const AiRadar = {
     const topRes = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
     const ids = (await topRes.json()).slice(0, 20);
     const items = await Promise.all(
-      ids.slice(0, 10).map(id =>
+      ids.slice(0, 8).map(id =>
         fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r => r.json())
       )
     );
-    return items.filter(i => i && i.title && i.url)
-      .slice(0, 8)
-      .map(i => ({
+    return items.filter(i => i && i.title)
+      .slice(0, 6)
+      .map((i, idx) => ({
+        index: String(idx + 1).padStart(2, '0'),
         title: i.title,
-        url: i.url,
+        url: i.url || `https://news.ycombinator.com/item?id=${i.id}`,
         points: i.score || 0,
         by: i.by || 'anonymous',
-        descendants: i.descendants || 0
+        comments: i.descendants || 0
       }));
   },
 
   renderRepos(repos) {
-    const section = document.createElement('div');
-    section.innerHTML = '<h2 class="section-title" style="margin-top:0">🔥 GitHub Trending Today</h2>';
+    const list = document.createElement('div');
+    list.className = 'entry-list';
     repos.forEach(r => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <h3><a href="${this.escapeAttr(r.url)}" target="_blank" rel="noopener">${this.escapeHtml(r.name)}</a></h3>
-        <p>${this.escapeHtml(r.description)}</p>
-        <div class="meta">
-          ${r.language ? `<span>🔤 ${this.escapeHtml(r.language)}</span>` : ''}
-          <span>⭐ ${this.formatNum(r.stars)}</span>
-          <span>⑂ ${this.formatNum(r.forks)}</span>
+      const entry = document.createElement('div');
+      entry.className = 'entry';
+      entry.innerHTML = `
+        <span class="entry-index">${r.index}</span>
+        <div class="entry-body">
+          <div class="entry-title"><a href="${this.eAttr(r.url)}" target="_blank">${this.eHtml(r.name)}</a></div>
+          ${r.description ? `<div class="entry-desc">${this.eHtml(r.description)}</div>` : ''}
+          <div class="entry-meta">
+            ${r.language ? `<span>${this.eHtml(r.language)}</span>` : ''}
+            <span>${this.fmt(r.stars)} stars</span>
+            <span>${this.fmt(r.forks)} forks</span>
+          </div>
         </div>`;
-      section.appendChild(card);
+      list.appendChild(entry);
     });
-    return section;
+    return list;
   },
 
   renderStories(stories) {
-    const section = document.createElement('div');
-    section.innerHTML = '<h2 class="section-title" style="margin-top:24px">📰 Top HackerNews</h2>';
+    const list = document.createElement('div');
+    list.className = 'entry-list';
     stories.forEach(s => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <h3><a href="${this.escapeAttr(s.url)}" target="_blank" rel="noopener">${this.escapeHtml(s.title)}</a></h3>
-        <div class="meta">${s.points} points by ${this.escapeHtml(s.by)} · ${s.descendants} comments</div>`;
-      section.appendChild(card);
+      const entry = document.createElement('div');
+      entry.className = 'entry';
+      entry.innerHTML = `
+        <span class="entry-index">${s.index}</span>
+        <div class="entry-body">
+          <div class="entry-title"><a href="${this.eAttr(s.url)}" target="_blank">${this.eHtml(s.title)}</a></div>
+          <div class="entry-meta">
+            <span>${s.points} points</span>
+            <span>${s.comments} comments</span>
+          </div>
+        </div>`;
+      list.appendChild(entry);
     });
-    return section;
+    return list;
   },
 
-  escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  },
-
-  escapeAttr(str) {
-    return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  },
-
-  formatNum(n) {
-    if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
-    return String(n);
-  }
+  eHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; },
+  eAttr(str) { return String(str).replace(/"/g, '&quot;'); },
+  fmt(n) { if (n >= 1000) return (n / 1000).toFixed(1) + 'k'; return String(n); }
 };

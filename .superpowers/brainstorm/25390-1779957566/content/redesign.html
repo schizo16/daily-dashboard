@@ -1,0 +1,154 @@
+<style>
+  .dashboard-preview { max-width: 800px; margin: 0 auto; }
+  .hero { text-align: center; padding: 32px 0 24px; }
+  .hero h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+  .hero p { color: #888; margin-top: 4px; font-size: 0.95rem; }
+
+  .pill-nav { display: flex; gap: 6px; background: #f0f0f0; border-radius: 14px; padding: 4px; margin-bottom: 28px; }
+  .dark .pill-nav { background: #1a1a1a; }
+  .pill { flex: 1; padding: 10px 16px; border: none; border-radius: 10px; background: transparent; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.25s; }
+  .pill.active { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .dark .pill.active { background: #2a2a2a; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .pill:hover:not(.active) { background: rgba(0,0,0,0.04); }
+
+  .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #999; margin-bottom: 12px; }
+
+  .repo-card { display: flex; gap: 14px; padding: 16px; border-radius: 12px; background: #f8f8f8; margin-bottom: 10px; transition: all 0.2s; cursor: default; }
+  .dark .repo-card { background: #181818; }
+  .repo-card:hover { background: #f0f0f0; }
+  .dark .repo-card:hover { background: #202020; }
+  .repo-icon { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #fff; flex-shrink: 0; }
+  .repo-body { flex: 1; min-width: 0; }
+  .repo-name { font-weight: 600; font-size: 0.95rem; }
+  .repo-desc { font-size: 0.82rem; color: #888; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .repo-meta { display: flex; gap: 12px; margin-top: 6px; font-size: 0.75rem; color: #999; }
+
+  .stat-badge { background: #e8e8e8; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; }
+  .dark .stat-badge { background: #2a2a2a; }
+
+  .movie-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 500px) { .movie-grid { grid-template-columns: 1fr; } }
+  .movie-card { border-radius: 12px; overflow: hidden; background: #f8f8f8; transition: all 0.2s; }
+  .dark .movie-card { background: #181818; }
+  .movie-card:hover { transform: translateY(-2px); }
+  .movie-poster { height: 120px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+  .movie-info { padding: 10px 12px; }
+  .movie-title { font-weight: 600; font-size: 0.9rem; }
+  .movie-rating { font-size: 0.8rem; color: #888; margin-top: 2px; }
+
+  .game-select { display: flex; gap: 10px; margin-bottom: 20px; }
+  .game-btn { flex: 1; padding: 12px; border-radius: 10px; border: 2px solid #eee; background: transparent; cursor: pointer; text-align: center; transition: all 0.2s; font-weight: 500; }
+  .dark .game-btn { border-color: #2a2a2a; }
+  .game-btn.active { border-color: #667eea; background: rgba(102,126,234,0.1); }
+
+  .wordle-grid { display: flex; flex-direction: column; gap: 4px; align-items: center; margin: 16px 0; }
+  .wordle-row { display: flex; gap: 4px; }
+  .wordle-cell { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 2px solid #ddd; font-weight: 700; font-size: 1.2rem; text-transform: uppercase; }
+  .dark .wordle-cell { border-color: #333; }
+  .wordle-cell.correct { background: #22c55e; border-color: #22c55e; color: #fff; }
+  .wordle-cell.present { background: #eab308; border-color: #eab308; color: #fff; }
+  .wordle-cell.absent { background: #374151; border-color: #374151; color: #fff; }
+
+  .pro-contrast { background: linear-gradient(135deg, #0f0f0f, #1a1a1a); color: #eee; padding: 24px; border-radius: 16px; margin-top: 24px; }
+  .pro-contrast h3 { color: #fff; font-size: 1rem; margin-bottom: 8px; }
+  .pro-contrast ul { list-style: none; padding: 0; }
+  .pro-contrast li { padding: 4px 0; font-size: 0.85rem; color: #bbb; }
+  .pro-contrast li::before { content: "✦ "; color: #22c55e; }
+</style>
+
+<div class="dashboard-preview">
+  <div class="hero">
+    <h1>Daily Dashboard</h1>
+    <p>Your personal hub for dev news, movies & games</p>
+  </div>
+
+  <div class="pill-nav">
+    <button class="pill active">🔴 AI Radar</button>
+    <button class="pill">🎬 Movies</button>
+    <button class="pill">🎮 Games</button>
+    <button style="margin-left:auto;background:none;border:none;cursor:pointer;font-size:1.1rem">🌙</button>
+  </div>
+
+  <div class="section-label">Trending Repositories</div>
+
+  <div class="repo-card">
+    <div class="repo-icon">📦</div>
+    <div class="repo-body">
+      <div class="repo-name">open-gsd/get-shit-done-redux</div>
+      <div class="repo-desc">Getting Shit Done, the Aftermath — a meta-prompting framework</div>
+      <div class="repo-meta">
+        <span class="stat-badge">🔤 JavaScript</span>
+        <span>⭐ 1.4k</span>
+        <span>⑂ 83</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="repo-card">
+    <div class="repo-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">🤖</div>
+    <div class="repo-body">
+      <div class="repo-name">MoonshotAI/kimi-code</div>
+      <div class="repo-desc">The Starting Point for Next-Gen Agents</div>
+      <div class="repo-meta">
+        <span class="stat-badge">🔤 TypeScript</span>
+        <span>⭐ 925</span>
+        <span>⑂ 81</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:24px">Trending Movies</div>
+
+  <div class="movie-grid">
+    <div class="movie-card">
+      <div class="movie-poster">🎬</div>
+      <div class="movie-info">
+        <div class="movie-title">The Last Frontier</div>
+        <div class="movie-rating">⭐ 8.4 · Action</div>
+      </div>
+    </div>
+    <div class="movie-card">
+      <div class="movie-poster" style="background:linear-gradient(135deg,#f43f5e,#e11d48)">🎭</div>
+      <div class="movie-info">
+        <div class="movie-title">Echoes of Tomorrow</div>
+        <div class="movie-rating">⭐ 7.9 · Drama</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:24px">Daily Games</div>
+
+  <div class="game-select">
+    <button class="game-btn active">🎯 Wordle</button>
+    <button class="game-btn">🎬 Movie Quiz</button>
+  </div>
+
+  <div class="wordle-grid">
+    <div class="wordle-row">
+      <div class="wordle-cell correct">C</div>
+      <div class="wordle-cell present">R</div>
+      <div class="wordle-cell absent">A</div>
+      <div class="wordle-cell correct">N</div>
+      <div class="wordle-cell absent">E</div>
+    </div>
+    <div class="wordle-row">
+      <div class="wordle-cell" style="border-color:#ddd"> </div>
+      <div class="wordle-cell" style="border-color:#ddd"> </div>
+      <div class="wordle-cell" style="border-color:#ddd"> </div>
+      <div class="wordle-cell" style="border-color:#ddd"> </div>
+      <div class="wordle-cell" style="border-color:#ddd"> </div>
+    </div>
+  </div>
+
+  <div class="pro-contrast">
+    <h3>✨ Improvements Over Current Version</h3>
+    <ul>
+      <li>Card-based layout với hover effects</li>
+      <li>Pill navigation tabs (Apple-style)</li>
+      <li>Repo cards có icon gradient + badge</li>
+      <li>Movie grid 2 cột với poster gradient</li>
+      <li>Wordle cell animation-ready</li>
+      <li>Dark/light theme pill tích hợp</li>
+    </ul>
+  </div>
+</div>
