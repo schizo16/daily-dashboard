@@ -600,6 +600,7 @@ const MusicPage = {
 
       <div id="ms-player"></div>
       <div id="ms-frame-container" style="width:0;height:0;overflow:hidden"></div>
+      <div id="ms-queue" style="margin-bottom:12px;display:none"></div>
 
       <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">🎧 QUICK LISTEN</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
