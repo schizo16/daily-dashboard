@@ -4,7 +4,7 @@ const TMDB_IMG_L = 'https://image.tmdb.org/t/p/w342';
 
 async function showMovieDetail(id, type) {
   const panel = document.createElement('div');
-  panel.style.cssText = 'position:fixed;z-index:1000;background:rgba(0,0,0,0.5);inset:0;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.15s ease-out';
+  panel.style.cssText = 'position:fixed;z-index:1000;background:rgba(0,0,0,0.7);inset:0;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.15s ease-out;backdrop-filter:blur(4px)';
     panel.innerHTML = `<div style="max-width:640px;margin:0 auto"><div class="loading">${_('loading')}</div></div>`;
   document.body.appendChild(panel);
   panel.onclick = (e) => { if (e.target === panel) panel.remove(); };
