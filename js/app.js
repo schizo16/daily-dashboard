@@ -55,7 +55,8 @@ const GamesPage = {
       posts.forEach(p => {
         const e = document.createElement('div'); e.className = 'entry';
         e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
-          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span></div>`;
+          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="speak-btn" data-text="${esc(p.t)}">🔊 ${_('readAloud')}</button></div>`;
+        e.querySelector('.speak-btn').onclick = () => speak(p.t);
         list.appendChild(e);
       });
       div.appendChild(list);
@@ -88,6 +89,56 @@ const WatchlistPage = {
   }
 };
 
+/* ─── Read Aloud ─── */
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = currentLocale === 'vi' ? 'vi-VN' : 'en-US';
+  u.rate = 0.9;
+  const voices = window.speechSynthesis.getVoices();
+  const viVoice = voices.find(v => v.lang.startsWith('vi'));
+  if (viVoice) u.voice = viVoice;
+  window.speechSynthesis.speak(u);
+}
+
+/* ─── Tech News (Vietnamese + global) ─── */
+async function loadTechNews(c) {
+  try {
+    const [vnRes, enRes] = await Promise.all([
+      fetch('https://www.reddit.com/r/congnghe/hot.json?limit=3').catch(() => null),
+      fetch('https://www.reddit.com/r/artificial/hot.json?limit=3').catch(() => null)
+    ]);
+    const allPosts = [];
+    if (vnRes && vnRes.ok) {
+      const d = await vnRes.json();
+      d.data.children.filter(x => !x.data.stickied).slice(0, 3).forEach(x => {
+        allPosts.push({ t: x.data.title, u: x.data.url, s: x.data.score, lang: 'VI' });
+      });
+    }
+    if (enRes && enRes.ok) {
+      const d = await enRes.json();
+      d.data.children.filter(x => !x.data.stickied).slice(0, 3).forEach(x => {
+        allPosts.push({ t: x.data.title, u: x.data.url, s: x.data.score, lang: 'EN' });
+      });
+    }
+    if (!allPosts.length) return;
+    const div = document.createElement('div'); div.className = 'card';
+    div.style.marginTop = '12px';
+    div.innerHTML = `<div class="section-h"><h2>${_('techNews')}</h2><a href="https://reddit.com/r/artificial" target="_blank">reddit ↗</a></div>`;
+    const list = document.createElement('div');
+    allPosts.forEach(p => {
+      const e = document.createElement('div'); e.className = 'entry';
+      e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
+        <div class="entry-meta"><span>${p.lang}</span><span>${p.s} points</span><button class="speak-btn" data-text="${esc(p.t)}">🔊 ${_('readAloud')}</button></div>`;
+      e.querySelector('.speak-btn').onclick = () => speak(p.t);
+      list.appendChild(e);
+    });
+    div.appendChild(list);
+    c.appendChild(div);
+  } catch (_) {}
+}
+
 function esc(s) {
   if (typeof s !== 'string') s = String(s);
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -105,7 +156,7 @@ function show(page) {
   const link = document.querySelector(`.nav a[data-page="${page}"]`);
   if (link) link.classList.add('active');
 
-  if (page === 'radar') AiRadar.load(el);
+  if (page === 'radar') { AiRadar.load(el); loadTechNews(el); }
   else if (page === 'movies') Movies.load(el);
   else if (page === 'games') GamesPage.load(el);
   else if (page === 'watchlist') WatchlistPage.load(el);
