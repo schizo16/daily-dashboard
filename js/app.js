@@ -342,12 +342,23 @@ document.getElementById('theme-btn').onclick = () => {
 
 /* ─── Radio ─── */
 const STATIONS = [
-  { name: 'Groove Salad (Chill)', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🎧', group: '🌍 International' },
-  { name: 'Jazz Radio', url: 'https://ice2.somafm.com/jazzradio-128-mp3', icon: '🎷', group: '🌍 International' },
-  { name: 'Classical', url: 'https://ice1.somafm.com/classical-128-mp3', icon: '🎻', group: '🌍 International' },
-  { name: 'Drone Zone (Electronic)', url: 'https://ice1.somafm.com/dronezone-128-mp3', icon: '🎛', group: '🌍 International' },
-  { name: 'Space Station (Ambient)', url: 'https://ice1.somafm.com/spacestation-128-mp3', icon: '🌌', group: '🌍 International' },
-  { name: 'PopTron', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🎤', group: '🌍 International' },
+  { name: 'Groove Salad', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🥗', group: '🎧 Chill / Lo-Fi' },
+  { name: 'Lofi Hip Hop', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🎧', group: '🎧 Chill / Lo-Fi' },
+  { name: 'Space Station', url: 'https://ice1.somafm.com/spacestation-128-mp3', icon: '🌌', group: '🎧 Chill / Lo-Fi' },
+  { name: 'Drone Zone', url: 'https://ice1.somafm.com/dronezone-128-mp3', icon: '🎛', group: '🎛 Electronic' },
+  { name: 'Digitalis', url: 'https://ice1.somafm.com/digitalis-128-mp3', icon: '💿', group: '🎛 Electronic' },
+  { name: 'The Trip', url: 'https://ice1.somafm.com/thetrip-128-mp3', icon: '🚀', group: '🎛 Electronic' },
+  { name: 'PopTron', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🎤', group: '🎤 Pop / Indie' },
+  { name: 'Indie Pop Rock', url: 'https://ice1.somafm.com/indiepop-128-mp3', icon: '🎸', group: '🎤 Pop / Indie' },
+  { name: 'Jazz Radio', url: 'https://ice2.somafm.com/jazzradio-128-mp3', icon: '🎷', group: '🎷 Jazz / Blues' },
+  { name: 'Soul City', url: 'https://ice1.somafm.com/soulcity-128-mp3', icon: '🎙', group: '🎷 Jazz / Blues' },
+  { name: 'Classical', url: 'https://ice1.somafm.com/classical-128-mp3', icon: '🎻', group: '🎻 Classical' },
+  { name: 'Heavyweight Reggae', url: 'https://ice1.somafm.com/reggae-128-mp3', icon: '🔊', group: '🌍 World' },
+  { name: 'Suburbs of Goa', url: 'https://ice1.somafm.com/goa-128-mp3', icon: '🌴', group: '🌍 World' },
+  { name: 'Secret Agent', url: 'https://ice1.somafm.com/secretagent-128-mp3', icon: '🕵', group: '🌍 World' },
+  { name: 'Boot Liquor', url: 'https://ice1.somafm.com/bootliquor-128-mp3', icon: '🍺', group: '🌍 World' },
+  { name: 'Metal Detector', url: 'https://ice1.somafm.com/metal-128-mp3', icon: '🤘', group: '🤘 Rock / Metal' },
+  { name: 'Rock', url: 'https://ice1.somafm.com/rock-128-mp3', icon: '🎸', group: '🤘 Rock / Metal' },
 ];
 
 const RadioPage = {
@@ -364,11 +375,15 @@ const RadioPage = {
         <button class="btn" id="music-play" disabled>▶ Play</button>
         <button class="btn" id="music-stop" disabled>⏹ Stop</button>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="music-stations">
-        ${STATIONS.map(s => `
-          <div class="station-btn" data-url="${s.url}" data-name="${s.name}" data-icon="${s.icon}" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:1.2rem">${s.icon}</div>
-            <div style="font-size:0.78rem;font-weight:500;margin-top:4px">${s.name}</div>
+      <div id="music-stations">
+        ${['🎧 Chill / Lo-Fi','🎛 Electronic','🎤 Pop / Indie','🎷 Jazz / Blues','🎻 Classical','🌍 World','🤘 Rock / Metal'].map(group => `
+          <div style="font-size:0.6rem;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin:14px 0 6px">${group}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            ${STATIONS.filter(s => s.group === group).map(s => `
+              <div class="station-btn" data-url="${s.url}" data-name="${s.name}" data-icon="${s.icon}" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+                <div style="font-size:1.1rem">${s.icon}</div>
+                <div style="font-size:0.72rem;font-weight:500;margin-top:3px">${s.name}</div>
+              </div>`).join('')}
           </div>`).join('')}
       </div>
       <div style="margin-top:16px;padding:10px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
