@@ -368,6 +368,7 @@ function show(page) {
   else if (page === 'watchlist') WatchlistPage.load(el);
   else if (page === 'tools') ToolsPage.load(el);
   else if (page === 'radio') RadioPage.load(el);
+  else if (page === 'media') MediaPage.load(el);
   else if (page === 'music') {
     if (!MusicPage._loaded) MusicPage.load(el);
     else { el.classList.add('active'); }
@@ -418,6 +419,42 @@ document.getElementById('theme-btn').onclick = () => {
   Storage.setTheme(n);
   document.documentElement.setAttribute('data-theme', n);
   document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
+};
+
+/* ─── Media (Radio + Music) ─── */
+const MediaPage = {
+  _tab: 'radio',
+  load(c) {
+    c.innerHTML = `
+      <div class="card">
+        <div class="section-h"><h2>📻 Media</h2></div>
+        <div style="display:flex;gap:2px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:6px">
+          <button class="media-tab active" data-tab="radio" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text);font-weight:600;border-bottom:2px solid var(--accent)">📻 Radio</button>
+          <button class="media-tab" data-tab="music" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-2);font-weight:400;border-bottom:2px solid transparent;margin-left:14px">🎵 Music</button>
+        </div>
+        <div id="media-content"></div>
+      </div>`;
+    this._c = c;
+    this._tab = 'radio';
+    this.switch('radio');
+
+    c.querySelectorAll('.media-tab').forEach(b => {
+      b.onclick = () => {
+        c.querySelectorAll('.media-tab').forEach(x => {
+          x.style.color = 'var(--text-2)'; x.style.fontWeight = '400'; x.style.borderBottomColor = 'transparent';
+        });
+        b.style.color = 'var(--text)'; b.style.fontWeight = '600'; b.style.borderBottomColor = 'var(--accent)';
+        this.switch(b.dataset.tab);
+      };
+    });
+  },
+  switch(tab) {
+    this._tab = tab;
+    const content = document.getElementById('media-content');
+    if (!content) return;
+    if (tab === 'radio') RadioPage.load(content);
+    else MusicPage.load(content);
+  }
 };
 
 /* ─── Radio ─── */
