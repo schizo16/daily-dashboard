@@ -531,97 +531,45 @@ const RadioPage = {
 };
 
 /* ─── Music ─── */
-const MUSIC_CHARTS = [
-  { name: '🇺🇸 US Top Hits', query: 'US top hits 2026', id: 'PL4o29bINf4Hj7o7WYxLxFt8Sx5LJN0s3M' },
-  { name: '🇬🇧 UK Top 40', query: 'UK top 40 2026', id: 'PL9tY0x3g0eE4y3LxH9v7y8n0s3M4o5p6Q' },
-  { name: '🇰🇷 K-Pop Hits', query: 'K-pop top hits 2026', id: 'PLMf7VY8La1RnE8L9F0gH4jK2lQ3w4e5r6T' },
-  { name: '🇯🇵 J-Pop Hits', query: 'J-pop top hits 2026', id: 'PL6B7B8C9D0E1F2G3H4I5J6K7L8M9N0O1P' },
-  { name: '🇻🇳 V-Pop', query: 'V-pop nhạc việt 2026', id: 'PLR7VY8La1RnE8L9F0gH4jK2lQ3w4e5r6T' },
-  { name: '🌍 Global Top', query: 'global top hits 2026', id: 'PL4o29bINf4Hj7o7WYxLxFt8Sx5LJN0s3M' },
+const FEATURED = [
+  { title: '🇺🇸 US Top Hits', url: 'https://www.youtube.com/results?search_query=us+top+hits+2026' },
+  { title: '🇬🇧 UK Top 40', url: 'https://www.youtube.com/results?search_query=uk+top+40+2026' },
+  { title: '🇰🇷 K-Pop', url: 'https://www.youtube.com/results?search_query=kpop+top+hits+2026' },
+  { title: '🇯🇵 J-Pop', url: 'https://www.youtube.com/results?search_query=jpop+hits+2026' },
+  { title: '🇻🇳 V-Pop', url: 'https://www.youtube.com/results?search_query=nhac+viet+top+2026' },
+  { title: '🌍 Global', url: 'https://www.youtube.com/results?search_query=global+hits+2026' },
+  { title: '🎧 Lo-Fi', url: 'https://www.youtube.com/results?search_query=lofi+chill+study' },
+  { title: '🎤 Rap US', url: 'https://www.youtube.com/results?search_query=us+rap+hip+hop+2026' },
 ];
 
 const MusicPage = {
-  _player: null,
   load(c) {
     c.innerHTML = `<div class="card">
       <div class="section-h"><h2>🎵 Music</h2></div>
-
       <div style="margin-bottom:16px">
         <div style="display:flex;gap:4px">
-          <input type="text" id="music-search" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Search YouTube for any song...">
-          <button class="btn btn-primary" id="music-search-btn">Search</button>
+          <input type="text" id="ms-q" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Search any song on YouTube...">
+          <a class="btn btn-primary" id="ms-btn" href="https://www.youtube.com/results?search_query=" target="_blank" style="text-decoration:none">Search</a>
         </div>
       </div>
-
-      <div id="music-player" style="margin-bottom:16px;display:none">
-        <div id="music-embed" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;background:var(--surface-2)"></div>
+      <div style="margin-bottom:12px">
+        <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">FEATURED CHARTS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          ${FEATURED.map(m => `
+            <a href="${m.url}" target="_blank" style="padding:10px;border:1px solid var(--border);border-radius:6px;text-align:center;text-decoration:none;color:var(--text);transition:all 0.12s;display:block" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+              <div style="font-size:0.82rem;font-weight:500">${m.title}</div>
+            </a>`).join('')}
+        </div>
       </div>
-
-      <div class="section-h" style="margin-bottom:10px"><h2>🏆 Top Charts</h2></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="music-charts">
-        ${MUSIC_CHARTS.map(m => `
-          <div class="music-chart-btn" data-query="${m.query}" data-id="${m.id}" style="padding:12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:0.82rem;font-weight:500">${m.name}</div>
-          </div>`).join('')}
+      <div class="section-h" style="margin-bottom:10px"><h2>▶ Now Playing</h2></div>
+      <div id="ms-player" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;background:var(--surface-2)">
+        <iframe id="ms-frame" src="https://www.youtube.com/embed/?autoplay=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>
       </div>
-      <div id="music-list" style="margin-top:12px"></div>
     </div>`;
-
-    document.getElementById('music-search-btn').onclick = () => {
-      const q = document.getElementById('music-search').value.trim();
-      if (q) MusicPage.searchAndPlay(q);
-    };
-    document.getElementById('music-search').onkeydown = (e) => {
-      if (e.key === 'Enter') document.getElementById('music-search-btn').click();
-    };
-
-    document.querySelectorAll('.music-chart-btn').forEach(b => {
-      b.onclick = () => {
-        const query = b.dataset.query;
-        MusicPage.searchAndPlay(query);
-      };
-    });
-  },
-
-  async searchAndPlay(query) {
-    const list = document.getElementById('music-list');
-    list.innerHTML = '<div class="loading" style="padding:16px 0">Searching...</div>';
-
-    try {
-      // Use a public proxy to search YouTube (no API key needed)
-      const r = await fetch(`https://corsproxy.io/?url=${encodeURIComponent('https://www.youtube.com/results?search_query=' + encodeURIComponent(query) + '&sp=EgIQAQ%253D%253D')}`);
-      const html = await r.text();
-      // Extract video IDs from the page
-      const matches = html.match(/\/watch\?v=([a-zA-Z0-9_-]{11})/g);
-      const ids = [...new Set(matches?.map(m => m.replace('/watch?v=', '')) || [])].slice(0, 12);
-
-      if (!ids.length) throw Error();
-
-      // Play the first result
-      this.playVideo(ids[0]);
-
-      // Show the list
-      list.innerHTML = '<div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">RESULTS</div>';
-      ids.forEach((id, i) => {
-        const d = document.createElement('div');
-        d.style.cssText = 'padding:8px 10px;border:1px solid var(--border);border-radius:4px;cursor:pointer;margin-bottom:4px;transition:all 0.12s;font-size:0.82rem';
-        d.textContent = `▶ Result ${i + 1}`;
-        d.onmouseover = () => { d.style.borderColor = 'var(--border-2)'; };
-        d.onmouseout = () => { d.style.borderColor = 'var(--border)'; };
-        d.onclick = () => this.playVideo(id);
-        list.appendChild(d);
-      });
-    } catch {
-      // Fallback: open YouTube search directly
-      list.innerHTML = `<div class="empty" style="padding:16px 0">Could not load. <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(query)}" target="_blank" style="color:var(--accent)">Search on YouTube ↗</a></div>`;
-    }
-  },
-
-  playVideo(id) {
-    const player = document.getElementById('music-player');
-    const embed = document.getElementById('music-embed');
-    player.style.display = '';
-    embed.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    const input = document.getElementById('ms-q');
+    const btn = document.getElementById('ms-btn');
+    input.oninput = () => { btn.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(input.value); };
+    input.onkeydown = (e) => { if (e.key === 'Enter') btn.click(); };
   }
 };
 
