@@ -4,7 +4,7 @@ const TMDB_IMG_L = 'https://image.tmdb.org/t/p/w342';
 
 async function showMovieDetail(id, type) {
   const panel = document.createElement('div');
-  panel.style.cssText = 'position:fixed;inset:0;z-index:1000;background:var(--bg);overflow-y:auto;padding:24px;animation:fadeIn 0.2s ease-out';
+  panel.style.cssText = 'position:fixed;z-index:1000;background:rgba(0,0,0,0.5);inset:0;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.15s ease-out';
     panel.innerHTML = `<div style="max-width:640px;margin:0 auto"><div class="loading">${_('loading')}</div></div>`;
   document.body.appendChild(panel);
   panel.onclick = (e) => { if (e.target === panel) panel.remove(); };
@@ -20,16 +20,16 @@ async function showMovieDetail(id, type) {
     const runtime = isM ? (d.runtime ? d.runtime + ' min' : '') : (d.number_of_seasons ? d.seasons + ' seasons' : '');
     const genres = (d.genres || []).map(g => g.name).join(', ');
     const cast = (d.credits?.cast || []).slice(0, 8).map(p => p.name).join(', ');
-    const poster = d.poster_path ? `<img src="https://image.tmdb.org/t/p/w342${d.poster_path}" alt="" style="width:140px;border-radius:6px;float:left;margin:0 16px 16px 0">` : '';
+    const poster = d.poster_path ? `<img src="https://image.tmdb.org/t/p/w185${d.poster_path}" alt="" style="width:100px;border-radius:6px;float:left;margin:0 14px 12px 0">` : '';
     const tagline = d.tagline ? `<p style="font-style:italic;color:var(--text-2);margin-bottom:12px">${esc(d.tagline)}</p>` : '';
     const rating = d.vote_average ? `${d.vote_average.toFixed(1)}/10` : 'N/A';
     const homepage = d.homepage ? `<a href="${d.homepage}" target="_blank" style="color:var(--accent)">🌐 Website</a>` : '';
     const tmdbUrl = `https://www.themoviedb.org/${isM ? 'movie' : 'tv'}/${id}`;
 
     const inner = document.createElement('div');
-    inner.style.cssText = 'max-width:640px;margin:0 auto;position:relative';
+    inner.style.cssText = 'max-width:480px;width:90%;max-height:80vh;overflow-y:auto;position:relative;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:fadeIn 0.2s ease-out';
     inner.innerHTML = `
-      <button id="detail-close" style="position:fixed;top:16px;right:16px;z-index:10;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.75rem;color:var(--text-2)">✕ Close</button>
+      <button id="detail-close" style="position:absolute;top:12px;right:12px;z-index:10;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text-2)">✕</button>
       <div style="overflow:hidden">
         ${poster}
         <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:4px">${esc(title)} <span style="font-weight:400;color:var(--text-2);font-size:1rem">(${year})</span></h2>
