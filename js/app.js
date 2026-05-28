@@ -1509,24 +1509,10 @@ document.addEventListener('DOMContentLoaded', () => {
   applyI18n();
   route();
 
-  // Mobile nav select
-  const sel = document.getElementById('nav-mobile-select');
-  if (sel) {
-    const links = document.querySelectorAll('.nav a[data-page]');
-    links.forEach(a => {
-      const opt = document.createElement('option');
-      opt.value = a.getAttribute('href');
-      opt.textContent = a.textContent;
-      if (a.classList.contains('active')) opt.selected = true;
-      sel.appendChild(opt);
-    });
-    sel.onchange = () => { location.hash = sel.value; };
-    // Update select on navigation
-    window.addEventListener('hashchange', () => {
-      const active = document.querySelector('.nav a.active');
-      if (active) sel.value = active.getAttribute('href');
-    });
-  }
+  // Close nav after clicking a link (mobile)
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.onclick = () => { document.getElementById('nav-toggle').checked = false; };
+  });
   updateClock();
   updateTimeBackground();
   setInterval(() => { updateClock(); updateTimeBackground(); }, 10000);

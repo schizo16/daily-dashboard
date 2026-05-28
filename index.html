@@ -18,17 +18,20 @@
   <nav class="nav">
     <div class="nav-inner">
       <a href="#home" class="nav-logo">Atlas</a>
-      <a href="#home" data-page="home" data-i18n="navHome">Home</a>
-      <a href="#radar" data-page="radar" data-i18n="navRadar">Radar</a>
-      <a href="#movies" data-page="movies" data-i18n="navMovies">Movies</a>
-      <a href="#games" data-page="games" data-i18n="navGames">Games</a>
-      <a href="#watchlist" data-page="watchlist" data-i18n="navWatchlist">Watchlist</a>
-      <a href="#radio" data-page="radio">Radio</a>
-      <a href="#music" data-page="music">Music</a>
-      <a href="#tools" data-page="tools">Tools</a>
-      <button class="theme-btn-sm" id="theme-btn" aria-label="Theme">☀️</button>
-      <button class="theme-btn-sm" id="locale-btn">VI</button>
-      <select class="nav-mobile-select" id="nav-mobile-select" aria-label="Navigate"></select>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label" id="nav-toggle-label">☰</label>
+      <div class="nav-links">
+        <a href="#home" data-page="home" data-i18n="navHome">Home</a>
+        <a href="#radar" data-page="radar" data-i18n="navRadar">Radar</a>
+        <a href="#movies" data-page="movies" data-i18n="navMovies">Movies</a>
+        <a href="#games" data-page="games" data-i18n="navGames">Games</a>
+        <a href="#watchlist" data-page="watchlist" data-i18n="navWatchlist">Watchlist</a>
+        <a href="#radio" data-page="radio">Radio</a>
+        <a href="#music" data-page="music">Music</a>
+        <a href="#tools" data-page="tools">Tools</a>
+        <button class="theme-btn-sm" id="theme-btn" aria-label="Theme">☀️</button>
+        <button class="theme-btn-sm" id="locale-btn">VI</button>
+      </div>
     </div>
   </nav>
 
