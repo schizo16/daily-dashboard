@@ -341,103 +341,110 @@ document.getElementById('theme-btn').onclick = () => {
 };
 
 /* ─── Radio ─── */
-const STATIONS = [
-  { name: 'Groove Salad', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🥗', group: '🎧 Chill / Lo-Fi' },
-  { name: 'Lofi Hip Hop', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🎧', group: '🎧 Chill / Lo-Fi' },
-  { name: 'Space Station', url: 'https://ice1.somafm.com/spacestation-128-mp3', icon: '🌌', group: '🎧 Chill / Lo-Fi' },
-  { name: 'Drone Zone', url: 'https://ice1.somafm.com/dronezone-128-mp3', icon: '🎛', group: '🎛 Electronic' },
-  { name: 'Digitalis', url: 'https://ice1.somafm.com/digitalis-128-mp3', icon: '💿', group: '🎛 Electronic' },
-  { name: 'The Trip', url: 'https://ice1.somafm.com/thetrip-128-mp3', icon: '🚀', group: '🎛 Electronic' },
-  { name: 'PopTron', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🎤', group: '🎤 Pop / Indie' },
-  { name: 'Indie Pop Rock', url: 'https://ice1.somafm.com/indiepop-128-mp3', icon: '🎸', group: '🎤 Pop / Indie' },
-  { name: 'Jazz Radio', url: 'https://ice2.somafm.com/jazzradio-128-mp3', icon: '🎷', group: '🎷 Jazz / Blues' },
-  { name: 'Soul City', url: 'https://ice1.somafm.com/soulcity-128-mp3', icon: '🎙', group: '🎷 Jazz / Blues' },
-  { name: 'Classical', url: 'https://ice1.somafm.com/classical-128-mp3', icon: '🎻', group: '🎻 Classical' },
-  { name: 'Heavyweight Reggae', url: 'https://ice1.somafm.com/reggae-128-mp3', icon: '🔊', group: '🌍 World' },
-  { name: 'Suburbs of Goa', url: 'https://ice1.somafm.com/goa-128-mp3', icon: '🌴', group: '🌍 World' },
-  { name: 'Secret Agent', url: 'https://ice1.somafm.com/secretagent-128-mp3', icon: '🕵', group: '🌍 World' },
-  { name: 'Boot Liquor', url: 'https://ice1.somafm.com/bootliquor-128-mp3', icon: '🍺', group: '🌍 World' },
-  { name: 'Metal Detector', url: 'https://ice1.somafm.com/metal-128-mp3', icon: '🤘', group: '🤘 Rock / Metal' },
-  { name: 'Rock', url: 'https://ice1.somafm.com/rock-128-mp3', icon: '🎸', group: '🤘 Rock / Metal' },
+const COUNTRIES = [
+  { name: '🇺🇸 United States', code: 'US' },
+  { name: '🇬🇧 United Kingdom', code: 'GB' },
+  { name: '🇻🇳 Vietnam', code: 'VN' },
+  { name: '🇯🇵 Japan', code: 'JP' },
+  { name: '🇰🇷 South Korea', code: 'KR' },
+  { name: '🇨🇳 China', code: 'CN' },
+  { name: '🇫🇷 France', code: 'FR' },
+  { name: '🇩🇪 Germany', code: 'DE' },
+  { name: '🇪🇸 Spain', code: 'ES' },
+  { name: '🇮🇹 Italy', code: 'IT' },
+  { name: '🇧🇷 Brazil', code: 'BR' },
+  { name: '🇮🇳 India', code: 'IN' },
+  { name: '🇦🇺 Australia', code: 'AU' },
+  { name: '🇨🇦 Canada', code: 'CA' },
+  { name: '🇷🇺 Russia', code: 'RU' },
+  { name: '🇹🇭 Thailand', code: 'TH' },
 ];
 
 const RadioPage = {
-  _audio: null, _station: null,
+  _audio: null, _country: null,
   load(c) {
-    c.innerHTML = `<div class="card">
-      <div class="section-h"><h2>📻 Radio</h2></div>
-      <div id="music-now" style="text-align:center;padding:24px 0">
-        <div style="font-size:2.5rem;margin-bottom:8px" id="music-icon">🎧</div>
-        <div style="font-size:1rem;font-weight:600;margin-bottom:4px" id="music-title">No station playing</div>
-        <div style="font-size:0.78rem;color:var(--text-2)" id="music-status">Choose a station below</div>
-      </div>
-      <div id="music-controls" style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
-        <button class="btn" id="music-play" disabled>▶ Play</button>
-        <button class="btn" id="music-stop" disabled>⏹ Stop</button>
-      </div>
-      <div id="music-stations">
-        ${['🎧 Chill / Lo-Fi','🎛 Electronic','🎤 Pop / Indie','🎷 Jazz / Blues','🎻 Classical','🌍 World','🤘 Rock / Metal'].map(group => `
-          <div style="font-size:0.6rem;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin:14px 0 6px">${group}</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-            ${STATIONS.filter(s => s.group === group).map(s => `
-              <div class="station-btn" data-url="${s.url}" data-name="${s.name}" data-icon="${s.icon}" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
-                <div style="font-size:1.1rem">${s.icon}</div>
-                <div style="font-size:0.72rem;font-weight:500;margin-top:3px">${s.name}</div>
-              </div>`).join('')}
-          </div>`).join('')}
-      </div>
-      <div style="margin-top:16px;padding:10px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
-        <strong>🎵 Tìm nhạc trên YouTube</strong>
-        <div style="display:flex;gap:4px;margin-top:6px">
-          <input type="text" id="music-search" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.78rem" placeholder="Search song name...">
-          <button class="btn btn-primary" id="music-search-btn">Search</button>
-        </div>
-        <div id="music-search-results" style="margin-top:8px;font-size:0.8rem"></div>
-      </div>
-      <div style="margin-top:8px;padding:10px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
-        🔗 Or paste audio URL: <input type="url" id="music-url" class="w-inp" style="width:100%;text-transform:none;text-align:left;font-size:0.78rem;margin-top:6px" placeholder="https://example.com/audio.mp3">
-        <button class="btn" id="music-url-btn" style="margin-top:4px;width:100%">Play URL</button>
-      </div>
-    </div>`;
+    this._c = c;
     this._audio = new Audio();
     this._audio.volume = 0.7;
+    this.showCountries();
+  },
 
-    this._audio.onplay = () => { document.getElementById('music-status').textContent = '🔊 Playing...'; document.getElementById('music-play').disabled = true; document.getElementById('music-stop').disabled = false; };
-    this._audio.onpause = () => { document.getElementById('music-status').textContent = '⏸ Paused'; document.getElementById('music-play').disabled = false; };
-    this._audio.onended = () => { document.getElementById('music-status').textContent = '⏹ Stopped'; document.getElementById('music-play').disabled = true; document.getElementById('music-stop').disabled = true; };
-    this._audio.onerror = () => { document.getElementById('music-status').textContent = '❌ Cannot play (CORS or dead link)'; document.getElementById('music-play').disabled = false; };
+  showCountries() {
+    this._c.innerHTML = `<div class="card">
+      <div class="section-h"><h2>📻 Radio</h2></div>
+      <div id="radio-now" style="text-align:center;padding:20px 0">
+        <div style="font-size:2.2rem;margin-bottom:6px" id="radio-icon">📻</div>
+        <div style="font-size:0.95rem;font-weight:600;margin-bottom:4px" id="radio-title">Choose a country</div>
+        <div style="font-size:0.75rem;color:var(--text-2)" id="radio-status">Select a country to browse stations</div>
+      </div>
+      <div id="radio-controls" style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
+        <button class="btn" id="radio-play" style="display:none">▶ Play</button>
+        <button class="btn" id="radio-stop" style="display:none">⏹ Stop</button>
+      </div>
+      <div id="radio-back" style="display:none;margin-bottom:12px"><button class="btn" onclick="RadioPage.showCountries()">← Back to countries</button></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="radio-content">
+        ${COUNTRIES.map(c => `
+          <div class="country-btn" data-code="${c.code}" style="padding:12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:0.82rem;font-weight:500">${c.name}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+    this._c.querySelectorAll('.country-btn').forEach(b => {
+      b.onclick = () => this.loadStations(b.dataset.code);
+    });
+  },
 
-    document.getElementById('music-play').onclick = () => this._audio.play();
-    document.getElementById('music-stop').onclick = () => { this._audio.pause(); this._audio.currentTime = 0; };
+  async loadStations(code) {
+    const country = COUNTRIES.find(c => c.code === code);
+    if (!country) return;
+    this._country = code;
+    const container = document.getElementById('radio-content');
+    const now = document.getElementById('radio-now');
+    container.innerHTML = '<div class="loading" style="padding:20px 0">Loading stations...</div>';
+    document.getElementById('radio-back').style.display = 'block';
+    document.getElementById('radio-controls').style.display = 'flex';
 
-    document.querySelectorAll('.station-btn').forEach(b => {
-      b.onclick = () => {
-        const url = b.dataset.url;
-        const name = b.dataset.name;
-        const icon = b.dataset.icon;
-        this._station = name;
-        document.getElementById('music-icon').textContent = icon;
-        document.getElementById('music-title').textContent = name;
-        document.getElementById('music-status').textContent = '⏳ Loading...';
-        document.getElementById('music-play').disabled = true;
-        this._audio.src = url;
-        this._audio.play().catch(() => {});
-        document.querySelectorAll('.station-btn').forEach(x => x.style.borderColor = 'var(--border)');
-        b.style.borderColor = 'var(--accent)';
-      };
+    try {
+      const r = await fetch(`https://de1.api.radio-browser.info/json/stations/bycountry/${encodeURIComponent(country.name.replace(/^[^\s]+\s/, ''))}?limit=30&order=votes&reverse=true&hidebroken=true`);
+      if (!r.ok) throw Error();
+      const stations = (await r.json()).filter(s => s.url && (s.codec === 'MP3' || s.codec === 'AAC' || s.codec === 'OGG')).slice(0, 20);
+      if (!stations.length) throw Error();
+
+      container.innerHTML = '';
+      stations.forEach(s => {
+        const d = document.createElement('div');
+        d.style.cssText = 'padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all 0.12s';
+        d.onmouseover = () => { d.style.borderColor = 'var(--border-2)'; };
+        d.onmouseout = () => { d.style.borderColor = 'var(--border)'; };
+        d.innerHTML = `<div style="font-size:0.82rem;font-weight:500">${esc(s.name)}</div>
+          <div style="font-size:0.65rem;color:var(--text-3);margin-top:2px">${esc(s.country || '')} · ${s.codec || ''} · ${s.bitrate || ''}kbps</div>`;
+        d.onclick = () => this.play(s.url, s.name, country.name);
+        container.appendChild(d);
+      });
+    } catch {
+      container.innerHTML = '<div class="empty" style="padding:20px 0">Could not load stations. Try another country.</div>';
+    }
+  },
+
+  play(url, name, countryName) {
+    const stop = document.getElementById('radio-stop');
+    const play = document.getElementById('radio-play');
+    stop.style.display = '';
+    play.style.display = '';
+
+    document.getElementById('radio-icon').textContent = '📻';
+    document.getElementById('radio-title').textContent = name;
+    document.getElementById('radio-status').textContent = `🔊 Playing · ${countryName}`;
+
+    this._audio.src = url;
+    this._audio.play().catch(() => {
+      document.getElementById('radio-status').textContent = '❌ Cannot play (CORS or dead link)';
     });
 
-    document.getElementById('music-url-btn').onclick = () => {
-      const url = document.getElementById('music-url').value.trim();
-      if (!url) return;
-      document.getElementById('music-icon').textContent = '🔗';
-      document.getElementById('music-title').textContent = 'Custom URL';
-      document.getElementById('music-status').textContent = '⏳ Loading...';
-      this._station = null;
-      this._audio.src = url;
-      this._audio.play().catch(() => {});
-    };
-  }
+    stop.onclick = () => { this._audio.pause(); this._audio.src = ''; document.getElementById('radio-status').textContent = '⏹ Stopped'; };
+    play.onclick = () => this._audio.play();
+  },
+
 };
 
 /* ─── Tools ─── */
