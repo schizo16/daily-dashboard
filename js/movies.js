@@ -5,96 +5,89 @@ const Movies = {
   async load(container) {
     container.innerHTML = '<div class="loading">Loading...</div>';
     try {
-      container.innerHTML = `
+      container.innerHTML = `<div class="section">
         <div class="section-header">
           <h2>Trending Movies</h2>
           <button id="watchlist-toggle" class="watchlist-toggle">Watchlist</button>
         </div>
-        <div id="movies-grid" class="movie-list"></div>
-        <div id="movies-watchlist" class="movie-list" style="display:none"></div>
-      `;
-      const movies = await this.fetchTrending();
-      this.renderGrid(container.querySelector('#movies-grid'), movies);
-      this.renderWatchlist(container.querySelector('#movies-watchlist'));
+        <div id="movies-grid"></div>
+        <div id="movies-watchlist" style="display:none"></div>
+      </div>`;
+      const movies = await this.fetch();
+      this.grid(container.querySelector('#movies-grid'), movies);
+      this.wl(container.querySelector('#movies-watchlist'));
 
       document.getElementById('watchlist-toggle').addEventListener('click', () => {
-        const grid = document.getElementById('movies-grid');
-        const wl = document.getElementById('movies-watchlist');
-        const btn = document.getElementById('watchlist-toggle');
-        const showing = wl.style.display !== 'none';
-        grid.style.display = showing ? '' : 'none';
-        wl.style.display = showing ? 'none' : '';
-        btn.textContent = showing ? 'Watchlist' : 'Movies';
+        const g = document.getElementById('movies-grid');
+        const w = document.getElementById('movies-watchlist');
+        const b = document.getElementById('watchlist-toggle');
+        const show = w.style.display !== 'none';
+        g.style.display = show ? '' : 'none';
+        w.style.display = show ? 'none' : '';
+        b.textContent = show ? 'Watchlist' : 'Movies';
       });
     } catch (err) {
-      container.innerHTML = `<div class="error">${err.message}. <button class="btn" onclick="Movies.load(this.parentElement.parentElement)">Retry</button></div>`;
+      container.innerHTML = `<div class="loading error">${err.message}. <button class="btn" onclick="Movies.load(this.parentElement.parentElement)">Retry</button></div>`;
     }
   },
 
-  async fetchTrending() {
-    const res = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
-    if (!res.ok) throw new Error('TMDB API error — check your API key');
-    const data = await res.json();
-    return data.results.slice(0, 12).map(m => ({
-      id: m.id,
-      title: m.title,
-      overview: m.overview,
-      poster: m.poster_path,
-      rating: m.vote_average,
+  async fetch() {
+    const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
+    if (!r.ok) throw new Error('TMDB API error');
+    const d = await r.json();
+    return d.results.slice(0, 10).map(m => ({
+      id: m.id, title: m.title, overview: m.overview,
+      poster: m.poster_path, rating: m.vote_average,
       year: m.release_date ? m.release_date.slice(0, 4) : ''
     }));
   },
 
-  renderGrid(container, movies) {
-    container.innerHTML = '';
+  grid(c, movies) {
+    c.innerHTML = '';
     movies.forEach(m => {
-      const entry = document.createElement('div');
-      entry.className = 'movie-entry';
-      entry.innerHTML = `
+      const e = document.createElement('div');
+      e.className = 'movie-entry';
+      e.innerHTML = `
         <div class="movie-icon">🎬</div>
         <div class="movie-info">
-          <div class="movie-name">${this.e(m.title)}</div>
-          <div class="movie-sub">${m.year} ${m.overview ? '· ' + this.e(m.overview.slice(0, 80)) + '...' : ''}</div>
+          <div class="movie-name">${this.eh(m.title)}</div>
+          <div class="movie-sub">${m.year}${m.overview ? ' · ' + this.eh(m.overview.slice(0, 70)) + '...' : ''}</div>
         </div>
         <span class="movie-score">${m.rating ? m.rating.toFixed(1) : ''}</span>
-        <button class="watchlist-btn" data-id="${m.id}" data-title="${this.eAttr(m.title)}" data-rating="${m.rating || 0}">+ Save</button>
+        <button class="watchlist-btn" data-id="${m.id}" data-title="${this.ea(m.title)}" data-rating="${m.rating || 0}">Save</button>
       `;
-      entry.querySelector('.watchlist-btn').addEventListener('click', (e) => {
-        const btn = e.currentTarget;
+      e.querySelector('.watchlist-btn').addEventListener('click', (ev) => {
+        const b = ev.currentTarget;
         Storage.addToWatchlist({ id: m.id, title: m.title, poster_path: m.poster, vote_average: m.rating });
-        btn.textContent = 'Saved';
-        btn.disabled = true;
+        b.textContent = 'Saved'; b.disabled = true;
       });
-      container.appendChild(entry);
+      c.appendChild(e);
     });
   },
 
-  renderWatchlist(container) {
+  wl(c) {
     const items = Storage.getWatchlist();
-    if (items.length === 0) {
-      container.innerHTML = '<div class="empty">No saved movies.</div>';
-      return;
-    }
-    container.innerHTML = '';
+    if (items.length === 0) { c.innerHTML = '<div class="empty" style="padding:24px 0">Nothing saved yet.</div>'; return; }
+    c.innerHTML = '';
     items.forEach(m => {
-      const entry = document.createElement('div');
-      entry.className = 'movie-entry';
-      entry.innerHTML = `
+      const e = document.createElement('div');
+      e.className = 'movie-entry';
+      e.innerHTML = `
         <div class="movie-icon">🎬</div>
         <div class="movie-info">
-          <div class="movie-name">${this.e(m.title)}</div>
+          <div class="movie-name">${this.eh(m.title)}</div>
           <div class="movie-sub">⭐ ${m.rating ? Number(m.rating).toFixed(1) : 'N/A'}</div>
         </div>
         <button class="remove-btn" data-id="${m.id}">Remove</button>
       `;
-      entry.querySelector('.remove-btn').addEventListener('click', () => {
+      e.querySelector('.remove-btn').addEventListener('click', () => {
         Storage.removeFromWatchlist(m.id);
-        this.renderWatchlist(container);
+        this.wl(c);
       });
-      container.appendChild(entry);
+      c.appendChild(e);
     });
   },
 
-  e(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; },
-  eAttr(str) { return String(str).replace(/"/g, '&quot;'); }
+  eh(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; },
+  ea(s) { return String(s).replace(/"/g, '&quot;'); }
 };

@@ -1,6 +1,7 @@
 const Games = {
   load(container) {
     container.innerHTML = `
+      <div class="section-header"><h2>Games</h2></div>
       <div class="game-selector">
         <button class="game-tab active" data-game="wordle">Wordle</button>
         <button class="game-tab" data-game="quiz">Movie Quiz</button>
@@ -29,7 +30,7 @@ const App = {
   init() {
     const theme = Storage.getTheme();
     document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('theme-toggle').textContent = theme === 'dark' ? '●' : '○';
+    document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀️' : '🌙';
 
     const pin = Storage.getPinnedTab();
     if (pin && document.querySelector(`[data-tab="${pin}"]`)) this.switch(pin);
@@ -37,7 +38,7 @@ const App = {
     document.querySelectorAll('.tab').forEach(b => {
       b.addEventListener('click', () => this.switch(b.dataset.tab));
     });
-    document.getElementById('theme-toggle').addEventListener('click', () => this. toggle());
+    document.getElementById('theme-toggle').addEventListener('click', () => this.toggle());
 
     this.load();
   },
@@ -64,7 +65,7 @@ const App = {
   toggle() {
     const next = Storage.getTheme() === 'dark' ? 'light' : 'dark';
     Storage.setTheme(next);
-    document.getElementById('theme-toggle').textContent = next === 'dark' ? '●' : '○';
+    document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
   }
 };
 
