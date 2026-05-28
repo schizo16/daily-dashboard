@@ -786,23 +786,23 @@ const MusicPage = {
       const bar = document.getElementById('music-bar');
       if (bar) bar.remove();
     };
-    if (window.YT && window.YT.Player) {
-      ytPlayer = new YT.Player('yt-player', {
-        height: '0', width: '0',
-        videoId: id,
-        playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
-        events: { onReady }
-      });
-    } else {
-      window.onYouTubeIframeAPIReady = () => {
+    const createPlayer = () => {
+      if (document.getElementById('yt-player') && window.YT && window.YT.Player && !ytPlayer) {
         ytPlayer = new YT.Player('yt-player', {
           height: '0', width: '0',
           videoId: id,
           playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
           events: { onReady }
         });
-      };
+      }
+    };
+    if (window.YT && window.YT.Player) {
+      createPlayer();
+    } else {
+      window.onYouTubeIframeAPIReady = createPlayer;
     }
+    // Retry in case API loads but callback already fired
+    setTimeout(createPlayer, 1500);
 
     // Fetch title
     fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`)
