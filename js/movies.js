@@ -1,6 +1,7 @@
 const TMDB_KEY = CONFIG.TMDB_KEY;
 const TMDB_IMG = 'https://image.tmdb.org/t/p/w92';
 const TMDB_IMG_L = 'https://image.tmdb.org/t/p/w342';
+const TMDB_LANG = () => currentLocale === 'vi' ? 'vi-VN' : 'en-US';
 
 async function showMovieDetail(id, type) {
   const panel = document.createElement('div');
@@ -12,7 +13,7 @@ async function showMovieDetail(id, type) {
 
   try {
     const isM = type === 'movie';
-    const r = await fetch(`https://api.themoviedb.org/3/${isM ? 'movie' : 'tv'}/${id}?api_key=${TMDB_KEY}&language=en-US&append_to_response=credits`);
+    const r = await fetch(`https://api.themoviedb.org/3/${isM ? 'movie' : 'tv'}/${id}?api_key=${TMDB_KEY}&language=${TMDB_LANG()}&append_to_response=credits`);
     if (!r.ok) throw Error('API error');
     const d = await r.json();
     const title = isM ? d.title : d.name;
@@ -93,7 +94,7 @@ const Movies = {
         try {
           const isMovie = this._mediaType === 'movie';
           const page = Math.floor(Math.random() * 20) + 1;
-          const r = await fetch(`https://api.themoviedb.org/3/${isMovie ? 'movie' : 'tv'}/popular?api_key=${TMDB_KEY}&language=en-US&page=${page}`);
+          const r = await fetch(`https://api.themoviedb.org/3/${isMovie ? 'movie' : 'tv'}/popular?api_key=${TMDB_KEY}&language=${TMDB_LANG()}&page=${page}`);
           if (!r.ok) throw Error();
           const data = await r.json();
           const pick = data.results[Math.floor(Math.random() * data.results.length)];
@@ -152,12 +153,12 @@ const Movies = {
 
       if (this._periodId === 'top') {
         url = isMovie
-          ? `https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`
-          : `https://api.themoviedb.org/3/tv/top_rated?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`;
+          ? `https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_KEY}&language=${TMDB_LANG()}&page=${this._gridPage}`
+          : `https://api.themoviedb.org/3/tv/top_rated?api_key=${TMDB_KEY}&language=${TMDB_LANG()}&page=${this._gridPage}`;
       } else if (this._periodId === 'week') {
         url = isMovie
-          ? `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`
-          : `https://api.themoviedb.org/3/trending/tv/week?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`;
+          ? `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_KEY}&language=${TMDB_LANG()}&page=${this._gridPage}`
+          : `https://api.themoviedb.org/3/trending/tv/week?api_key=${TMDB_KEY}&language=${TMDB_LANG()}&page=${this._gridPage}`;
       } else {
         const date = new Date();
         let start, end;
@@ -170,9 +171,9 @@ const Movies = {
         }
         const fmt = d => d.toISOString().split('T')[0];
         if (isMovie) {
-          url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_KEY}&sort_by=popularity.desc&primary_release_date.gte=${fmt(start)}&primary_release_date.lte=${fmt(end)}&language=en-US&page=${this._gridPage}`;
+          url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_KEY}&sort_by=popularity.desc&primary_release_date.gte=${fmt(start)}&primary_release_date.lte=${fmt(end)}&language=${TMDB_LANG()}&page=${this._gridPage}`;
         } else {
-          url = `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_KEY}&sort_by=popularity.desc&first_air_date.gte=${fmt(start)}&first_air_date.lte=${fmt(end)}&language=en-US&page=${this._gridPage}`;
+          url = `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_KEY}&sort_by=popularity.desc&first_air_date.gte=${fmt(start)}&first_air_date.lte=${fmt(end)}&language=${TMDB_LANG()}&page=${this._gridPage}`;
         }
       }
 
