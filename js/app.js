@@ -1359,6 +1359,17 @@ function initSearch() {
   };
 }
 
+/* ─── Dynamic background ─── */
+function updateTimeBackground() {
+  const h = new Date().getHours();
+  let period;
+  if (h >= 6 && h < 12) period = 'morning';
+  else if (h >= 12 && h < 18) period = 'afternoon';
+  else if (h >= 18 && h < 22) period = 'evening';
+  else period = 'night';
+  document.documentElement.setAttribute('data-time', period);
+}
+
 /* ─── Home widgets ─── */
 function updateClock() {
   const now = new Date();
@@ -1405,7 +1416,8 @@ document.addEventListener('DOMContentLoaded', () => {
   applyI18n();
   route();
   updateClock();
-  setInterval(updateClock, 10000);
+  updateTimeBackground();
+  setInterval(() => { updateClock(); updateTimeBackground(); }, 10000);
   initSearch();
   loadWeather();
   initNotes();

@@ -19,6 +19,38 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Time-based background accent ─── */
+[data-time="morning"] body::before {
+  background:
+    radial-gradient(ellipse at 75% 25%, rgba(220,180,120,0.08) 0%, transparent 35%),
+    radial-gradient(ellipse at 25% 70%, rgba(200,160,100,0.05) 0%, transparent 30%),
+    radial-gradient(ellipse at 50% 30%, rgba(230,200,150,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0,0,0,0.35) 100%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.004) 2px, rgba(255,255,255,0.004) 3px);
+}
+[data-time="afternoon"] body::before {
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(200,180,140,0.07) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 60%, rgba(180,160,120,0.04) 0%, transparent 30%),
+    radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(0,0,0,0.4) 100%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.003) 2px, rgba(255,255,255,0.003) 3px);
+}
+[data-time="evening"] body::before {
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(200,100,60,0.06) 0%, transparent 35%),
+    radial-gradient(ellipse at 70% 30%, rgba(180,80,50,0.04) 0%, transparent 30%),
+    radial-gradient(ellipse at 80% 80%, rgba(160,100,70,0.05) 0%, transparent 30%),
+    radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0,0,0,0.5) 100%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.005) 2px, rgba(255,255,255,0.005) 3px);
+}
+[data-time="night"] body::before {
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(100,120,180,0.05) 0%, transparent 35%),
+    radial-gradient(ellipse at 80% 80%, rgba(80,100,160,0.04) 0%, transparent 30%),
+    radial-gradient(ellipse at 50% 50%, transparent 25%, rgba(0,0,0,0.55) 100%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.006) 2px, rgba(255,255,255,0.006) 3px);
+}
+
 /* ─── Background ─── */
 html {
   background: var(--bg);
