@@ -1,4 +1,4 @@
-const TMDB_KEY = 'YOUR_TMDB_API_KEY';
+const TMDB_KEY = '64cbee95805bc6f398898e585b312a8c';
 
 const Movies = {
   async load(c) {

@@ -36,8 +36,7 @@ Built with vanilla JavaScript. No frameworks, no build steps, no slop.
 Movies tab needs a TMDB API key:
 
 1. Register at https://www.themoviedb.org/settings/api
-2. Open `js/movies.js`
-3. Replace `YOUR_TMDB_API_KEY` with your key
+2. Open `js/movies.js` — API key is already set
 
 ## Tech
 
