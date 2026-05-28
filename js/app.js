@@ -293,7 +293,10 @@ function show(page) {
   else if (page === 'watchlist') WatchlistPage.load(el);
   else if (page === 'tools') ToolsPage.load(el);
   else if (page === 'radio') RadioPage.load(el);
-  else if (page === 'music') MusicPage.load(el);
+  else if (page === 'music') {
+    if (!MusicPage._loaded) MusicPage.load(el);
+    else { el.classList.add('active'); }
+  }
   startAutoRefresh(page);
 }
 
@@ -548,7 +551,9 @@ function onYouTubeIframeAPIReady() {
 }
 
 const MusicPage = {
+  _loaded: false,
   load(c) {
+    this._loaded = true;
     c.innerHTML = `<div class="card">
       <div class="section-h"><h2>🎵 Music</h2></div>
 
