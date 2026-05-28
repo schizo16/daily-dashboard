@@ -397,6 +397,7 @@ button:focus-visible, a:focus-visible {
 /* ─── Nav ─── */
 .nav {
   border-bottom: 1px solid var(--border);
+  background: var(--surface);
   background: color-mix(in srgb, var(--surface) 40%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
