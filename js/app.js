@@ -78,6 +78,7 @@ const GamesPage = {
     container.innerHTML = '';
     this.loadGames(container);
     this.loadNews(container);
+    this.loadEsports(container);
   },
   async loadGames(c) {
     try {
@@ -161,6 +162,31 @@ const GamesPage = {
       grid.innerHTML = '<div class="empty" style="padding:16px 0">Failed to load. <button class="btn" onclick="GamesPage.loadPage()">Retry</button></div>';
     }
   },
+  async loadEsports(c) {
+    try {
+      const r = await fetch('https://www.reddit.com/r/esports/hot.json?limit=12');
+      if (!r.ok) return;
+      const data = await r.json();
+      const posts = data.data.children.filter(x => !x.data.stickied).slice(0, 8).map(x => ({
+        t: x.data.title, u: x.data.url, s: x.data.score, c: x.data.num_comments
+      }));
+      if (!posts.length) return;
+      const div = document.createElement('div'); div.className = 'card';
+      div.style.marginTop = '12px';
+      div.innerHTML = `<div class="section-h"><h2>🎮 Esports</h2><a href="https://reddit.com/r/esports" target="_blank">r/esports ↗</a></div>`;
+      const list = document.createElement('div');
+      posts.forEach((p, i) => {
+        const e = document.createElement('div'); e.className = 'entry';
+        e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${i * 0.02}s`;
+        e.innerHTML = `<div class="entry-thumb">🏆</div><div class="entry-body"><div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
+          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span></div></div>`;
+        list.appendChild(e);
+      });
+      div.appendChild(list);
+      c.appendChild(div);
+    } catch (_) {}
+  },
+
   async loadNews(c) {
     try {
       const r = await fetch('https://www.reddit.com/r/gaming/hot.json?limit=15');
