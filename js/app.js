@@ -15,6 +15,7 @@ document.getElementById('locale-btn').onclick = () => {
 
 
 const GAME_GENRES = [
+  { id: 'topdeals', label: '⭐🔥 Top deal', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&steamRating=85&pageNumber=' },
   { id: 'deals', label: '🔥 Giảm giá', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&steamRating=60&pageNumber=' },
   { id: 'under5', label: '💵 Dưới $5', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&maxPrice=5&pageNumber=' },
   { id: 'under10', label: '💵 Dưới $10', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&maxPrice=10&pageNumber=' },
@@ -36,7 +37,7 @@ const GamesPage = {
         <div class="mood-bar" id="gp-bar" style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap"></div>
         <div id="gp-grid"></div>`;
       c.appendChild(div);
-      this._page = 1; this._genre = 'deals';
+      this._page = 1; this._genre = 'topdeals';
       this.renderGenreBar();
       await this.loadPage();
     } catch (_) {}
