@@ -167,7 +167,7 @@ const GamesPage = {
       const r = await fetch('https://www.reddit.com/r/esports/hot.json?limit=12');
       if (!r.ok) return;
       const data = await r.json();
-      const posts = data.data.children.filter(x => !x.data.stickied).slice(0, 8).map(x => ({
+      const posts = data.data.children.filter(x => !x.data.stickied && x.data.score > 10).slice(0, 8).map(x => ({
         t: x.data.title, u: x.data.url, s: x.data.score, c: x.data.num_comments
       }));
       if (!posts.length) return;
@@ -192,7 +192,7 @@ const GamesPage = {
       const r = await fetch('https://www.reddit.com/r/gaming/hot.json?limit=15');
       if (!r.ok) return;
       const data = await r.json();
-      const posts = data.data.children.filter(x => !x.data.stickied).slice(0, 12).map(x => ({
+      const posts = data.data.children.filter(x => !x.data.stickied && x.data.score > 10).slice(0, 12).map(x => ({
         t: x.data.title, u: x.data.url, s: x.data.score, c: x.data.num_comments
       }));
       if (!posts.length) return;
@@ -314,13 +314,13 @@ async function loadTechNews(c) {
     const allPosts = [];
     if (vnRes && vnRes.ok) {
       const d = await vnRes.json();
-      d.data.children.filter(x => !x.data.stickied).slice(0, 8).forEach(x => {
+      d.data.children.filter(x => !x.data.stickied && x.data.score > 10).slice(0, 8).forEach(x => {
         allPosts.push({ t: x.data.title, u: x.data.url, s: x.data.score, lang: 'VI' });
       });
     }
     if (enRes && enRes.ok) {
       const d = await enRes.json();
-      d.data.children.filter(x => !x.data.stickied).slice(0, 8).forEach(x => {
+      d.data.children.filter(x => !x.data.stickied && x.data.score > 10).slice(0, 8).forEach(x => {
         allPosts.push({ t: x.data.title, u: x.data.url, s: x.data.score, lang: 'EN' });
       });
     }

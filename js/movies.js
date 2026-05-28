@@ -237,7 +237,7 @@ const Movies = {
       const r = await fetch('https://www.reddit.com/r/movies/hot.json?limit=15');
       if (!r.ok) return;
       const data = await r.json();
-      const posts = data.data.children.filter(x => !x.data.stickied).slice(0, 10).map(x => ({
+      const posts = data.data.children.filter(x => !x.data.stickied && x.data.score > 10).slice(0, 10).map(x => ({
         t: x.data.title, u: x.data.url, s: x.data.score, c: x.data.num_comments
       }));
       if (!posts.length) return;
