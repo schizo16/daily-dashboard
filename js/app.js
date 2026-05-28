@@ -571,9 +571,11 @@ const MusicPage = {
         <div style="font-size:0.78rem;color:var(--text-2);margin-top:4px" id="ms-status">Paste a YouTube URL and press Play</div>
       </div>
 
-      <div style="display:flex;gap:6px;justify-content:center;margin-bottom:16px">
+        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:16px">
+        <button class="btn" id="ms-prev" disabled>⏮ Prev</button>
         <button class="btn" id="ms-pause" disabled>⏸ Pause</button>
         <button class="btn" id="ms-stop" disabled>⏹ Stop</button>
+        <button class="btn" id="ms-next" disabled>Next ⏭</button>
       </div>
 
       <div id="ms-player"></div>
@@ -628,12 +630,21 @@ const MusicPage = {
   },
 
   play(id) {
+    this._currentId = id;
+    this._currentIdx = FEATURED.findIndex(f => f.vid === id);
+
     document.getElementById('ms-title').textContent = '▶ Loading...';
     document.getElementById('ms-status').textContent = 'Starting player...';
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-pause').textContent = '⏸ Pause';
-    this._currentId = id;
+
+    const prevBtn = document.getElementById('ms-prev');
+    const nextBtn = document.getElementById('ms-next');
+    prevBtn.disabled = this._currentIdx <= 0;
+    nextBtn.disabled = this._currentIdx < 0 || this._currentIdx >= FEATURED.length - 1;
+    prevBtn.onclick = () => { if (this._currentIdx > 0) this.play(FEATURED[this._currentIdx - 1].vid); };
+    nextBtn.onclick = () => { if (this._currentIdx < FEATURED.length - 1) this.play(FEATURED[this._currentIdx + 1].vid); };
 
     // Load YouTube IFrame API if needed
     if (!window.YT) {
@@ -697,7 +708,9 @@ const MusicPage = {
           <div style="font-size:0.65rem;color:var(--text-3)">👤 ${esc(author || 'YouTube')}</div>
         </div>
         <div style="display:flex;gap:4px">
+          <button class="btn" id="mb-prev" style="padding:4px 8px;font-size:0.7rem">⏮</button>
           <button class="btn" id="mb-play" style="padding:4px 10px;font-size:0.75rem">⏸</button>
+          <button class="btn" id="mb-next" style="padding:4px 8px;font-size:0.7rem">⏭</button>
           <button class="btn" id="mb-stop" style="padding:4px 10px;font-size:0.75rem">⏹</button>
         </div>
       </div>
@@ -716,6 +729,12 @@ const MusicPage = {
           document.getElementById('mb-play').textContent = '⏸';
         }
       }
+    };
+    document.getElementById('mb-prev').onclick = () => {
+      if (this._currentIdx > 0) this.play(FEATURED[this._currentIdx - 1].vid);
+    };
+    document.getElementById('mb-next').onclick = () => {
+      if (this._currentIdx < FEATURED.length - 1) this.play(FEATURED[this._currentIdx + 1].vid);
     };
     document.getElementById('mb-stop').onclick = () => {
       if (ytPlayer) ytPlayer.stopVideo();
