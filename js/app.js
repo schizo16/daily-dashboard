@@ -342,18 +342,12 @@ document.getElementById('theme-btn').onclick = () => {
 
 /* ─── Radio ─── */
 const STATIONS = [
-  { name: 'Chill Lo-Fi', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🎧', group: '🌍 International' },
-  { name: 'Jazz', url: 'https://ice2.somafm.com/jazzradio-128-mp3', icon: '🎷', group: '🌍 International' },
+  { name: 'Groove Salad (Chill)', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🎧', group: '🌍 International' },
+  { name: 'Jazz Radio', url: 'https://ice2.somafm.com/jazzradio-128-mp3', icon: '🎷', group: '🌍 International' },
   { name: 'Classical', url: 'https://ice1.somafm.com/classical-128-mp3', icon: '🎻', group: '🌍 International' },
-  { name: 'Electronic', url: 'https://ice1.somafm.com/dronezone-128-mp3', icon: '🎛', group: '🌍 International' },
-  { name: 'Ambient', url: 'https://ice1.somafm.com/spacestation-128-mp3', icon: '🌌', group: '🌍 International' },
-  { name: 'Pop', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🎤', group: '🌍 International' },
-  { name: '🇻🇳 VOV1 (Tin tức)', url: 'https://stream.vov.vn/vov1-media/vov1/vov1.stream_aac/playlist.m3u8', icon: '🇻🇳', group: '🇻🇳 Việt Nam' },
-  { name: '🇻🇳 VOV2 (Văn hóa)', url: 'https://stream.vov.vn/vov2-media/vov2/vov2.stream_aac/playlist.m3u8', icon: '🇻🇳', group: '🇻🇳 Việt Nam' },
-  { name: '🇻🇳 VOV3 (Âm nhạc)', url: 'https://stream.vov.vn/vov3-media/vov3/vov3.stream_aac/playlist.m3u8', icon: '🇻🇳', group: '🇻🇳 Việt Nam' },
-  { name: '🇯🇵 J-Pop', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🇯🇵', group: '🇯🇵 Nhật Bản' },
-  { name: '🇯🇵 Anime', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🇯🇵', group: '🇯🇵 Nhật Bản' },
-  { name: '🇨🇳 Chinese Pop', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🇨🇳', group: '🇨🇳 Trung Quốc' },
+  { name: 'Drone Zone (Electronic)', url: 'https://ice1.somafm.com/dronezone-128-mp3', icon: '🎛', group: '🌍 International' },
+  { name: 'Space Station (Ambient)', url: 'https://ice1.somafm.com/spacestation-128-mp3', icon: '🌌', group: '🌍 International' },
+  { name: 'PopTron', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🎤', group: '🌍 International' },
 ];
 
 const RadioPage = {
@@ -370,15 +364,11 @@ const RadioPage = {
         <button class="btn" id="music-play" disabled>▶ Play</button>
         <button class="btn" id="music-stop" disabled>⏹ Stop</button>
       </div>
-      <div id="music-stations">
-        ${['🌍 International','🇻🇳 Việt Nam','🇯🇵 Nhật Bản','🇨🇳 Trung Quốc'].map(group => `
-          <div style="font-size:0.65rem;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin:14px 0 6px">${group}</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-            ${STATIONS.filter(s => s.group === group).map(s => `
-              <div class="station-btn" data-url="${s.url}" data-name="${s.name}" data-icon="${s.icon}" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
-                <div style="font-size:1.2rem">${s.icon}</div>
-                <div style="font-size:0.78rem;font-weight:500;margin-top:4px">${s.name}</div>
-              </div>`).join('')}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="music-stations">
+        ${STATIONS.map(s => `
+          <div class="station-btn" data-url="${s.url}" data-name="${s.name}" data-icon="${s.icon}" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;cursor:pointer;text-align:center;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:1.2rem">${s.icon}</div>
+            <div style="font-size:0.78rem;font-weight:500;margin-top:4px">${s.name}</div>
           </div>`).join('')}
       </div>
       <div style="margin-top:16px;padding:10px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
