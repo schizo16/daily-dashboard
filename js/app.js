@@ -12,25 +12,14 @@ document.getElementById('locale-btn').onclick = () => {
 
 /* ─── Page Loaders ─── */
 
-const PROXY = 'https://corsproxy.io/?url=';
-function steamApi() {
-  const cc = currentLocale === 'vi' ? 'VN' : 'US';
-  return `https://store.steampowered.com/api/featuredcategories?cc=${cc}&l=${currentLocale === 'vi' ? 'vi' : 'en'}`;
-}
 
-function fmtPrice(price, isVn) {
-  if (price == null) return isVn ? 'Miễn phí' : 'Free';
-  const val = Number(price) / 100;
-  if (isVn) return Math.round(val).toLocaleString('vi-VN') + '₫';
-  return '$' + val.toFixed(2);
-}
 
 const GAME_GENRES = [
-  { id: 'topsellers', label: '🔥 Bán chạy', key: 'top_sellers' },
-  { id: 'specials', label: '🏷️ Giảm giá', key: 'specials' },
-  { id: 'free', label: '🎁 Miễn phí', key: 'specials', filter: g => g.final_price === 0 || g.discount_percent >= 100 },
-  { id: 'newreleases', label: '🆕 Mới ra', key: 'new_releases' },
-  { id: 'comingsoon', label: '⏳ Sắp ra', key: 'coming_soon' },
+  { id: 'deals', label: '🔥 Giảm giá', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&steamRating=60&pageNumber=' },
+  { id: 'under5', label: '💵 Dưới $5', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&maxPrice=5&pageNumber=' },
+  { id: 'under10', label: '💵 Dưới $10', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&maxPrice=10&pageNumber=' },
+  { id: 'toprated', label: '⭐ Top rate', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Metacritic&steamRating=90&pageNumber=' },
+  { id: 'new', label: '🆕 Mới', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Release&steamRating=60&pageNumber=' },
 ];
 
 const GamesPage = {
@@ -43,15 +32,13 @@ const GamesPage = {
     try {
       const div = document.createElement('div'); div.className = 'card';
       div.style.marginTop = '12px';
-      div.innerHTML = `<div class="section-h"><h2>🎮 Steam Store</h2><a href="https://store.steampowered.com" target="_blank">store.steampowered ↗</a></div>
+      div.innerHTML = `<div class="section-h"><h2>🎮 Steam Deals</h2><a href="https://www.cheapshark.com" target="_blank">cheapshark ↗</a></div>
         <div class="mood-bar" id="gp-bar" style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap"></div>
         <div id="gp-grid"></div>`;
       c.appendChild(div);
+      this._page = 1; this._genre = 'deals';
       this.renderGenreBar();
-      const data = await this.fetchSteam();
-      this._allData = data;
-      this._page = 1;
-      this.renderGrid(data, 'topsellers');
+      await this.loadPage();
     } catch (_) {}
   },
   renderGenreBar() {
@@ -62,67 +49,66 @@ const GamesPage = {
       b.className = 'mood-btn';
       b.textContent = g.label;
       b.style.cssText = 'padding:4px 10px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem';
+      if (g.id === this._genre) { b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)'; }
       b.onmouseover = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border-2)'; };
       b.onmouseout = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border)'; };
       b.onclick = () => {
-        bar.querySelectorAll('.mood-btn').forEach(x => {
-          x.classList.remove('active');
-          x.style.background = 'transparent'; x.style.color = 'var(--text-2)'; x.style.borderColor = 'var(--border)';
-        });
-        b.classList.add('active');
-        b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)';
-        const cached = window.__steamData;
-        if (cached) { this._page = 1; this.renderGrid(cached, g.id); }
+        bar.querySelectorAll('.mood-btn').forEach(x => { x.classList.remove('active'); x.style.background = 'transparent'; x.style.color = 'var(--text-2)'; x.style.borderColor = 'var(--border)'; });
+        b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)';
+        this._genre = g.id; this._page = 1; this.loadPage();
       };
-      if (g.id === 'topsellers') { b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)'; }
       bar.appendChild(b);
     });
   },
-  async fetchSteam() {
-    const r = await fetch(PROXY + encodeURIComponent(steamApi()));
-    if (!r.ok) throw new Error('Steam error');
-    const d = await r.json();
-    window.__steamData = d;
-    return d;
-  },
-  renderGrid(data, section) {
+  async loadPage() {
     const grid = document.getElementById('gp-grid');
     if (!grid) return;
-    grid.innerHTML = '';
-    const genre = GAME_GENRES.find(g => g.id === section);
+    grid.innerHTML = '<div class="loading" style="padding:16px 0">Loading...</div>';
+    const genre = GAME_GENRES.find(g => g.id === this._genre);
     if (!genre) return;
-    let items = data[genre.key]?.items || [];
-    if (genre.filter) items = items.filter(genre.filter);
-    const totalPages = Math.max(1, Math.ceil(items.length / 10));
-    const pg = Math.min(this._page || 1, totalPages);
-    const pageItems = items.slice((pg - 1) * 10, pg * 10);
-    if (!pageItems.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
-    const isVn = currentLocale === 'vi';
-    pageItems.forEach(g => {
-      const appId = g.id;
-      const steamUrl = `https://store.steampowered.com/app/${appId}/`;
-      const e = document.createElement('a'); e.className = 'movie-e'; e.href = steamUrl; e.target = '_blank'; e.style.textDecoration = 'none'; e.style.display = 'flex'; e.style.cursor = 'pointer';
-      const img = g.capsule_small || g.header_image || '';
-      const pct = g.discount_percent || 0;
-      const hasDisc = pct > 0;
-      const finalP = g.final_price;
-      const origP = g.original_price;
-      e.innerHTML = `<div class="movie-thumb" style="width:60px;height:34px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
-        <div class="movie-body"><div class="movie-name" style="color:var(--text)">${esc(g.name || '')}</div>
-        <div class="movie-sub">${hasDisc ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${(origP !== undefined && origP !== finalP) ? `<s>${fmtPrice(origP, isVn)}</s> ` : ''}${finalP !== undefined ? `<span style="font-weight:600">${fmtPrice(finalP, isVn)}</span>` : (isVn ? 'Miễn phí' : 'Free')}</div></div>`;
-      grid.appendChild(e);
-    });
-    if (totalPages > 1) {
+    try {
+      const r = await fetch(genre.url + this._page);
+      if (!r.ok) throw Error('API error');
+      const deals = await r.json();
+      grid.innerHTML = '';
+      if (!deals || !deals.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No deals</div>'; return; }
+      deals.slice(0, 15).forEach(g => {
+        const e = document.createElement('a'); e.className = 'movie-e';
+        e.href = `https://store.steampowered.com/app/${g.steamAppID}/`; e.target = '_blank';
+        e.style.cssText = 'text-decoration:none;display:flex;cursor:pointer';
+        const img = g.thumb || '';
+        const pct = g.savings ? Math.round(Number(g.savings)) : 0;
+        const rating = g.steamRatingPercent ? `${g.steamRatingPercent}%` : '—';
+        const ratingTxt = g.steamRatingText ? `<span style="color:#4ade80">${esc(g.steamRatingText)}</span>` : '';
+        const price = g.salePrice ? `$${g.salePrice}` : 'Free';
+        const orig = g.normalPrice && g.normalPrice !== g.salePrice ? `<s>$${g.normalPrice}</s>` : '';
+        e.innerHTML = `<div class="movie-thumb" style="width:60px;height:34px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
+          <div class="movie-body"><div class="movie-name" style="color:var(--text)">${esc(g.title || g.external || '')}</div>
+          <div class="movie-sub">${pct ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${orig} <span style="font-weight:600">${price}</span> · ⭐ ${rating} ${ratingTxt}</div></div>`;
+        grid.appendChild(e);
+      });
+      // Simple pagination: show prev/next
       const nav = document.createElement('div');
-      nav.style.cssText = 'display:flex;gap:4px;margin-top:12px;justify-content:center;flex-wrap:wrap';
-      for (let p = 1; p <= totalPages; p++) {
-        const btn = document.createElement('button');
-        btn.textContent = p;
-        btn.style.cssText = `padding:2px 8px;border:1px solid var(--border);border-radius:3px;background:${p === pg ? 'var(--accent)' : 'transparent'};color:${p === pg ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem`;
-        btn.onclick = () => { this._page = p; this.renderGrid(this._allData, section); };
-        nav.appendChild(btn);
+      nav.style.cssText = 'display:flex;gap:8px;margin-top:12px;justify-content:center;align-items:center';
+      if (this._page > 1) {
+        const prev = document.createElement('button');
+        prev.textContent = '‹ Trang ' + (this._page - 1);
+        prev.className = 'btn'; prev.style.cssText = 'padding:4px 12px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem';
+        prev.onclick = () => { this._page--; this.loadPage(); };
+        nav.appendChild(prev);
       }
+      const current = document.createElement('span');
+      current.textContent = this._page;
+      current.style.cssText = 'font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text)';
+      nav.appendChild(current);
+      const next = document.createElement('button');
+      next.textContent = 'Trang ' + (this._page + 1) + ' ›';
+      next.className = 'btn'; next.style.cssText = 'padding:4px 12px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem';
+      next.onclick = () => { this._page++; this.loadPage(); };
+      nav.appendChild(next);
       grid.parentElement.appendChild(nav);
+    } catch (e) {
+      grid.innerHTML = '<div class="empty" style="padding:16px 0">Failed to load. <button class="btn" onclick="GamesPage.loadPage()">Retry</button></div>';
     }
   },
   async loadNews(c) {
