@@ -458,33 +458,25 @@ const RadioPage = {
     const channelMatch = url.match(/https:\/\/(?:ice\d)\.somafm\.com\/(\w+)-128/);
     if (channelMatch) {
       const channel = channelMatch[1];
-      this._npInterval = setInterval(async () => {
+      const updateNowPlaying = async () => {
         try {
           const r = await fetch(`https://api.somafm.com/songs/${channel}.json`);
           if (r.ok) {
             const d = await r.json();
-            if (d.song && d.song !== this._nowPlaying) {
-              this._nowPlaying = d.song;
-              const np = document.getElementById('bar-nowplaying');
-              if (np) np.textContent = `🎵 ${esc(d.song)}`;
+            const song = d.songs?.[0];
+            if (song) {
+              const text = `${song.artist} — ${song.title}`;
+              if (text !== this._nowPlaying) {
+                this._nowPlaying = text;
+                const np = document.getElementById('bar-nowplaying');
+                if (np) np.textContent = `🎵 ${esc(text)}`;
+              }
             }
           }
         } catch {}
-      }, 15000);
-      // Fetch immediately
-      setTimeout(async () => {
-        try {
-          const r = await fetch(`https://api.somafm.com/songs/${channel}.json`);
-          if (r.ok) {
-            const d = await r.json();
-            if (d.song) {
-              this._nowPlaying = d.song;
-              const np = document.getElementById('bar-nowplaying');
-              if (np) np.textContent = `🎵 ${esc(d.song)}`;
-            }
-          }
-        } catch {}
-      }, 2000);
+      };
+      this._npInterval = setInterval(updateNowPlaying, 15000);
+      setTimeout(updateNowPlaying, 2000);
     }
   },
 
