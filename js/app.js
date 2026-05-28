@@ -461,16 +461,23 @@ const RadioPage = {
       bar.id = 'radio-bar';
       document.body.appendChild(bar);
     }
-    bar.style.cssText = 'position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:999;background:var(--surface);border:1px solid var(--border);border-top-left-radius:10px;border-top-right-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;max-width:600px;width:90%;box-shadow:0 -4px 20px rgba(0,0,0,0.15);animation:fadeIn 0.2s ease-out';
+    bar.style.cssText = 'position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:999;background:var(--surface);border:1px solid var(--border);border-top-left-radius:12px;border-top-right-radius:12px;padding:12px 18px;max-width:600px;width:92%;box-shadow:0 -4px 20px rgba(0,0,0,0.15);animation:fadeIn 0.2s ease-out';
     bar.innerHTML = `
-      <div style="flex:1;min-width:0">
-        <div style="font-size:0.78rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="bar-title">${esc(this._currentName)}</div>
-        <div style="font-size:0.62rem;color:var(--text-3)" id="bar-country">${esc(this._currentCountry || '')}</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:0.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="bar-title">${esc(this._currentName)}</div>
+          <div style="font-size:0.65rem;color:var(--text-3)" id="bar-country">${esc(this._currentCountry || '')}</div>
+        </div>
+        <div style="display:flex;gap:4px;align-items:center">
+          <button class="btn" id="bar-play" style="padding:4px 10px;font-size:0.75rem">⏸</button>
+          <button class="btn" id="bar-stop" style="padding:4px 10px;font-size:0.75rem">⏹</button>
+          <button class="btn" id="bar-change" style="padding:4px 10px;font-size:0.7rem">📡</button>
+        </div>
       </div>
-      <div style="display:flex;gap:4px;align-items:center">
-        <button class="btn" id="bar-play" style="padding:4px 10px;font-size:0.75rem">⏸</button>
-        <button class="btn" id="bar-stop" style="padding:4px 10px;font-size:0.75rem">⏹</button>
-        <button class="btn" id="bar-change" style="padding:4px 10px;font-size:0.7rem">📡 Stations</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <span style="font-size:0.6rem;color:var(--text-3);font-family:JetBrains Mono,monospace">🔊</span>
+        <input type="range" id="bar-volume" min="0" max="1" step="0.05" value="${this._audio.volume}" style="flex:1;height:4px;accent-color:var(--accent);cursor:pointer">
+        <span id="bar-vol-pct" style="font-size:0.6rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:28px;text-align:right">${Math.round(this._audio.volume * 100)}%</span>
       </div>`;
     document.getElementById('bar-play').onclick = () => {
       if (this._audio.paused) { this._audio.play(); document.getElementById('bar-play').textContent = '⏸'; }
@@ -482,6 +489,10 @@ const RadioPage = {
     document.getElementById('bar-change').onclick = () => {
       if (this._country) this.loadStations(this._country);
       this.hidePlayer();
+    };
+    document.getElementById('bar-volume').oninput = (e) => {
+      this._audio.volume = e.target.value;
+      document.getElementById('bar-vol-pct').textContent = Math.round(e.target.value * 100) + '%';
     };
   },
 
