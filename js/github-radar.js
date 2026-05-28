@@ -25,7 +25,7 @@ const AiRadar = {
     });
     if (!r.ok) throw new Error(_('githubError'));
     return (await r.json()).items.map(x => ({
-      n: x.full_name, u: x.html_url, d: x.description || '',
+      n: x.full_name, u: x.html_url, d: x.description || '', a: x.owner?.avatar_url || '',
       s: x.stargazers_count, f: x.forks_count, l: x.language
     }));
   },
@@ -46,9 +46,12 @@ const AiRadar = {
     const d = document.createElement('div');
     list.forEach(r => {
       const e = document.createElement('div'); e.className = 'entry';
-      e.innerHTML = `<div class="entry-title"><a href="${this.ea(r.u)}" target="_blank">${this.eh(r.n)}</a></div>
+      const thumb = r.a ? `<div class="entry-thumb"><img src="${this.ea(r.a)}" alt="" loading="lazy"></div>` : `<div class="entry-thumb">📦</div>`;
+      e.innerHTML = `${thumb}<div class="entry-body">
+        <div class="entry-title"><a href="${this.ea(r.u)}" target="_blank">${this.eh(r.n)}</a></div>
         ${r.d ? `<div class="entry-desc">${this.eh(r.d)}</div>` : ''}
-        <div class="entry-meta">${r.l ? `<span>${this.eh(r.l)}</span>` : ''}<span>${this.fmt(r.s)} stars</span><span>${this.fmt(r.f)} forks</span></div>`;
+        <div class="entry-meta">${r.l ? `<span>${this.eh(r.l)}</span>` : ''}<span>${this.fmt(r.s)} stars</span><span>${this.fmt(r.f)} forks</span></div>
+      </div>`;
       d.appendChild(e);
     });
     return d;
@@ -58,8 +61,10 @@ const AiRadar = {
     const d = document.createElement('div');
     list.forEach(s => {
       const e = document.createElement('div'); e.className = 'entry';
-      e.innerHTML = `<div class="entry-title"><a href="${this.ea(s.u)}" target="_blank">${this.eh(s.t)}</a></div>
-        <div class="entry-meta"><span>${s.p} points</span><span>${s.c} comments</span></div>`;
+      e.innerHTML = `<div class="entry-thumb">📰</div><div class="entry-body">
+        <div class="entry-title"><a href="${this.ea(s.u)}" target="_blank">${this.eh(s.t)}</a></div>
+        <div class="entry-meta"><span>${s.p} points</span><span>${s.c} comments</span></div>
+      </div>`;
       d.appendChild(e);
     });
     return d;

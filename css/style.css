@@ -297,6 +297,16 @@ body::after {
 }
 
 /* ─── Entry ─── */
+.entry { display: flex; gap: 12px; align-items: flex-start; }
+.entry-thumb {
+  width: 40px; height: 40px; border-radius: 4px; flex-shrink: 0;
+  background: var(--surface-2); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; margin-top: 2px;
+}
+.entry-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.entry-body { flex: 1; min-width: 0; }
+
 .entry-title { font-size: 1rem; font-weight: 600; line-height: 1.5; }
 .entry-title a { color: inherit; text-decoration: none; }
 .entry-title a:hover { color: var(--accent); }
