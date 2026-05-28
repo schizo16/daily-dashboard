@@ -601,6 +601,8 @@ const MusicPage = {
       <div id="ms-player"></div>
       <div id="ms-frame-container" style="width:0;height:0;overflow:hidden"></div>
 
+      <div id="ms-queue" style="margin-bottom:12px;display:none"></div>
+
       <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">🎧 QUICK LISTEN</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
         ${FEATURED.map(m => `
@@ -675,8 +677,11 @@ const MusicPage = {
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-frame-container').innerHTML = `
-      <iframe src="https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1&controls=0&disablekb=1" style="width:0;height:0;border:none" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    this.showMusicBar('📋 YouTube Playlist', 'Playlist');
+      <iframe src="https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1" style="width:0;height:0;border:none" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    this._queue = [];
+    this._queueIdx = -1;
+    this.showMusicBar('📋 YouTube Playlist', '');
+    this.renderQueue([{ t: '📋 YouTube Playlist', vid: listId }], 0);
   },
 
   playSpotify(id, type) {
@@ -723,6 +728,23 @@ const MusicPage = {
   playYT(id) {
     this._currentId = id;
     this._currentIdx = FEATURED.findIndex(f => f.vid === id);
+    // Build queue from FEATURED
+    if (this._currentIdx >= 0) {
+      this._queue = FEATURED;
+      this._queueIdx = this._currentIdx;
+      this.renderQueue(FEATURED, this._currentIdx);
+    } else {
+      // Check SONG_DB
+      const dbIdx = SONG_DB.findIndex(s => s.vid === id);
+      if (dbIdx >= 0) {
+        this._queue = SONG_DB;
+        this._queueIdx = dbIdx;
+        this.renderQueue(SONG_DB, dbIdx);
+      } else {
+        this._queue = [];
+        this._queueIdx = -1;
+      }
+    }
 
     document.getElementById('ms-title').textContent = '▶ Loading...';
     document.getElementById('ms-status').textContent = 'Starting player...';
@@ -730,12 +752,14 @@ const MusicPage = {
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-pause').textContent = '⏸ Pause';
 
+    const q = this._queue || FEATURED;
+    const qi = this._queueIdx >= 0 ? this._queueIdx : this._currentIdx;
     const prevBtn = document.getElementById('ms-prev');
     const nextBtn = document.getElementById('ms-next');
-    prevBtn.disabled = this._currentIdx <= 0;
-    nextBtn.disabled = this._currentIdx < 0 || this._currentIdx >= FEATURED.length - 1;
-    prevBtn.onclick = () => { if (this._currentIdx > 0) this.play(FEATURED[this._currentIdx - 1].vid); };
-    nextBtn.onclick = () => { if (this._currentIdx < FEATURED.length - 1) this.play(FEATURED[this._currentIdx + 1].vid); };
+    prevBtn.disabled = qi <= 0;
+    nextBtn.disabled = qi < 0 || qi >= q.length - 1;
+    prevBtn.onclick = () => { if (qi > 0) this.playFromQueue(qi - 1); };
+    nextBtn.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); };
 
     // Load YouTube IFrame API if needed
     if (!window.YT) {
@@ -782,6 +806,32 @@ const MusicPage = {
         } else this.showMusicBar('Playing', 'YouTube');
       })
       .catch(() => this.showMusicBar('Playing', 'YouTube'));
+  },
+
+  playFromQueue(idx) {
+    const q = this._queue || FEATURED;
+    if (idx < 0 || idx >= q.length) return;
+    this._queueIdx = idx;
+    const item = q[idx];
+    const vid = item.vid || item.id;
+    if (vid) this.playYT(vid);
+  },
+
+  renderQueue(queue, currentIdx) {
+    const list = document.getElementById('ms-queue');
+    if (!list) return;
+    const start = Math.max(0, currentIdx - 2);
+    const items = queue.slice(start, currentIdx + 6);
+    list.innerHTML = items.map((item, i) => {
+      const realIdx = start + i;
+      const isCurrent = realIdx === currentIdx;
+      const icon = isCurrent ? '▶' : '🎵';
+      const t = item.t || item.title || 'Unknown';
+      return `<div style="padding:6px 8px;border-radius:4px;background:${isCurrent ? 'var(--accent-soft)' : 'transparent'};font-size:0.78rem;display:flex;align-items:center;gap:8px;cursor:pointer" onclick="MusicPage.playFromQueue(${realIdx})">
+        <span style="font-family:JetBrains Mono,monospace;font-size:0.6rem;color:${isCurrent ? 'var(--accent)' : 'var(--text-3)'}">${icon}</span>
+        <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:${isCurrent ? '600' : '400'}">${esc(t)}</span>
+      </div>`;
+    }).join('');
   },
 
   showMusicBar(title, author) {
