@@ -789,6 +789,7 @@ const MusicPage = {
   },
 
   playYT(id) {
+    if (ytPlayer) { try { ytPlayer.destroy(); } catch {} ytPlayer = null; }
     this._currentId = id;
     this._currentIdx = FEATURED.findIndex(f => f.vid === id);
     if (this._currentIdx >= 0) {
@@ -904,7 +905,11 @@ const MusicPage = {
     if (idx < 0 || idx >= q.length) return;
     this._queueIdx = idx;
     const item = q[idx];
-    if (item.vid) this.playYT(item.vid);
+    if (item.vid) {
+      // Update queue highlight
+      this.renderQueue(q, idx);
+      this.playYT(item.vid);
+    }
   },
 
   showMusicBar(title, author) {
