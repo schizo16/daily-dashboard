@@ -96,19 +96,37 @@ const AI_KEY = 'AIzaSyCDUdpLXKQzx_exXm5RIG7l8Gq5RjdjPcU';
 
 async function aiWrite(title, content) {
   if (!content) return '';
-  const prompt = `Bạn là biên tập viên báo điện tử. Viết lại tin sau thành bài báo tiếng Việt chuyên nghiệp, hấp dẫn. Giữ nguyên sự thật, thêm ngữ cảnh. Dài 2-3 đoạn ngắn. Có tiêu đề phụ.
+  // Try Gemini first
+  try {
+    const prompt = `Bạn là biên tập viên báo điện tử. Viết lại tin sau thành bài báo tiếng Việt chuyên nghiệp, hấp dẫn. Giữ nguyên sự thật, thêm ngữ cảnh. Dài 2-3 đoạn ngắn.
 
 Tin gốc (tiếng Anh):
 Tiêu đề: ${title}
 Nội dung: ${content.slice(0, 2000)}`;
-  try {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${AI_KEY}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 800 } })
     });
-    const d = await r.json();
-    return d.candidates?.[0]?.content?.parts?.[0]?.text || content;
-  } catch { return content; }
+    if (r.ok) {
+      const d = await r.json();
+      const t = d.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (t) return t;
+    }
+  } catch {}
+
+  // Fallback: LibreTranslate
+  try {
+    const r = await fetch('https://libretranslate.com/translate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: `Tiêu đề: ${title}\n\n${content.slice(0, 1000)}`, source: 'en', target: 'vi' })
+    });
+    if (r.ok) {
+      const d = await r.json();
+      if (d.translatedText) return d.translatedText;
+    }
+  } catch {}
+
+  return content;
 }
 
 /* ─── Inline Reader ─── */

@@ -1,4 +1,5 @@
 const TMDB_KEY = '64cbee95805bc6f398898e585b312a8c';
+const TMDB_IMG = 'https://image.tmdb.org/t/p/w92';
 
 const MOODS = [
   { id: 'all', label: 'moodAll', genres: '' },
@@ -117,7 +118,7 @@ const Movies = {
       if (!r.ok) throw new Error('API error');
       const data = await r.json();
       const movies = data.results.slice(0, 10).map(m => ({
-        id: m.id, t: m.title, o: m.overview,
+        id: m.id, t: m.title, o: m.overview, p: m.poster_path,
         r: m.vote_average, y: m.release_date ? m.release_date.slice(0, 4) : ''
       }));
       this.grd(grid, movies);
@@ -130,7 +131,8 @@ const Movies = {
     c.innerHTML = '';
     movies.forEach(m => {
       const e = document.createElement('div'); e.className = 'movie-e';
-      e.innerHTML = `<div class="movie-body"><div class="movie-name">${esc(m.t)}</div><div class="movie-sub">${m.y}${m.o ? ' · ' + esc(m.o.slice(0, 60)) + '...' : ''} · ${m.r ? m.r.toFixed(1) : 'N/A'}</div></div><button class="wl-btn" data-id="${m.id}">${_('save')}</button>`;
+      const poster = m.p ? `<div class="movie-thumb"><img src="${TMDB_IMG + m.p}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>` : '<div class="movie-thumb" style="font-size:1.2rem">🎬</div>';
+      e.innerHTML = `${poster}<div class="movie-body"><div class="movie-name">${esc(m.t)}</div><div class="movie-sub">${m.y}${m.o ? ' · ' + esc(m.o.slice(0, 60)) + '...' : ''} · ${m.r ? m.r.toFixed(1) : 'N/A'}</div></div><button class="wl-btn" data-id="${m.id}">${_('save')}</button>`;
       e.querySelector('.wl-btn').onclick = (ev) => {
         const b = ev.currentTarget;
         Storage.addToWatchlist({ id: m.id, title: m.t });

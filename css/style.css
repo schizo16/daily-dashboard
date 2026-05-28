@@ -322,6 +322,7 @@ body::after {
 }
 
 /* ─── Movie ─── */
+.movie-thumb { width: 40px; height: 56px; border-radius: 4px; flex-shrink: 0; overflow: hidden; background: var(--surface-2); display:flex;align-items:center;justify-content:center; }
 .movie-e { display: flex; gap: 10px; align-items: center; padding: 12px 0; transition: background 0.15s; }
 .movie-e + .movie-e { border-top: 1px solid var(--border); }
 .movie-e:hover { background: var(--surface-2); margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: 2px; }
