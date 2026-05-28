@@ -574,7 +574,7 @@ function onYouTubeIframeAPIReady() {
 const MusicPage = {
   _loaded: false,
   _shuffle: false,
-  _loop: false,
+  _loop: 0, // 0: off, 1: loop all, 2: loop one
   load(c) {
     this._loaded = true;
     c.innerHTML = `<div class="card">
@@ -661,9 +661,9 @@ const MusicPage = {
     };
     shuffBtn.style.opacity = '0.4';
     loopBtn.onclick = () => {
-      this._loop = !this._loop;
-      loopBtn.textContent = this._loop === true ? '🔂' : '🔁';
-      loopBtn.style.opacity = this._loop ? '1' : '0.4';
+      this._loop = (this._loop + 1) % 3;
+      loopBtn.textContent = ['🔁', '🔁', '🔂'][this._loop];
+      loopBtn.style.opacity = this._loop > 0 ? '1' : '0.4';
     };
     loopBtn.style.opacity = '0.4';
 
@@ -889,13 +889,30 @@ const MusicPage = {
         document.getElementById('ms-status').textContent = 'Connected';
         MusicPage._startTimeTick();
       };
+      const onStateChange = (e) => {
+        if (e.data === YT.PlayerState.ENDED) {
+          if (MusicPage._loop === 2) { // Loop one
+            MusicPage.playFromQueue(MusicPage._queueIdx);
+          } else if (MusicPage._loop === 1) { // Loop all
+            const q = MusicPage._queue || [];
+            if (q.length > 0) {
+              const next = MusicPage._queueIdx + 1;
+              MusicPage.playFromQueue(next >= q.length ? 0 : next);
+            }
+          } else { // No loop — play next if exists
+            const q = MusicPage._queue || [];
+            const next = MusicPage._queueIdx + 1;
+            if (q.length > 0 && next < q.length) MusicPage.playFromQueue(next);
+          }
+        }
+      };
       const createPlayer = () => {
         if (document.getElementById('yt-player') && window.YT && window.YT.Player && !ytPlayer) {
           ytPlayer = new YT.Player('yt-player', {
             height: '0', width: '0',
             videoId: id,
             playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
-            events: { onReady }
+            events: { onReady, onStateChange }
           });
         }
       };
@@ -1088,12 +1105,13 @@ const MusicPage = {
       document.getElementById('ms-shuffle').style.opacity = this._shuffle ? '1' : '0.4';
     };
     document.getElementById('mb-loop').onclick = () => {
-      this._loop = !this._loop;
-      const txt = this._loop ? '🔂' : '🔁';
-      document.getElementById('mb-loop').textContent = txt;
-      document.getElementById('mb-loop').style.opacity = this._loop ? '1' : '0.4';
-      document.getElementById('ms-loop').textContent = txt;
-      document.getElementById('ms-loop').style.opacity = this._loop ? '1' : '0.4';
+      this._loop = (this._loop + 1) % 3;
+      const txt = ['🔁', '🔁', '🔂'][this._loop];
+      const op = this._loop > 0 ? '1' : '0.4';
+      const el1 = document.getElementById('mb-loop');
+      const el2 = document.getElementById('ms-loop');
+      if (el1) { el1.textContent = txt; el1.style.opacity = op; }
+      if (el2) { el2.textContent = txt; el2.style.opacity = op; }
     };
     document.getElementById('mb-vol').oninput = (e) => {
       const v = e.target.value;
