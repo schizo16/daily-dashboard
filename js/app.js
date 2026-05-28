@@ -769,32 +769,23 @@ const MusicPage = {
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     const height = type === 'playlist' ? '352' : '80';
-    document.getElementById('ms-frame-container').innerHTML = `
+    const container = document.getElementById('ms-frame-container');
+    container.style.cssText = 'margin-bottom:12px';
+    container.innerHTML = `
       <iframe src="https://open.spotify.com/embed/${type}/${id}" style="width:100%;height:${height}px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     document.getElementById('ms-pause').textContent = '⏸ Pause';
     document.getElementById('ms-pause').onclick = () => {};
     document.getElementById('ms-stop').onclick = () => {
       if (this._tickInterval) clearInterval(this._tickInterval);
-      try { if (ytPlayer) ytPlayer.stopVideo(); } catch {}
+      container.style.cssText = 'width:0;height:0;overflow:hidden';
+      container.innerHTML = '';
       document.getElementById('ms-pause').disabled = true;
       document.getElementById('ms-stop').disabled = true;
       document.getElementById('ms-title').textContent = 'No track playing';
-      document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
-      document.getElementById('ms-frame-container').innerHTML = '';
       const qq = document.getElementById('ms-queue');
       if (qq) qq.style.display = 'none';
       const bar = document.getElementById('music-bar');
       if (bar) bar.remove();
-    };
-    document.getElementById('mb-prev').onclick = () => {
-      const q2 = (this._queue && this._queue.length > 0) ? this._queue : [];
-      const qi2 = this._queueIdx >= 0 ? this._queueIdx : 0;
-      if (qi2 > 0) this.playFromQueue(qi2 - 1);
-    };
-    document.getElementById('mb-next').onclick = () => {
-      const q2 = (this._queue && this._queue.length > 0) ? this._queue : [];
-      const qi2 = this._queueIdx >= 0 ? this._queueIdx : 0;
-      if (qi2 < q2.length - 1) this.playFromQueue(qi2 + 1);
     };
     const label = type === 'playlist' ? '📋 Spotify Playlist' : type === 'album' ? '💿 Spotify Album' : '🎵 Spotify Track';
     this.showMusicBar(label, '');
@@ -803,22 +794,41 @@ const MusicPage = {
   playSoundCloud(url) {
     document.getElementById('ms-title').textContent = '▶ SoundCloud';
     document.getElementById('ms-status').textContent = 'Loading...';
-    document.getElementById('ms-frame-container').innerHTML = `
+    const container = document.getElementById('ms-frame-container');
+    container.style.cssText = 'margin-bottom:12px';
+    container.innerHTML = `
       <iframe src="https://w.soundcloud.com/player/?url=https://soundcloud.com/${url}&auto_play=true&visual=false" style="width:100%;height:166px;border:none;border-radius:8px" allow="autoplay"></iframe>`;
+    document.getElementById('ms-pause').onclick = () => {};
+    document.getElementById('ms-stop').onclick = () => {
+      container.style.cssText = 'width:0;height:0;overflow:hidden';
+      container.innerHTML = '';
+      document.getElementById('ms-title').textContent = 'No track playing';
+      const bar = document.getElementById('music-bar');
+      if (bar) bar.remove();
+    };
     this.showMusicBar('SoundCloud', url);
   },
 
   playAudio(url) {
     document.getElementById('ms-title').textContent = '▶ Audio URL';
     document.getElementById('ms-status').textContent = 'Loading...';
-    document.getElementById('ms-frame-container').innerHTML = `
+    const container = document.getElementById('ms-frame-container');
+    container.style.cssText = 'margin-bottom:12px';
+    container.innerHTML = `
       <audio src="${esc(url)}" controls autoplay style="width:100%;border-radius:6px" id="ms-audio"></audio>`;
     const audio = document.getElementById('ms-audio');
     if (audio) {
       audio.onplay = () => document.getElementById('ms-pause').textContent = '⏸ Pause';
       audio.onpause = () => document.getElementById('ms-pause').textContent = '▶ Resume';
       document.getElementById('ms-pause').onclick = () => { if (audio.paused) audio.play(); else audio.pause(); };
-      document.getElementById('ms-stop').onclick = () => { audio.pause(); audio.src = ''; };
+      document.getElementById('ms-stop').onclick = () => {
+        audio.pause(); audio.src = '';
+        container.style.cssText = 'width:0;height:0;overflow:hidden';
+        container.innerHTML = '';
+        document.getElementById('ms-title').textContent = 'No track playing';
+        const bar = document.getElementById('music-bar');
+        if (bar) bar.remove();
+      };
     }
     this.showMusicBar('Audio URL', url.split('/').pop() || url);
   },
@@ -875,6 +885,8 @@ const MusicPage = {
       if (window.YT && window.YT.Player) createPlayer();
       else { window.onYouTubeIframeAPIReady = createPlayer; setTimeout(createPlayer, 1500); }
     }
+    this.updateQueueAndButtons();
+    this.fetchTitle(id);
   },
 
   updateQueueAndButtons() {
