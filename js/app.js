@@ -623,7 +623,7 @@ const MusicPage = {
       const scMatch = raw.match(/soundcloud\.com\/([^\/]+\/[^\/]+)/);
       const audioMatch = raw.match(/\.(mp3|wav|ogg|m4a|flac)(\?|$)/i);
 
-      if (ytPlaylist && raw.includes('playlist')) MusicPage.playYTPlaylist(ytPlaylist[1]);
+      if (ytPlaylist && !raw.match(/\/watch\?v=/)) MusicPage.playYTPlaylist(ytPlaylist[1]);
       else if (ytMatch) MusicPage.playYT(ytMatch[1]);
       else if (spMatch) MusicPage.playSpotify(spMatch[2], spMatch[1]);
       else if (scMatch) MusicPage.playSoundCloud(scMatch[1]);
@@ -677,11 +677,11 @@ const MusicPage = {
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-frame-container').innerHTML = `
-      <iframe src="https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1" style="width:0;height:0;border:none" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    this._queue = [];
-    this._queueIdx = -1;
+      <iframe src="https://www.youtube.com/embed?listType=playlist&list=${listId}&autoplay=1" style="width:100%;height:120px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    this._queue = FEATURED;
+    this._queueIdx = 0;
     this.showMusicBar('📋 YouTube Playlist', '');
-    this.renderQueue([{ t: '📋 YouTube Playlist', vid: listId }], 0);
+    this.renderQueue(FEATURED, 0);
   },
 
   playSpotify(id, type) {
