@@ -1338,6 +1338,27 @@ async function loadWeather() {
   }
 }
 
+/* ─── Search ─── */
+function initSearch() {
+  const form = document.getElementById('search-form');
+  const input = document.getElementById('search-input');
+  if (!form || !input) return;
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    const val = input.value.trim();
+    if (!val) return;
+    // Check if it's a URL
+    const hasSpace = val.includes(' ');
+    const hasDot = val.includes('.');
+    const hasProtocol = val.startsWith('http://') || val.startsWith('https://');
+    if ((hasDot && !hasSpace) || hasProtocol) {
+      window.open(hasProtocol ? val : 'https://' + val, '_blank');
+    } else {
+      window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
+    }
+  };
+}
+
 /* ─── Home widgets ─── */
 function updateClock() {
   const now = new Date();
@@ -1385,6 +1406,7 @@ document.addEventListener('DOMContentLoaded', () => {
   route();
   updateClock();
   setInterval(updateClock, 10000);
+  initSearch();
   loadWeather();
   initNotes();
 });
