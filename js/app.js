@@ -535,12 +535,14 @@ const RadioPage = {
 
 /* ─── Music ─── */
 const FEATURED = [
-  { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8' },
-  { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k' },
-  { title: '🇯🇵 J-Pop Mix', vid: 'sXwL65mzLvM' },
-  { title: '🇻🇳 Nhạc Việt', vid: 'dI3q-rW8bWY' },
-  { title: '🎧 Lo-Fi Chill', vid: 'jfKfPfyJRdk' },
-  { title: '🎤 Rap US', vid: 'JGwWNGJdvx8' },
+  { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8', platform: 'yt' },
+  { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k', platform: 'yt' },
+  { title: '🇯🇵 J-Pop Mix', vid: 'sXwL65mzLvM', platform: 'yt' },
+  { title: '🇻🇳 Nhạc Việt', vid: 'dI3q-rW8bWY', platform: 'yt' },
+  { title: '🎧 Lo-Fi Chill', vid: 'jfKfPfyJRdk', platform: 'yt' },
+  { title: '🎤 Rap US', vid: 'JGwWNGJdvx8', platform: 'yt' },
+  { title: '🎷 Jazz Relax', vid: 'jfKfPfyJRdk', platform: 'yt' },
+  { title: '🌌 Ambient', vid: 'sXwL65mzLvM', platform: 'yt' },
 ];
 
 let ytPlayer = null;
@@ -592,14 +594,20 @@ const MusicPage = {
 
     document.getElementById('ms-play-btn').onclick = () => {
       const val = document.getElementById('ms-q').value.trim();
-      let id = '';
-      const m = val.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
-      if (m) id = m[1];
-      if (id) MusicPage.play(id);
+      if (!val) return;
+      // Detect platform
+      const ytMatch = val.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
+      const spMatch = val.match(/open\.spotify\.com\/(track|playlist)\/([a-zA-Z0-9]+)/);
+      const scMatch = val.match(/soundcloud\.com\/([^\/]+\/[^\/]+)/);
+      const audioMatch = val.match(/\.(mp3|wav|ogg|m4a|flac)(\?|$)/i);
+
+      if (ytMatch) MusicPage.playYT(ytMatch[1]);
+      else if (spMatch) MusicPage.playSpotify(spMatch[2], spMatch[1]);
+      else if (scMatch) MusicPage.playSoundCloud(scMatch[1]);
+      else if (audioMatch || val.startsWith('http')) MusicPage.playAudio(val);
       else {
-        const link = document.getElementById('ms-search-link');
-        link.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(val);
-        link.click();
+        document.getElementById('ms-search-link').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(val);
+        document.getElementById('ms-search-link').click();
       }
     };
     document.getElementById('ms-q').onkeydown = (e) => {
@@ -610,7 +618,7 @@ const MusicPage = {
     };
 
     document.querySelectorAll('.ms-feat').forEach(el => {
-      el.onclick = () => MusicPage.play(el.dataset.vid);
+      el.onclick = () => MusicPage.playYT(el.dataset.vid);
     });
 
     document.getElementById('ms-pause').onclick = () => {
@@ -629,7 +637,50 @@ const MusicPage = {
     };
   },
 
-  play(id) {
+  play(id, platform) {
+    if (platform === 'yt' || !platform) this.playYT(id);
+  },
+
+  playSpotify(id, type) {
+    document.getElementById('ms-title').textContent = '▶ Spotify';
+    document.getElementById('ms-status').textContent = `Loading ${type}...`;
+    document.getElementById('ms-pause').disabled = false;
+    document.getElementById('ms-stop').disabled = false;
+    document.getElementById('ms-frame-container').innerHTML = `
+      <iframe src="https://open.spotify.com/embed/${type}/${id}" style="width:100%;height:80px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    document.getElementById('ms-pause').textContent = '⏸ Pause';
+    document.getElementById('ms-pause').onclick = () => {};
+    document.getElementById('ms-stop').onclick = () => {
+      document.getElementById('ms-frame-container').innerHTML = '';
+      document.getElementById('ms-title').textContent = 'No track playing';
+    };
+    this.showMusicBar('Spotify', `${type} ${id.slice(0, 8)}...`);
+  },
+
+  playSoundCloud(url) {
+    document.getElementById('ms-title').textContent = '▶ SoundCloud';
+    document.getElementById('ms-status').textContent = 'Loading...';
+    document.getElementById('ms-frame-container').innerHTML = `
+      <iframe src="https://w.soundcloud.com/player/?url=https://soundcloud.com/${url}&auto_play=true&visual=false" style="width:100%;height:166px;border:none;border-radius:8px" allow="autoplay"></iframe>`;
+    this.showMusicBar('SoundCloud', url);
+  },
+
+  playAudio(url) {
+    document.getElementById('ms-title').textContent = '▶ Audio URL';
+    document.getElementById('ms-status').textContent = 'Loading...';
+    document.getElementById('ms-frame-container').innerHTML = `
+      <audio src="${esc(url)}" controls autoplay style="width:100%;border-radius:6px" id="ms-audio"></audio>`;
+    const audio = document.getElementById('ms-audio');
+    if (audio) {
+      audio.onplay = () => document.getElementById('ms-pause').textContent = '⏸ Pause';
+      audio.onpause = () => document.getElementById('ms-pause').textContent = '▶ Resume';
+      document.getElementById('ms-pause').onclick = () => { if (audio.paused) audio.play(); else audio.pause(); };
+      document.getElementById('ms-stop').onclick = () => { audio.pause(); audio.src = ''; };
+    }
+    this.showMusicBar('Audio URL', url.split('/').pop() || url);
+  },
+
+  playYT(id) {
     this._currentId = id;
     this._currentIdx = FEATURED.findIndex(f => f.vid === id);
 
