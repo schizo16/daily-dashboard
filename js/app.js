@@ -540,6 +540,13 @@ const FEATURED = [
   { title: '🎤 Rap US', vid: 'JGwWNGJdvx8' },
 ];
 
+let ytPlayer = null;
+let ytReady = false;
+
+function onYouTubeIframeAPIReady() {
+  ytReady = true;
+}
+
 const MusicPage = {
   load(c) {
     c.innerHTML = `<div class="card">
@@ -564,9 +571,8 @@ const MusicPage = {
         <button class="btn" id="ms-stop" disabled>⏹ Stop</button>
       </div>
 
-      <div id="ms-player" style="width:0;height:0;overflow:hidden">
-        <iframe id="ms-frame" src="https://www.youtube.com/embed/?autoplay=0&controls=0&showinfo=0" style="border:none" allow="autoplay; encrypted-media"></iframe>
-      </div>
+      <div id="ms-player"></div>
+      <div id="ms-frame-container" style="width:0;height:0;overflow:hidden"></div>
 
       <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">🎧 QUICK LISTEN</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
@@ -617,28 +623,58 @@ const MusicPage = {
   },
 
   play(id) {
-    document.getElementById('ms-title').textContent = '▶ Playing...';
-    document.getElementById('ms-status').textContent = 'Loading audio...';
+    document.getElementById('ms-title').textContent = '▶ Loading...';
+    document.getElementById('ms-status').textContent = 'Starting player...';
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-pause').textContent = '⏸ Pause';
-    const frame = document.getElementById('ms-frame');
-    frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&controls=0&showinfo=0`;
     this._currentId = id;
 
-    // Fetch video title via oembed
+    // Load YouTube IFrame API if needed
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    }
+
+    const container = document.getElementById('ms-frame-container');
+    container.innerHTML = '<div id="yt-player"></div>';
+
+    const onReady = () => {
+      ytPlayer.setVolume(70);
+      ytPlayer.playVideo();
+      document.getElementById('ms-title').textContent = '▶ Playing...';
+    };
+
+    if (window.YT && window.YT.Player) {
+      ytPlayer = new YT.Player('yt-player', {
+        height: '0', width: '0',
+        videoId: id,
+        playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
+        events: { onReady }
+      });
+    } else {
+      window.onYouTubeIframeAPIReady = () => {
+        ytPlayer = new YT.Player('yt-player', {
+          height: '0', width: '0',
+          videoId: id,
+          playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
+          events: { onReady }
+        });
+      };
+    }
+
+    // Fetch title
     fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`)
       .then(r => r.ok ? r.json() : null)
       .then(d => {
         if (d) {
-          const title = d.title || '';
-          const author = d.author_name || '';
-          document.getElementById('ms-title').textContent = `🎵 ${esc(title)}`;
-          document.getElementById('ms-status').textContent = `👤 ${esc(author)}`;
-          this.showMusicBar(title, author);
-        }
+          document.getElementById('ms-title').textContent = `🎵 ${esc(d.title || '')}`;
+          document.getElementById('ms-status').textContent = `👤 ${esc(d.author_name || '')}`;
+          this.showMusicBar(d.title, d.author_name);
+        } else this.showMusicBar('Playing', 'YouTube');
       })
-      .catch(() => {});
+      .catch(() => this.showMusicBar('Playing', 'YouTube'));
   },
 
   showMusicBar(title, author) {
@@ -662,25 +698,31 @@ const MusicPage = {
       </div>
       <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
         <span style="font-size:0.6rem;color:var(--text-3)">🔊</span>
-        <input type="range" id="mb-vol" min="0" max="1" step="0.05" value="0.7" style="flex:1;height:4px;accent-color:var(--accent);cursor:pointer">
+        <input type="range" id="mb-vol" min="0" max="100" step="5" value="70" style="flex:1;height:4px;accent-color:var(--accent);cursor:pointer">
         <span id="mb-vol-pct" style="font-size:0.6rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:28px;text-align:right">70%</span>
       </div>`;
     document.getElementById('mb-play').onclick = () => {
-      const frame = document.getElementById('ms-frame');
-      const p = frame.src.includes('autoplay=1');
-      frame.src = p ? frame.src.replace('autoplay=1','autoplay=0') : frame.src.replace('autoplay=0','autoplay=1');
-      document.getElementById('mb-play').textContent = p ? '▶' : '⏸';
+      if (ytPlayer) {
+        if (ytPlayer.getPlayerState() === 1) {
+          ytPlayer.pauseVideo();
+          document.getElementById('mb-play').textContent = '▶';
+        } else {
+          ytPlayer.playVideo();
+          document.getElementById('mb-play').textContent = '⏸';
+        }
+      }
     };
     document.getElementById('mb-stop').onclick = () => {
-      document.getElementById('ms-frame').src = 'https://www.youtube.com/embed/?autoplay=0';
-      document.getElementById('ms-title').textContent = 'No track playing';
+      if (ytPlayer) ytPlayer.stopVideo();
       document.getElementById('ms-pause').disabled = true;
       document.getElementById('ms-stop').disabled = true;
+      document.getElementById('ms-title').textContent = 'No track playing';
       bar.remove();
     };
     document.getElementById('mb-vol').oninput = (e) => {
-      document.getElementById('mb-vol-pct').textContent = Math.round(e.target.value * 100) + '%';
-      // YouTube iframe volume is controlled differently - this is visual only
+      const v = e.target.value;
+      document.getElementById('mb-vol-pct').textContent = v + '%';
+      if (ytPlayer && ytPlayer.setVolume) ytPlayer.setVolume(v);
     };
   }
 };
