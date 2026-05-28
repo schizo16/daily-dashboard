@@ -423,20 +423,20 @@ document.getElementById('theme-btn').onclick = () => {
 
 /* ─── Media (Radio + Music) ─── */
 const MediaPage = {
-  _tab: 'radio',
+  _tab: 'music',
   load(c) {
     c.innerHTML = `
       <div class="card">
-        <div class="section-h"><h2>📻 Media</h2></div>
+        <div class="section-h"><h2>🎵 Media</h2></div>
         <div style="display:flex;gap:2px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:6px">
-          <button class="media-tab active" data-tab="radio" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text);font-weight:600;border-bottom:2px solid var(--accent)">📻 Radio</button>
-          <button class="media-tab" data-tab="music" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-2);font-weight:400;border-bottom:2px solid transparent;margin-left:14px">🎵 Music</button>
+          <button class="media-tab active" data-tab="music" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text);font-weight:600;border-bottom:2px solid var(--accent)">🎵 Music</button>
+          <button class="media-tab" data-tab="radio" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-2);font-weight:400;border-bottom:2px solid transparent;margin-left:14px">📻 Radio</button>
         </div>
         <div id="media-content"></div>
       </div>`;
     this._c = c;
-    this._tab = 'radio';
-    this.switch('radio');
+    this._tab = 'music';
+    this.switch('music');
 
     c.querySelectorAll('.media-tab').forEach(b => {
       b.onclick = () => {
