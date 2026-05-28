@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1 class="app-title">Daily Dashboard</h1>
+    <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">🌙</button>
+  </header>
+
+  <nav class="tab-bar" role="tablist">
+    <button class="tab active" data-tab="radar" role="tab" aria-selected="true">🔴 AI Radar</button>
+    <button class="tab" data-tab="movies" role="tab" aria-selected="false">🎬 Movies</button>
+    <button class="tab" data-tab="games" role="tab" aria-selected="false">🎮 Games</button>
+  </nav>
+
+  <main>
+    <section id="tab-radar" class="tab-content active" role="tabpanel"></section>
+    <section id="tab-movies" class="tab-content" role="tabpanel"></section>
+    <section id="tab-games" class="tab-content" role="tabpanel"></section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/github-radar.js"></script>
+  <script src="js/movies.js"></script>
+  <script src="js/games/wordle.js"></script>
+  <script src="js/games/quiz.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
