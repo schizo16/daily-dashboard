@@ -532,44 +532,109 @@ const RadioPage = {
 
 /* ─── Music ─── */
 const FEATURED = [
-  { title: '🇺🇸 US Top Hits', url: 'https://www.youtube.com/results?search_query=us+top+hits+2026' },
-  { title: '🇬🇧 UK Top 40', url: 'https://www.youtube.com/results?search_query=uk+top+40+2026' },
-  { title: '🇰🇷 K-Pop', url: 'https://www.youtube.com/results?search_query=kpop+top+hits+2026' },
-  { title: '🇯🇵 J-Pop', url: 'https://www.youtube.com/results?search_query=jpop+hits+2026' },
-  { title: '🇻🇳 V-Pop', url: 'https://www.youtube.com/results?search_query=nhac+viet+top+2026' },
-  { title: '🌍 Global', url: 'https://www.youtube.com/results?search_query=global+hits+2026' },
-  { title: '🎧 Lo-Fi', url: 'https://www.youtube.com/results?search_query=lofi+chill+study' },
-  { title: '🎤 Rap US', url: 'https://www.youtube.com/results?search_query=us+rap+hip+hop+2026' },
+  { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8' },
+  { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k' },
+  { title: '🇯🇵 J-Pop Mix', vid: 'sXwL65mzLvM' },
+  { title: '🇻🇳 Nhạc Việt', vid: 'dI3q-rW8bWY' },
+  { title: '🎧 Lo-Fi Chill', vid: 'jfKfPfyJRdk' },
+  { title: '🎤 Rap US', vid: 'JGwWNGJdvx8' },
 ];
 
 const MusicPage = {
   load(c) {
     c.innerHTML = `<div class="card">
       <div class="section-h"><h2>🎵 Music</h2></div>
+
       <div style="margin-bottom:16px">
         <div style="display:flex;gap:4px">
-          <input type="text" id="ms-q" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Search any song on YouTube...">
-          <a class="btn btn-primary" id="ms-btn" href="https://www.youtube.com/results?search_query=" target="_blank" style="text-decoration:none">Search</a>
+          <input type="text" id="ms-q" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Paste YouTube URL or search...">
+          <button class="btn btn-primary" id="ms-play-btn">▶ Play</button>
         </div>
+        <a id="ms-search-link" href="https://www.youtube.com/results?search_query=" target="_blank" style="font-size:0.65rem;color:var(--text-3);margin-top:4px;display:inline-block">Search on YouTube ↗</a>
       </div>
-      <div style="margin-bottom:12px">
-        <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">FEATURED CHARTS</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-          ${FEATURED.map(m => `
-            <a href="${m.url}" target="_blank" style="padding:10px;border:1px solid var(--border);border-radius:6px;text-align:center;text-decoration:none;color:var(--text);transition:all 0.12s;display:block" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
-              <div style="font-size:0.82rem;font-weight:500">${m.title}</div>
-            </a>`).join('')}
-        </div>
+
+      <div style="text-align:center;padding:20px;border:1px solid var(--border);border-radius:8px;margin-bottom:12px;background:var(--surface-2)" id="ms-now">
+        <div style="font-size:2.5rem;margin-bottom:6px" id="ms-icon">🎵</div>
+        <div style="font-size:1rem;font-weight:600" id="ms-title">No track playing</div>
+        <div style="font-size:0.78rem;color:var(--text-2);margin-top:4px" id="ms-status">Paste a YouTube URL and press Play</div>
       </div>
-      <div class="section-h" style="margin-bottom:10px"><h2>▶ Now Playing</h2></div>
-      <div id="ms-player" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;background:var(--surface-2)">
-        <iframe id="ms-frame" src="https://www.youtube.com/embed/?autoplay=0" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+      <div style="display:flex;gap:6px;justify-content:center;margin-bottom:16px">
+        <button class="btn" id="ms-pause" disabled>⏸ Pause</button>
+        <button class="btn" id="ms-stop" disabled>⏹ Stop</button>
+      </div>
+
+      <div id="ms-player" style="width:0;height:0;overflow:hidden">
+        <iframe id="ms-frame" src="https://www.youtube.com/embed/?autoplay=0&controls=0&showinfo=0" style="border:none" allow="autoplay; encrypted-media"></iframe>
+      </div>
+
+      <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">🎧 QUICK LISTEN</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        ${FEATURED.map(m => `
+          <div class="ms-feat" data-vid="${m.vid}" style="padding:12px;border:1px solid var(--border);border-radius:6px;text-align:center;cursor:pointer;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:0.82rem;font-weight:500">${m.title}</div>
+          </div>`).join('')}
       </div>
     </div>`;
-    const input = document.getElementById('ms-q');
-    const btn = document.getElementById('ms-btn');
-    input.oninput = () => { btn.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(input.value); };
-    input.onkeydown = (e) => { if (e.key === 'Enter') btn.click(); };
+
+    document.getElementById('ms-play-btn').onclick = () => {
+      const val = document.getElementById('ms-q').value.trim();
+      let id = '';
+      const m = val.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
+      if (m) id = m[1];
+      if (id) MusicPage.play(id);
+      else {
+        const link = document.getElementById('ms-search-link');
+        link.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(val);
+        link.click();
+      }
+    };
+    document.getElementById('ms-q').onkeydown = (e) => {
+      if (e.key === 'Enter') document.getElementById('ms-play-btn').click();
+    };
+    document.getElementById('ms-q').oninput = () => {
+      document.getElementById('ms-search-link').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(document.getElementById('ms-q').value);
+    };
+
+    document.querySelectorAll('.ms-feat').forEach(el => {
+      el.onclick = () => MusicPage.play(el.dataset.vid);
+    });
+
+    document.getElementById('ms-pause').onclick = () => {
+      const frame = document.getElementById('ms-frame');
+      frame.src = frame.src.includes('autoplay=1') ? frame.src.replace('autoplay=1','autoplay=0') : frame.src.replace('autoplay=0','autoplay=1');
+      const btn = document.getElementById('ms-pause');
+      btn.textContent = btn.textContent === '⏸ Pause' ? '▶ Resume' : '⏸ Pause';
+    };
+    document.getElementById('ms-stop').onclick = () => {
+      const frame = document.getElementById('ms-frame');
+      frame.src = 'https://www.youtube.com/embed/?autoplay=0';
+      document.getElementById('ms-title').textContent = 'No track playing';
+      document.getElementById('ms-status').textContent = 'Paste a YouTube URL and press Play';
+      document.getElementById('ms-pause').disabled = true;
+      document.getElementById('ms-stop').disabled = true;
+    };
+  },
+
+  play(id) {
+    document.getElementById('ms-title').textContent = '▶ Playing...';
+    document.getElementById('ms-status').textContent = 'Loading audio...';
+    document.getElementById('ms-pause').disabled = false;
+    document.getElementById('ms-stop').disabled = false;
+    document.getElementById('ms-pause').textContent = '⏸ Pause';
+    const frame = document.getElementById('ms-frame');
+    frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&controls=0&showinfo=0`;
+
+    // Fetch video title via oembed
+    fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`)
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (d) {
+          document.getElementById('ms-title').textContent = `🎵 ${esc(d.title || '')}`;
+          document.getElementById('ms-status').textContent = `👤 ${esc(d.author_name || '')}`;
+        }
+      })
+      .catch(() => {});
   }
 };
 
