@@ -604,7 +604,10 @@ const MusicPage = {
         <button class="btn" id="ms-shuffle" style="font-size:0.7rem;padding:2px 10px">🔀</button>
         <button class="btn" id="ms-loop" style="font-size:0.7rem;padding:2px 10px">🔁</button>
       </div>
-      <div id="ms-time" style="text-align:center;font-family:JetBrains Mono,monospace;font-size:0.65rem;color:var(--text-3);margin-bottom:12px">0:00 / 0:00</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <input type="range" id="ms-seek" min="0" max="100" value="0" step="0.1" style="flex:1;height:4px;accent-color:var(--accent);cursor:pointer">
+        <span id="ms-time" style="font-family:JetBrains Mono,monospace;font-size:0.6rem;color:var(--text-3);min-width:70px;text-align:right">0:00 / 0:00</span>
+      </div>
 
       <div id="ms-player"></div>
       <div id="ms-frame-container" style="width:0;height:0;overflow:hidden"></div>
@@ -663,6 +666,20 @@ const MusicPage = {
       loopBtn.style.opacity = this._loop ? '1' : '0.4';
     };
     loopBtn.style.opacity = '0.4';
+
+    // Seek
+    for (const id of ['ms-seek', 'mb-seek']) {
+      const seek = document.getElementById(id);
+      if (!seek) continue;
+      seek.addEventListener('input', () => { seek._dragging = true; });
+      seek.addEventListener('change', () => {
+        seek._dragging = false;
+        if (ytPlayer && typeof ytPlayer.getDuration === 'function') {
+          const dur = ytPlayer.getDuration();
+          if (dur > 0) ytPlayer.seekTo((seek.value / 100) * dur, true);
+        }
+      });
+    }
 
 
 
@@ -928,10 +945,15 @@ const MusicPage = {
         if (dur > 0) {
           const fmt = s => { const m = Math.floor(s / 60); const sec = Math.floor(s % 60); return m + ':' + String(sec).padStart(2, '0'); };
           const txt = fmt(cur) + ' / ' + fmt(dur);
-          const el1 = document.getElementById('mb-time');
-          const el2 = document.getElementById('ms-time');
-          if (el1) el1.textContent = txt;
-          if (el2) el2.textContent = txt;
+          const pct = (cur / dur) * 100;
+          for (const id of ['mb-time', 'ms-time']) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = txt;
+          }
+          for (const id of ['mb-seek', 'ms-seek']) {
+            const el = document.getElementById(id);
+            if (el && !el._dragging) el.value = pct;
+          }
         }
       } catch {}
     }, 1000);
@@ -1020,10 +1042,11 @@ const MusicPage = {
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
-        <span id="mb-time" style="font-size:0.6rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:70px">0:00 / 0:00</span>
-        <span style="font-size:0.55rem;color:var(--text-3)">🔊</span>
-        <input type="range" id="mb-vol" min="0" max="100" step="5" value="70" style="flex:1;height:4px;accent-color:var(--accent);cursor:pointer">
-        <span id="mb-vol-pct" style="font-size:0.55rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:24px;text-align:right">70%</span>
+        <span id="mb-time" style="font-size:0.55rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:65px">0:00 / 0:00</span>
+        <input type="range" id="mb-seek" min="0" max="100" value="0" step="0.1" style="flex:1;height:3px;accent-color:var(--accent);cursor:pointer">
+        <span style="font-size:0.5rem;color:var(--text-3)">🔊</span>
+        <input type="range" id="mb-vol" min="0" max="100" step="5" value="70" style="width:50px;height:3px;accent-color:var(--accent);cursor:pointer">
+        <span id="mb-vol-pct" style="font-size:0.5rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:22px;text-align:right">70%</span>
       </div>`;
     document.getElementById('mb-play').onclick = () => {
       if (ytPlayer) {
