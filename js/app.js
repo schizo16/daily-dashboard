@@ -12,6 +12,17 @@ document.getElementById('locale-btn').onclick = () => {
 
 /* ─── Page Loaders ─── */
 
+const GAME_GENRES = [
+  { id: 'popular', label: '🔥 Popular', sort: 'popularity' },
+  { id: 'new', label: '🆕 New', sort: 'release-date' },
+  { id: 'rpg', label: '⚔️ RPG', genreSlug: 'role-playing-games' },
+  { id: 'shooter', label: '🔫 Shooter', genreSlug: 'shooter' },
+  { id: 'strategy', label: '🧠 Strategy', genreSlug: 'strategy' },
+  { id: 'racing', label: '🏎️ Racing', genreSlug: 'racing' },
+  { id: 'sports', label: '⚽ Sports', genreSlug: 'sports' },
+  { id: 'horror', label: '👻 Horror', genreSlug: 'horror' },
+];
+
 const GamesPage = {
   current: 'wordle',
   load(container) {
@@ -33,11 +44,81 @@ const GamesPage = {
         this.switch(b.dataset.game, gc);
       };
     });
+    this.loadGames(container);
     this.loadNews(container);
   },
   switch(g, c) {
     if (g === 'wordle') Wordle.init(c);
     else if (g === 'quiz') Quiz.init(c);
+  },
+  async loadGames(c) {
+    try {
+      const div = document.createElement('div'); div.className = 'card';
+      div.style.marginTop = '12px';
+      div.innerHTML = `<div class="section-h"><h2>🎮 Game Picks</h2><a href="https://www.freetogame.com" target="_blank">freetogame ↗</a></div>
+        <div class="mood-bar" id="gp-bar" style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap"></div>
+        <div id="gp-grid"></div>`;
+      c.appendChild(div);
+      this.renderGenreBar();
+      await this.loadGenreGames('popular');
+    } catch (_) {}
+  },
+  renderGenreBar() {
+    const bar = document.getElementById('gp-bar');
+    if (!bar) return;
+    GAME_GENRES.forEach(g => {
+      const b = document.createElement('button');
+      b.className = 'mood-btn';
+      b.textContent = g.label;
+      b.style.cssText = 'padding:4px 10px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.04em';
+      b.onmouseover = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border-2)'; };
+      b.onmouseout = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border)'; };
+      b.onclick = () => {
+        bar.querySelectorAll('.mood-btn').forEach(x => {
+          x.classList.remove('active');
+          x.style.background = 'transparent';
+          x.style.color = 'var(--text-2)';
+          x.style.borderColor = 'var(--border)';
+        });
+        b.classList.add('active');
+        b.style.background = 'var(--accent)';
+        b.style.color = 'var(--bg)';
+        b.style.borderColor = 'var(--accent)';
+        this.loadGenreGames(g.id);
+      };
+      if (g.id === 'popular') {
+        b.classList.add('active');
+        b.style.background = 'var(--accent)';
+        b.style.color = 'var(--bg)';
+        b.style.borderColor = 'var(--accent)';
+      }
+      bar.appendChild(b);
+    });
+  },
+  async loadGenreGames(genreId) {
+    const grid = document.getElementById('gp-grid');
+    if (!grid) return;
+    grid.innerHTML = '<div class="loading" style="padding:16px 0">Loading games...</div>';
+    try {
+      const genre = GAME_GENRES.find(g => g.id === genreId);
+      let url = 'https://www.freetogame.com/api/games?sort-by=popularity';
+      if (genre.genreSlug) url = `https://www.freetogame.com/api/games?category=${genre.genreSlug}`;
+      else if (genre.sort) url = `https://www.freetogame.com/api/games?sort-by=${genre.sort}`;
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('API error');
+      const games = (await r.json()).slice(0, 10);
+      grid.innerHTML = '';
+      games.forEach(g => {
+        const e = document.createElement('div'); e.className = 'movie-e';
+        e.innerHTML = `<div class="movie-thumb"><img src="${g.thumbnail || ''}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>
+          <div class="movie-body"><div class="movie-name">${esc(g.title)}</div>
+          <div class="movie-sub">${g.genre || ''}${g.platform ? ' · ' + esc(g.platform) : ''}${g.release_date ? ' · ' + g.release_date : ''}</div></div>
+          ${g.freetogame_profile_url ? `<a class="wl-btn" href="${g.freetogame_profile_url}" target="_blank" style="text-decoration:none">Play</a>` : ''}`;
+        grid.appendChild(e);
+      });
+    } catch (e) {
+      grid.innerHTML = '<div class="empty" style="padding:16px 0">Failed to load games.</div>';
+    }
   },
   async loadNews(c) {
     try {
