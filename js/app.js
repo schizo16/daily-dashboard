@@ -1,3 +1,67 @@
+/* ─── Chat ─── */
+function toggleChat() {
+  let panel = document.getElementById('chat-panel');
+  if (panel) { panel.remove(); return; }
+  panel = document.createElement('div');
+  panel.id = 'chat-panel';
+  panel.style.cssText = 'position:fixed;bottom:80px;right:20px;z-index:999;width:340px;max-height:460px;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.2);display:flex;flex-direction:column;animation:fadeIn 0.2s ease-out';
+  panel.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--border)">
+      <span style="font-weight:600;font-size:0.85rem">💬 Atlas Chat</span>
+      <button onclick="this.closest('#chat-panel').remove()" style="background:none;border:none;cursor:pointer;color:var(--text-3);font-size:0.85rem">✕</button>
+    </div>
+    <div id="chat-msgs" style="flex:1;overflow-y:auto;padding:10px 12px;font-size:0.82rem;line-height:1.5;min-height:200px">
+      <div style="color:var(--text-2);padding:8px 0">Ask me anything. 👋</div>
+    </div>
+    <div style="display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--border)">
+      <input type="text" id="chat-inp" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.8rem" placeholder="Message..." autocomplete="off">
+      <button class="btn btn-primary" id="chat-send" style="font-size:0.75rem">Send</button>
+    </div>`;
+  document.body.appendChild(panel);
+  document.getElementById('chat-inp').focus();
+  document.getElementById('chat-send').onclick = () => sendChat();
+  document.getElementById('chat-inp').onkeydown = (e) => { if (e.key === 'Enter') sendChat(); };
+}
+
+async function sendChat() {
+  const inp = document.getElementById('chat-inp');
+  const msg = inp.value.trim();
+  if (!msg) return;
+  inp.value = '';
+  const msgs = document.getElementById('chat-msgs');
+  msgs.innerHTML += `<div style="text-align:right;padding:6px 0;color:var(--accent)">${esc(msg)}</div>`;
+  msgs.innerHTML += `<div style="padding:6px 0;color:var(--text-2)"><span class="loading" style="padding:0;font-size:0.75rem">Thinking...</span></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  try {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${CONFIG.GEMINI_KEY}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: msg }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 500 } })
+    });
+    if (!r.ok) throw Error('API error');
+    const d = await r.json();
+    const reply = d.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
+    msgs.querySelector('.loading')?.closest('div')?.remove();
+    msgs.innerHTML += `<div style="padding:6px 0">${esc(reply)}</div>`;
+  } catch {
+    msgs.querySelector('.loading')?.closest('div')?.remove();
+    msgs.innerHTML += `<div style="padding:6px 0;color:#a33">Error: API unavailable</div>`;
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// Chat toggle button
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.createElement('button');
+  btn.id = 'chat-btn';
+  btn.textContent = '💬';
+  btn.title = 'Chat';
+  btn.style.cssText = 'position:fixed;bottom:24px;right:20px;z-index:998;width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.2);transition:all 0.15s';
+  btn.onmouseover = () => { btn.style.transform = 'scale(1.1)'; };
+  btn.onmouseout = () => { btn.style.transform = 'scale(1)'; };
+  btn.onclick = toggleChat;
+  document.body.appendChild(btn);
+});
+
 /* ─── i18n ─── */
 function applyI18n() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
