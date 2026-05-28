@@ -429,20 +429,65 @@ const RadioPage = {
   play(url, name, countryName) {
     const stop = document.getElementById('radio-stop');
     const play = document.getElementById('radio-play');
-    stop.style.display = '';
-    play.style.display = '';
+    if (stop) stop.style.display = '';
+    if (play) play.style.display = '';
 
-    document.getElementById('radio-icon').textContent = '📻';
-    document.getElementById('radio-title').textContent = name;
-    document.getElementById('radio-status').textContent = `🔊 Playing · ${countryName}`;
+    const icon = document.getElementById('radio-icon');
+    const title = document.getElementById('radio-title');
+    const status = document.getElementById('radio-status');
+    if (icon) icon.textContent = '📻';
+    if (title) title.textContent = name;
+    if (status) status.textContent = `🔊 Playing · ${countryName}`;
+
+    this._currentUrl = url;
+    this._currentName = name;
+    this._currentCountry = countryName;
 
     this._audio.src = url;
     this._audio.play().catch(() => {
-      document.getElementById('radio-status').textContent = '❌ Cannot play (CORS or dead link)';
+      if (status) status.textContent = '❌ Cannot play (CORS or dead link)';
     });
 
-    stop.onclick = () => { this._audio.pause(); this._audio.src = ''; document.getElementById('radio-status').textContent = '⏹ Stopped'; };
-    play.onclick = () => this._audio.play();
+    if (stop) stop.onclick = () => { this._audio.pause(); this._audio.src = ''; if (status) status.textContent = '⏹ Stopped'; this.hidePlayer(); };
+    if (play) play.onclick = () => this._audio.play();
+
+    this.showPlayer();
+  },
+
+  showPlayer() {
+    let bar = document.getElementById('radio-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'radio-bar';
+      document.body.appendChild(bar);
+    }
+    bar.style.cssText = 'position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:999;background:var(--surface);border:1px solid var(--border);border-top-left-radius:10px;border-top-right-radius:10px;padding:10px 18px;display:flex;align-items:center;gap:12px;max-width:600px;width:90%;box-shadow:0 -4px 20px rgba(0,0,0,0.15);animation:fadeIn 0.2s ease-out';
+    bar.innerHTML = `
+      <div style="flex:1;min-width:0">
+        <div style="font-size:0.78rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="bar-title">${esc(this._currentName)}</div>
+        <div style="font-size:0.62rem;color:var(--text-3)" id="bar-country">${esc(this._currentCountry || '')}</div>
+      </div>
+      <div style="display:flex;gap:4px;align-items:center">
+        <button class="btn" id="bar-play" style="padding:4px 10px;font-size:0.75rem">⏸</button>
+        <button class="btn" id="bar-stop" style="padding:4px 10px;font-size:0.75rem">⏹</button>
+        <button class="btn" id="bar-change" style="padding:4px 10px;font-size:0.7rem">📡 Stations</button>
+      </div>`;
+    document.getElementById('bar-play').onclick = () => {
+      if (this._audio.paused) { this._audio.play(); document.getElementById('bar-play').textContent = '⏸'; }
+      else { this._audio.pause(); document.getElementById('bar-play').textContent = '▶'; }
+    };
+    document.getElementById('bar-stop').onclick = () => {
+      this._audio.pause(); this._audio.src = ''; this.hidePlayer();
+    };
+    document.getElementById('bar-change').onclick = () => {
+      if (this._country) this.loadStations(this._country);
+      this.hidePlayer();
+    };
+  },
+
+  hidePlayer() {
+    const bar = document.getElementById('radio-bar');
+    if (bar) bar.remove();
   },
 
 };
