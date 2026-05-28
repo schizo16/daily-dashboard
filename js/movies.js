@@ -67,11 +67,11 @@ const Movies = {
     try {
       c.innerHTML = `<div class="card">
         <div class="section-h"><h2 id="ms-title">${_('trendingMovies')}</h2><button id="wl-tog" class="wl-toggle">${_('navWatchlist')}</button></div>
-        <div id="ms-type" class="tab-bar" style="margin-bottom:16px">
-          <button class="tab active" data-type="movie">🎬 Movies</button>
-          <button class="tab" data-type="tv">📺 Series</button>
+        <div id="ms-type" style="display:flex;gap:12px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:6px">
+          <button class="ms-btn active" data-type="movie" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:inherit;font-size:0.85rem;color:var(--text);font-weight:600;border-bottom:2px solid var(--accent)">🎬 Movies</button>
+          <button class="ms-btn" data-type="tv" style="padding:4px 0;border:none;background:none;cursor:pointer;font-family:inherit;font-size:0.85rem;color:var(--text-2);font-weight:400;border-bottom:2px solid transparent">📺 Series</button>
         </div>
-        <div class="tab-bar" id="ms-period" style="margin-bottom:16px"></div>
+        <div id="ms-period" style="display:flex;gap:10px;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:6px"></div>
         <div id="mg"></div>
         <div id="mw" style="display:none"></div>
       </div>`;
@@ -84,10 +84,12 @@ const Movies = {
         g.style.display = s ? '' : 'none'; w.style.display = s ? 'none' : '';
         b.textContent = s ? _('navWatchlist') : _('movies');
       };
-      document.querySelectorAll('#ms-type .tab').forEach(btn => {
+      document.querySelectorAll('#ms-type .ms-btn').forEach(btn => {
         btn.onclick = () => {
-          document.querySelectorAll('#ms-type .tab').forEach(x => x.classList.remove('active'));
-          btn.classList.add('active');
+          document.querySelectorAll('#ms-type .ms-btn').forEach(x => {
+            x.style.color = 'var(--text-2)'; x.style.fontWeight = '400'; x.style.borderBottomColor = 'transparent';
+          });
+          btn.style.color = 'var(--text)'; btn.style.fontWeight = '600'; btn.style.borderBottomColor = 'var(--accent)';
           this._mediaType = btn.dataset.type;
           this._gridPage = 1;
           document.getElementById('ms-title').textContent = this._mediaType === 'movie' ? _('trendingMovies') : '📺 TV Series';
@@ -108,12 +110,12 @@ const Movies = {
       const b = document.createElement('button');
       b.className = 'ms-btn' + (p.id === 'week' ? ' active' : '');
       b.textContent = p.label;
-      b.className = 'tab';
-      b.style.cssText = 'font-size:0.7rem;font-family:JetBrains Mono,monospace';
-      if (p.id === 'week') b.classList.add('active');
+      b.style.cssText = 'padding:4px 0;border:none;background:none;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.03em;border-bottom:2px solid ' + (p.id === 'week' ? 'var(--accent)' : 'transparent') + ';color:' + (p.id === 'week' ? 'var(--text)' : 'var(--text-2)') + ';font-weight:' + (p.id === 'week' ? '600' : '400');
       b.onclick = () => {
-        bar.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-        b.classList.add('active');
+        bar.querySelectorAll('.ms-btn').forEach(x => {
+          x.style.color = 'var(--text-2)'; x.style.fontWeight = '400'; x.style.borderBottomColor = 'transparent';
+        });
+        b.style.color = 'var(--text)'; b.style.fontWeight = '600'; b.style.borderBottomColor = 'var(--accent)';
         this._periodId = p.id; this._gridPage = 1; this.loadPage();
       };
       bar.appendChild(b);
