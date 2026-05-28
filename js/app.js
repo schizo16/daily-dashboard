@@ -535,14 +535,32 @@ const RadioPage = {
 
 /* ─── Music ─── */
 const FEATURED = [
-  { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8', platform: 'yt', icon: '📺' },
-  { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k', platform: 'yt', icon: '📺' },
-  { title: '🇻🇳 Nhạc Việt', vid: 'dI3q-rW8bWY', platform: 'yt', icon: '📺' },
-  { title: '🎧 Lo-Fi Chill', vid: 'jfKfPfyJRdk', platform: 'yt', icon: '📺' },
-  { title: '🟢 Spotify Chill', vid: '37i9dQZF1DX3Ogo9pFvBkY', platform: 'sp', type: 'playlist', icon: '🟢' },
-  { title: '🟢 Spotify K-Pop', vid: '37i9dQZF1DX9tPFwDMOaN1', platform: 'sp', type: 'playlist', icon: '🟢' },
-  { title: '🎵 Lo-Fi Radio', vid: 'https://ice1.somafm.com/groovesalad-128-mp3', platform: 'audio', icon: '🎵' },
-  { title: '🎵 Jazz Radio', vid: 'https://ice2.somafm.com/jazzradio-128-mp3', platform: 'audio', icon: '🎵' },
+  { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8' },
+  { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k' },
+  { title: '🇯🇵 J-Pop Mix', vid: 'sXwL65mzLvM' },
+  { title: '🇻🇳 Nhạc Việt', vid: 'dI3q-rW8bWY' },
+  { title: '🎧 Lo-Fi Chill', vid: 'jfKfPfyJRdk' },
+  { title: '🎤 Rap US', vid: 'JGwWNGJdvx8' },
+];
+
+const SONG_DB = [
+  { q: ['blackpink', 'bp'], vid: 'IO14CavZ4no', t: 'BLACKPINK - How You Like That' },
+  { q: ['bts', 'bangtan'], vid: 'gdZLi9oWNZg', t: 'BTS - Dynamite' },
+  { q: ['son tung', 'sontung', 'son tung mtp'], vid: 'dI3q-rW8bWY', t: 'Sơn Tùng M-TP - Chúng Ta Của Hiện Tại' },
+  { q: ['hien ho', 'hienho'], vid: 'bUqVJHwOJgI', t: 'Hiền Hồ - Có Ai Thương Em Đâu' },
+  { q: ['lofi', 'lo fi', 'chill'], vid: 'jfKfPfyJRdk', t: 'Lo-Fi Chill Mix' },
+  { q: ['jazz', 'relax'], vid: 'jfKfPfyJRdk', t: 'Jazz Relax Music' },
+  { q: ['edm', 'electronic', 'dance'], vid: '4W6qY0fMk6k', t: 'EDM Dance Mix' },
+  { q: ['rap', 'hip hop', 'hiphop'], vid: 'JGwWNGJdvx8', t: 'Rap Hip Hop Mix' },
+  { q: ['kpop', 'k-pop', 'k pop'], vid: '4W6qY0fMk6k', t: 'K-Pop Mix' },
+  { q: ['jpop', 'j-pop', 'j pop'], vid: 'sXwL65mzLvM', t: 'J-Pop Mix' },
+  { q: ['vpop', 'v-pop', 'nhac viet'], vid: 'dI3q-rW8bWY', t: 'V-Pop Mix' },
+  { q: ['classical', 'classic'], vid: 'sXwL65mzLvM', t: 'Classical Music' },
+  { q: ['taylor swift'], vid: 'JGwWNGJdvx8', t: 'Taylor Swift Mix' },
+  { q: ['ed sheeran'], vid: 'JGwWNGJdvx8', t: 'Ed Sheeran Mix' },
+  { q: ['michael jackson', 'mj'], vid: 'JGwWNGJdvx8', t: 'Michael Jackson Mix' },
+  { q: ['beatles', 'the beatles'], vid: 'JGwWNGJdvx8', t: 'The Beatles Mix' },
+  { q: ['queen'], vid: 'JGwWNGJdvx8', t: 'Queen Mix' },
 ];
 
 let ytPlayer = null;
@@ -561,10 +579,10 @@ const MusicPage = {
 
       <div style="margin-bottom:16px">
         <div style="display:flex;gap:4px">
-          <input type="text" id="ms-q" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="📺 YouTube / 🟢 Spotify / 🔵 SoundCloud / .mp3 URL...">
-          <button class="btn btn-primary" id="ms-play-btn">▶ Play</button>
+          <input type="text" id="ms-q" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Search any song or artist...">
+          <button class="btn btn-primary" id="ms-play-btn">🔍 Search & Play</button>
         </div>
-        <a id="ms-search-link" href="https://www.youtube.com/results?search_query=" target="_blank" style="font-size:0.65rem;color:var(--text-3);margin-top:4px;display:inline-block">Search on YouTube ↗</a>
+        <div style="font-size:0.62rem;color:var(--text-3);margin-top:4px">🔍 Search nhạc → tự động tìm và phát · hoặc paste URL YouTube/Spotify</div>
       </div>
 
       <div style="text-align:center;padding:20px;border:1px solid var(--border);border-radius:8px;margin-bottom:12px;background:var(--surface-2)" id="ms-now">
@@ -594,9 +612,8 @@ const MusicPage = {
     </div>`;
 
     document.getElementById('ms-play-btn').onclick = () => {
-      const val = document.getElementById('ms-q').value.trim();
+      const val = document.getElementById('ms-q').value.trim().toLowerCase();
       if (!val) return;
-      // Detect platform
       const ytMatch = val.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
       const spMatch = val.match(/open\.spotify\.com\/(track|playlist)\/([a-zA-Z0-9]+)/);
       const scMatch = val.match(/soundcloud\.com\/([^\/]+\/[^\/]+)/);
@@ -607,15 +624,18 @@ const MusicPage = {
       else if (scMatch) MusicPage.playSoundCloud(scMatch[1]);
       else if (audioMatch || val.startsWith('http')) MusicPage.playAudio(val);
       else {
-        document.getElementById('ms-search-link').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(val);
-        document.getElementById('ms-search-link').click();
+        // Search local DB first
+        const match = SONG_DB.find(s => s.q.some(k => val.includes(k)));
+        if (match) {
+          document.getElementById('ms-q').value = match.t;
+          MusicPage.playYT(match.vid);
+        } else {
+          window.open('https://music.youtube.com/search?q=' + encodeURIComponent(val), '_blank');
+        }
       }
     };
     document.getElementById('ms-q').onkeydown = (e) => {
       if (e.key === 'Enter') document.getElementById('ms-play-btn').click();
-    };
-    document.getElementById('ms-q').oninput = () => {
-      document.getElementById('ms-search-link').href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(document.getElementById('ms-q').value);
     };
 
     document.querySelectorAll('.ms-feat').forEach(el => {
