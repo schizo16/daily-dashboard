@@ -1,6 +1,6 @@
 const LOCALE = {
   vi: {
-    pageTitle: 'bảng tin',
+    pageTitle: 'Atlas',
     navHome: 'Trang chủ',
     navRadar: 'Theo dõi',
     navMovies: 'Phim',
@@ -71,11 +71,11 @@ const LOCALE = {
     viewOriginal: 'Xem gốc',
     readerTitle: 'Đọc bài',
 
-    footer: 'bảng tin · js thuần · 2026',
+    footer: 'Atlas · js thuần · 2026',
   },
 
   en: {
-    pageTitle: 'dashboard',
+    pageTitle: 'Atlas',
     navHome: 'Home',
     navRadar: 'Radar',
     navMovies: 'Movies',
