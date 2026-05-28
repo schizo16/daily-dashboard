@@ -909,7 +909,7 @@ const MusicPage = {
     list.style.display = '';
     const start = Math.max(0, currentIdx - 2);
     const items = queue.slice(start, currentIdx + 6);
-    list.innerHTML = '<div style="font-size:0.6rem;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin-bottom:6px">Queue</div>' +
+    list.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:0.6rem;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3)">Queue</span><button onclick="MusicPage.clearQueue()" style="font-size:0.55rem;font-family:JetBrains Mono,monospace;border:none;background:none;color:var(--text-3);cursor:pointer">Clear</button></div>' +
       items.map((item, i) => {
         const realIdx = start + i;
         const isCurrent = realIdx === currentIdx;
@@ -919,6 +919,23 @@ const MusicPage = {
           <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:${isCurrent ? '600' : '400'}">${esc(t)}</span>
         </div>`;
       }).join('');
+  },
+
+  clearQueue() {
+    this._queue = [];
+    this._queueIdx = -1;
+    const qe = document.getElementById('ms-queue');
+    if (qe) { qe.style.display = 'none'; qe.innerHTML = ''; }
+    if (ytPlayer) { try { ytPlayer.stopVideo(); } catch {} ytPlayer = null; }
+    document.getElementById('ms-title').textContent = 'No track playing';
+    document.getElementById('ms-pause').disabled = true;
+    document.getElementById('ms-stop').disabled = true;
+    document.getElementById('ms-prev').disabled = true;
+    document.getElementById('ms-next').disabled = true;
+    document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
+    document.getElementById('ms-frame-container').innerHTML = '';
+    const bar = document.getElementById('music-bar');
+    if (bar) bar.remove();
   },
 
   playFromQueue(idx) {
