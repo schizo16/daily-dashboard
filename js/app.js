@@ -892,7 +892,7 @@ const MusicPage = {
       const onStateChange = (e) => {
         if (e.data === YT.PlayerState.ENDED) {
           if (MusicPage._loop === 2) { // Loop one
-            MusicPage.playFromQueue(MusicPage._queueIdx);
+            try { ytPlayer.seekTo(0, true); ytPlayer.playVideo(); } catch {}
           } else if (MusicPage._loop === 1) { // Loop all
             const q = MusicPage._queue || [];
             if (q.length > 0) {
