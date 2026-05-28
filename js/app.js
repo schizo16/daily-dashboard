@@ -289,7 +289,7 @@ function show(page) {
 }
 
 function route() {
-  show(location.hash.slice(1) || 'home');
+  show((location.hash.slice(1) || 'home').split('?')[0].split('&')[0]);
 }
 
 window.addEventListener('hashchange', route);
