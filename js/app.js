@@ -592,12 +592,13 @@ const MusicPage = {
         <div style="font-size:0.78rem;color:var(--text-2);margin-top:4px" id="ms-status">Paste a YouTube URL and press Play</div>
       </div>
 
-        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:16px">
+        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:6px">
         <button class="btn" id="ms-prev" disabled>⏮ Prev</button>
         <button class="btn" id="ms-pause" disabled>⏸ Pause</button>
         <button class="btn" id="ms-stop" disabled>⏹ Stop</button>
         <button class="btn" id="ms-next" disabled>Next ⏭</button>
       </div>
+      <div id="ms-time" style="text-align:center;font-family:JetBrains Mono,monospace;font-size:0.65rem;color:var(--text-3);margin-bottom:12px">0:00 / 0:00</div>
 
       <div id="ms-player"></div>
       <div id="ms-frame-container" style="width:0;height:0;overflow:hidden"></div>
@@ -725,7 +726,7 @@ const MusicPage = {
           videoId: '',
           playerVars: { listType: 'playlist', list: listId, autoplay: 1, controls: 0 },
           events: {
-            onReady: () => { document.getElementById('ms-title').textContent = '▶ Playlist'; }
+            onReady: () => { document.getElementById('ms-title').textContent = '▶ Playlist'; MusicPage._startTimeTick(); }
           }
         });
       }
@@ -751,15 +752,27 @@ const MusicPage = {
     document.getElementById('ms-pause').textContent = '⏸ Pause';
     document.getElementById('ms-pause').onclick = () => {};
     document.getElementById('ms-stop').onclick = () => {
+      if (this._tickInterval) clearInterval(this._tickInterval);
       try { if (ytPlayer) ytPlayer.stopVideo(); } catch {}
       document.getElementById('ms-pause').disabled = true;
       document.getElementById('ms-stop').disabled = true;
       document.getElementById('ms-title').textContent = 'No track playing';
       document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
       document.getElementById('ms-frame-container').innerHTML = '';
-      const q = document.getElementById('ms-queue');
-      if (q) q.style.display = 'none';
-      bar.remove();
+      const qq = document.getElementById('ms-queue');
+      if (qq) qq.style.display = 'none';
+      const bar = document.getElementById('music-bar');
+      if (bar) bar.remove();
+    };
+    document.getElementById('mb-prev').onclick = () => {
+      const q2 = (this._queue && this._queue.length > 0) ? this._queue : [];
+      const qi2 = this._queueIdx >= 0 ? this._queueIdx : 0;
+      if (qi2 > 0) this.playFromQueue(qi2 - 1);
+    };
+    document.getElementById('mb-next').onclick = () => {
+      const q2 = (this._queue && this._queue.length > 0) ? this._queue : [];
+      const qi2 = this._queueIdx >= 0 ? this._queueIdx : 0;
+      if (qi2 < q2.length - 1) this.playFromQueue(qi2 + 1);
     };
     const label = type === 'playlist' ? '📋 Spotify Playlist' : type === 'album' ? '💿 Spotify Album' : '🎵 Spotify Track';
     this.showMusicBar(label, '');
@@ -825,6 +838,7 @@ const MusicPage = {
       const onReady = () => {
         document.getElementById('ms-title').textContent = '▶ Playing';
         document.getElementById('ms-status').textContent = 'Connected';
+        MusicPage._startTimeTick();
       };
       const createPlayer = () => {
         if (document.getElementById('yt-player') && window.YT && window.YT.Player && !ytPlayer) {
@@ -868,6 +882,25 @@ const MusicPage = {
         } else this.showMusicBar('Playing', 'YouTube');
       })
       .catch(() => this.showMusicBar('Playing', 'YouTube'));
+  },
+
+  _startTimeTick() {
+    if (this._tickInterval) clearInterval(this._tickInterval);
+    this._tickInterval = setInterval(() => {
+      if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+      try {
+        const cur = ytPlayer.getCurrentTime();
+        const dur = ytPlayer.getDuration();
+        if (dur > 0) {
+          const fmt = s => { const m = Math.floor(s / 60); const sec = Math.floor(s % 60); return m + ':' + String(sec).padStart(2, '0'); };
+          const txt = fmt(cur) + ' / ' + fmt(dur);
+          const el1 = document.getElementById('mb-time');
+          const el2 = document.getElementById('ms-time');
+          if (el1) el1.textContent = txt;
+          if (el2) el2.textContent = txt;
+        }
+      } catch {}
+    }, 1000);
   },
 
   renderQueue(queue, currentIdx) {
@@ -921,10 +954,11 @@ const MusicPage = {
           <button class="btn" id="mb-stop" style="padding:4px 10px;font-size:0.75rem">⏹</button>
         </div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
-        <span style="font-size:0.6rem;color:var(--text-3)">🔊</span>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+        <span id="mb-time" style="font-size:0.6rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:70px">0:00 / 0:00</span>
+        <span style="font-size:0.55rem;color:var(--text-3)">🔊</span>
         <input type="range" id="mb-vol" min="0" max="100" step="5" value="70" style="flex:1;height:4px;accent-color:var(--accent);cursor:pointer">
-        <span id="mb-vol-pct" style="font-size:0.6rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:28px;text-align:right">70%</span>
+        <span id="mb-vol-pct" style="font-size:0.55rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:24px;text-align:right">70%</span>
       </div>`;
     document.getElementById('mb-play').onclick = () => {
       if (ytPlayer) {
