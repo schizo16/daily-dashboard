@@ -677,11 +677,13 @@ const MusicPage = {
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-frame-container').innerHTML = `
-      <iframe src="https://www.youtube.com/embed?listType=playlist&list=${listId}&autoplay=1" style="width:0;height:0;border:none" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    this._queue = FEATURED;
-    this._queueIdx = 0;
-    this.renderQueue(FEATURED, 0);
+      <iframe src="https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1" style="width:100%;height:200px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    this._queue = [];
+    this._queueIdx = -1;
     this.showMusicBar('📋 YouTube Playlist', '');
+    // Hide queue since we can't get playlist contents
+    const q = document.getElementById('ms-queue');
+    if (q) q.style.display = 'none';
   },
 
   playSpotify(id, type) {
