@@ -166,7 +166,7 @@ const WatchlistPage = {
 };
 
 /* ─── AI Journalist ─── */
-const AI_KEY = 'AIzaSyCDUdpLXKQzx_exXm5RIG7l8Gq5RjdjPcU';
+const AI_KEY = CONFIG.GEMINI_KEY;
 
 async function aiWrite(title, content) {
   if (!content) return '';
@@ -534,7 +534,7 @@ const RadioPage = {
 };
 
 /* ─── Music ─── */
-const YT_KEY = 'AIzaSyDZAye3xJHnpB-ZPJUkUVm69x7zUp5hnKA';
+const YT_KEY = CONFIG.YT_KEY;
 const FEATURED = [
   { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8' },
   { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k' },

@@ -1,4 +1,4 @@
-const TMDB_KEY = '64cbee95805bc6f398898e585b312a8c';
+const TMDB_KEY = CONFIG.TMDB_KEY;
 const TMDB_IMG = 'https://image.tmdb.org/t/p/w92';
 const TMDB_IMG_L = 'https://image.tmdb.org/t/p/w342';
 
