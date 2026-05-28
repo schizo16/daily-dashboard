@@ -41,9 +41,7 @@ body::before {
       transparent 2px,
       rgba(255,255,255,0.006) 2px,
       rgba(255,255,255,0.006) 3px
-    ),
-    repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(166,124,82,0.015) 100px, rgba(166,124,82,0.015) 101px, transparent 101px, transparent 200px),
-    repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(166,124,82,0.01) 100px, rgba(166,124,82,0.01) 101px, transparent 101px, transparent 200px);
+    );
   pointer-events: none;
 }
 
@@ -74,11 +72,6 @@ body::after {
 .container {
   max-width: 640px; margin: 0 auto; padding: 0 24px; width: 100%;
   position: relative;
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  min-height: 100vh;
-  background: var(--bg);
-  box-shadow: 0 0 60px rgba(0,0,0,0.3);
 }
 .container::before {
   content: '✦';
