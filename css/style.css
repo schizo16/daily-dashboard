@@ -356,7 +356,22 @@ body::before {
   .nav a:not(.nav-logo) { font-size: 0.55rem; padding: 4px 5px; white-space: nowrap; }
   .nav-logo { font-size: 0.75rem; margin-right: 2px; flex-shrink: 0; }
   .theme-btn-sm, #locale-btn { font-size: 0.65rem; padding: 2px 5px; }
-  .nav-hamburger { display: none; }
+.nav-hamburger { display: none; }
+.nav-mobile-select { display: none; }
+
+@media (max-width: 640px) {
+  .nav a:not(.nav-logo) { display: none !important; }
+  .theme-btn-sm { display: none !important; }
+  .nav-logo { font-size: 0.85rem; margin-right: 4px; }
+  .nav-mobile-select {
+    display: block; flex: 1; padding: 6px 8px; font-size: 0.8rem;
+    border: 1px solid var(--border); border-radius: 6px;
+    background: var(--surface); color: var(--text);
+    font-family: inherit; cursor: pointer; outline: none;
+    max-width: 160px;
+  }
+  .nav-inner { gap: 4px; }
+}
   .nav-dropdown { display: none !important; }
 }
 
