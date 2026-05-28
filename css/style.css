@@ -19,6 +19,57 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Stars ─── */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.stars {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  display: none;
+}
+[data-time="night"] .stars {
+  display: block;
+  background-image:
+    radial-gradient(1px 1px at 10% 10%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 25% 30%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 70% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 60% 85%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 42%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 5%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 92%, rgba(255,255,255,0.3) 0%, transparent 100%);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+/* ─── Weather effects ─── */
+@keyframes rainDrops {
+  0% { transform: translateY(-10px); opacity: 0; }
+  20% { opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+.weather-rain {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  display: none;
+}
+[data-weather="rain"] .weather-rain,
+[data-weather="drizzle"] .weather-rain,
+[data-weather="thunderstorm"] .weather-rain {
+  display: block;
+  background-image:
+    linear-gradient(transparent, transparent 8px, rgba(174,194,224,0.15) 8px, rgba(174,194,224,0.15) 9px);
+  background-size: 1px 12px;
+  animation: rainDrops 0.8s linear infinite;
+}
+
 /* ─── Time-based background accent ─── */
 [data-time="morning"] body::before {
   background:

@@ -1382,6 +1382,14 @@ async function loadWeather() {
     const icon = ['☀️','🌤','⛅','🌥','☁️','🌧','🌦','⛈','🌨','🌫'][code <= 1 ? 0 : code <= 2 ? 1 : code <= 3 ? 2 : code <= 4 ? 3 : code <= 10 ? 5 : code <= 20 ? 6 : code <= 30 ? 7 : code <= 40 ? 8 : 9];
     const unit = '°C';
     el.innerHTML = `${icon} <span class="weather-temp">${temp}${unit}</span>`;
+    // Set weather type for effects
+    let wtype = 'clear';
+    if (code >= 51 && code <= 67) wtype = 'drizzle';
+    else if (code >= 71 && code <= 77) wtype = 'snow';
+    else if (code >= 80 && code <= 82) wtype = 'rain';
+    else if (code >= 95 && code <= 99) wtype = 'thunderstorm';
+    else if (code >= 41 && code <= 49) wtype = 'fog';
+    document.documentElement.setAttribute('data-weather', wtype);
   } catch {
     el.innerHTML = '';
   }
