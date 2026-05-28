@@ -656,11 +656,19 @@ const MusicPage = {
 
   playYTPlaylist(listId) {
     document.getElementById('ms-title').textContent = '▶ Playlist';
-    document.getElementById('ms-status').textContent = 'Loading playlist...';
+    document.getElementById('ms-status').textContent = 'Playing · YouTube';
     document.getElementById('ms-pause').disabled = true;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-prev').disabled = true;
     document.getElementById('ms-next').disabled = true;
+    document.getElementById('ms-stop').onclick = () => {
+      document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
+      document.getElementById('ms-frame-container').innerHTML = '';
+      document.getElementById('ms-title').textContent = 'No track playing';
+      document.getElementById('ms-stop').disabled = true;
+      const bar = document.getElementById('music-bar');
+      if (bar) bar.remove();
+    };
     const container = document.getElementById('ms-frame-container');
     container.style.cssText = 'margin-bottom:12px';
     container.innerHTML = `
@@ -879,6 +887,8 @@ const MusicPage = {
       document.getElementById('ms-frame-container').innerHTML = '';
       const q3 = document.getElementById('ms-queue');
       if (q3) q3.style.display = 'none';
+      const q4 = document.getElementById('ms-queue');
+      if (q4) q4.style.display = 'none';
       bar.remove();
     };
     document.getElementById('mb-vol').oninput = (e) => {
