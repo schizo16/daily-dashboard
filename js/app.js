@@ -34,32 +34,10 @@ const GAME_GENRES = [
 ];
 
 const GamesPage = {
-  current: 'wordle',
   load(container) {
-    container.innerHTML = `
-      <div class="card"><div class="section-h"><h2>${_('games')}</h2></div>
-        <div class="games-picker">
-          <button class="active" data-game="wordle">${_('wordle')}</button>
-          <button data-game="quiz">${_('movieQuiz')}</button>
-        </div>
-        <div id="games-container"></div>
-      </div>`;
-    const gc = document.getElementById('games-container');
-    const cur = Storage.get('currentGame', 'wordle');
-    this.switch(cur, gc);
-    container.querySelectorAll('[data-game]').forEach(b => {
-      b.onclick = () => {
-        container.querySelectorAll('[data-game]').forEach(x => x.classList.toggle('active', x === b));
-        Storage.set('currentGame', b.dataset.game);
-        this.switch(b.dataset.game, gc);
-      };
-    });
+    container.innerHTML = '';
     this.loadGames(container);
     this.loadNews(container);
-  },
-  switch(g, c) {
-    if (g === 'wordle') Wordle.init(c);
-    else if (g === 'quiz') Quiz.init(c);
   },
   async loadGames(c) {
     try {
