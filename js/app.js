@@ -64,6 +64,9 @@ const GamesPage = {
   async loadPage() {
     const grid = document.getElementById('gp-grid');
     if (!grid) return;
+    // Remove old pagination nav
+    const oldNav = grid.parentElement.querySelector('.gp-nav');
+    if (oldNav) oldNav.remove();
     grid.innerHTML = '<div class="loading" style="padding:16px 0">Loading...</div>';
     const genre = GAME_GENRES.find(g => g.id === this._genre);
     if (!genre) return;
@@ -89,6 +92,7 @@ const GamesPage = {
         grid.appendChild(e);
       });
       const nav = document.createElement('div');
+      nav.className = 'gp-nav';
       nav.style.cssText = 'display:flex;gap:4px;margin-top:12px;justify-content:center;align-items:center;flex-wrap:wrap';
       const total = Math.min(50, this._page + 4);
       const start = Math.max(1, this._page - 2);
