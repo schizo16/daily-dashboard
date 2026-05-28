@@ -26,12 +26,24 @@
       <div class="hero">
         <div class="hero-rule">✦</div>
         <h1>Atlas</h1>
-        <p class="hero-tagline">The world on your shoulders.</p>
-        <p class="hero-desc">AI trends, movie picks, game deals, and daily news — curated and translated. Built with vanilla JS, no frameworks, no slop.</p>
-        <div class="hero-links">
-          <a href="#radar">Explore →</a>
-          <a href="https://github.com/schizo16/daily-dashboard" target="_blank">GitHub ↗</a>
+        <p class="hero-tagline" id="greeting">Carrying the world.</p>
+
+        <div class="hero-clock" id="hero-clock">00:00</div>
+        <div class="hero-date" id="hero-date">Monday, 1 January 2026</div>
+
+        <div class="hero-search">
+          <form id="search-form" action="https://www.google.com/search" method="GET" target="_blank">
+            <input type="text" name="q" class="search-input" id="search-input" placeholder="Search the web..." autocomplete="off">
+          </form>
         </div>
+      </div>
+
+      <div class="hero-notes">
+        <div class="notes-header">
+          <span class="quick-label">Quick Notes</span>
+          <button class="notes-clear" id="notes-clear">Clear</button>
+        </div>
+        <textarea class="notes-area" id="notes-area" placeholder="Write something..." rows="3"></textarea>
       </div>
 
       <div class="quick-label">Explore</div>
@@ -39,12 +51,12 @@
         <a class="tile" href="#radar">
           <div class="tile-icon">🔴</div>
           <div class="tile-title">Radar</div>
-          <div class="tile-desc">GitHub trending and HackerNews stories.</div>
+          <div class="tile-desc">GitHub trending and HackerNews.</div>
         </a>
         <a class="tile" href="#movies">
           <div class="tile-icon">🎬</div>
           <div class="tile-title">Movies</div>
-          <div class="tile-desc">Trending films by week, month, or all time.</div>
+          <div class="tile-desc">Trending films by week, month, all time.</div>
         </a>
         <a class="tile" href="#games">
           <div class="tile-icon">🎮</div>

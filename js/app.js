@@ -338,7 +338,52 @@ document.getElementById('theme-btn').onclick = () => {
   document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
 };
 
+/* ─── Home widgets ─── */
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const clock = document.getElementById('hero-clock');
+  if (clock) clock.textContent = h + ':' + m;
+
+  const dateEl = document.getElementById('hero-date');
+  if (dateEl) {
+    const opts = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    dateEl.textContent = now.toLocaleDateString(currentLocale === 'vi' ? 'vi-VN' : 'en-US', opts);
+  }
+
+  const greeting = document.getElementById('greeting');
+  if (greeting) {
+    const hour = now.getHours();
+    let msg;
+    if (currentLocale === 'vi') {
+      if (hour < 12) msg = 'Chào buổi sáng. ☀️';
+      else if (hour < 18) msg = 'Chào buổi chiều. 🌤';
+      else msg = 'Chào buổi tối. 🌙';
+    } else {
+      if (hour < 12) msg = 'Good morning. ☀️';
+      else if (hour < 18) msg = 'Good afternoon. 🌤';
+      else msg = 'Good evening. 🌙';
+    }
+    greeting.textContent = msg;
+  }
+}
+
+function initNotes() {
+  const area = document.getElementById('notes-area');
+  if (!area) return;
+  area.value = Storage.get('notes', '');
+  area.oninput = () => Storage.set('notes', area.value);
+  document.getElementById('notes-clear').onclick = () => {
+    area.value = '';
+    Storage.remove('notes');
+  };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   applyI18n();
   route();
+  updateClock();
+  setInterval(updateClock, 10000);
+  initNotes();
 });
