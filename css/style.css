@@ -367,13 +367,15 @@ button:focus-visible, a:focus-visible {
 .search-input:focus { border-color: var(--accent); }
 .search-input::placeholder { color: var(--text-3); }
 
-.search-shortcuts { display: flex; gap: 14px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.search-shortcuts { display: flex; gap: 16px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
 .search-shortcuts a {
-  font-size: 0.78rem; color: var(--text-3); text-decoration: none;
-  border-bottom: 1px solid transparent; padding-bottom: 1px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-3); text-decoration: none;
+  border-bottom: 1px solid var(--border); padding-bottom: 2px;
   transition: all 0.15s;
 }
-.search-shortcuts a:hover { color: var(--text); border-bottom-color: var(--accent); }
+.search-shortcuts a:hover { color: var(--accent); border-color: var(--accent); }
 
 /* Quick Notes */
 .hero-notes { margin: 28px 0; animation: fadeInUp 0.5s ease-out both; animation-delay: 0.25s; }
