@@ -18,7 +18,7 @@
   <nav class="nav">
     <div class="nav-inner">
       <a href="#home" class="nav-logo">Atlas</a>
-      <a href="#home" data-page="home" data-i18n="navHome">Home</a>
+      <a href="#home" data-page="home" data-i18n="navHome" class="nav-show-mobile">Home</a>
       <a href="#radar" data-page="radar" data-i18n="navRadar">Radar</a>
       <a href="#movies" data-page="movies" data-i18n="navMovies">Movies</a>
       <a href="#games" data-page="games" data-i18n="navGames">Games</a>
@@ -28,7 +28,9 @@
       <a href="#tools" data-page="tools">Tools</a>
       <button class="theme-btn-sm" id="theme-btn" aria-label="Theme">☀️</button>
       <button class="theme-btn-sm" id="locale-btn">VI</button>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">☰</button>
     </div>
+    <div class="nav-dropdown" id="nav-dropdown"></div>
   </nav>
 
   <main class="container">
