@@ -87,25 +87,19 @@ const GamesPage = {
           <div class="movie-sub">${pct ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${orig} <span style="font-weight:600">${price}</span> · ⭐ ${rating} ${ratingTxt}</div></div>`;
         grid.appendChild(e);
       });
-      // Simple pagination: show prev/next
       const nav = document.createElement('div');
-      nav.style.cssText = 'display:flex;gap:8px;margin-top:12px;justify-content:center;align-items:center';
-      if (this._page > 1) {
-        const prev = document.createElement('button');
-        prev.textContent = '‹ Trang ' + (this._page - 1);
-        prev.className = 'btn'; prev.style.cssText = 'padding:4px 12px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem';
-        prev.onclick = () => { this._page--; this.loadPage(); };
-        nav.appendChild(prev);
+      nav.style.cssText = 'display:flex;gap:4px;margin-top:12px;justify-content:center;align-items:center;flex-wrap:wrap';
+      const total = Math.min(50, this._page + 4);
+      const start = Math.max(1, this._page - 2);
+      for (let p = start; p <= Math.min(total, start + 4); p++) {
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.style.cssText = `min-width:28px;height:28px;border:1px solid ${p === this._page ? 'var(--accent)' : 'var(--border)'};border-radius:4px;background:${p === this._page ? 'var(--accent)' : 'transparent'};color:${p === this._page ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;transition:all 0.1s`;
+        btn.onmouseover = () => { if (p !== this._page) btn.style.borderColor = 'var(--text-3)'; };
+        btn.onmouseout = () => { if (p !== this._page) btn.style.borderColor = 'var(--border)'; };
+        btn.onclick = () => { this._page = p; this.loadPage(); };
+        nav.appendChild(btn);
       }
-      const current = document.createElement('span');
-      current.textContent = this._page;
-      current.style.cssText = 'font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text)';
-      nav.appendChild(current);
-      const next = document.createElement('button');
-      next.textContent = 'Trang ' + (this._page + 1) + ' ›';
-      next.className = 'btn'; next.style.cssText = 'padding:4px 12px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem';
-      next.onclick = () => { this._page++; this.loadPage(); };
-      nav.appendChild(next);
       grid.parentElement.appendChild(nav);
     } catch (e) {
       grid.innerHTML = '<div class="empty" style="padding:16px 0">Failed to load. <button class="btn" onclick="GamesPage.loadPage()">Retry</button></div>';
