@@ -1,0 +1,5 @@
+const CONFIG = {
+  GEMINI_KEY: 'AIzaSyCDUdpLXKQzx_exXm5RIG7l8Gq5RjdjPcU',
+  YT_KEY: 'AIzaSyDZAye3xJHnpB-ZPJUkUVm69x7zUp5hnKA',
+  TMDB_KEY: '64cbee95805bc6f398898e585b312a8c',
+};
