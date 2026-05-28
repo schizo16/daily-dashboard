@@ -695,19 +695,19 @@ const MusicPage = {
       .then(r => r.ok ? r.json() : null)
       .then(d => {
         if (d?.items) {
-          this._queue = d.items.map((i, idx) => ({ t: i.snippet.title, vid: i.snippet.resourceId.videoId, idx }));
+          this._queue = d.items.map((i, idx) => ({ t: i.snippet.title, vid: i.snippet.resourceId.videoId }));
           this._queueIdx = 0;
           this.renderQueue(this._queue, 0);
           document.getElementById('ms-status').textContent = `Playing · ${this._queue.length} songs`;
-          document.getElementById('ms-prev').disabled = true;
-          document.getElementById('ms-next').disabled = this._queue.length <= 1;
-          // Set up prev/next
-          document.getElementById('ms-prev').onclick = () => { if (this._queueIdx > 0) this.playFromQueue(this._queueIdx - 1); };
-          document.getElementById('ms-next').onclick = () => { if (this._queueIdx < this._queue.length - 1) this.playFromQueue(this._queueIdx + 1); };
-          const mb = document.getElementById('music-bar');
-          if (mb) {
-            document.getElementById('mb-prev').onclick = () => { if (this._queueIdx > 0) this.playFromQueue(this._queueIdx - 1); };
-            document.getElementById('mb-next').onclick = () => { if (this._queueIdx < this._queue.length - 1) this.playFromQueue(this._queueIdx + 1); };
+          this.updateQueueAndButtons();
+          // Play first song
+          const first = this._queue[0];
+          if (first && first.vid) {
+            if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+              ytPlayer.loadVideoById(first.vid);
+            } else {
+              // Player will be created by the async path
+            }
           }
         }
       })
@@ -789,13 +789,20 @@ const MusicPage = {
   },
 
   playYT(id) {
-    if (ytPlayer) { try { ytPlayer.destroy(); } catch {} ytPlayer = null; }
     this._currentId = id;
     this._currentIdx = FEATURED.findIndex(f => f.vid === id);
+
+    // If player exists, just load new video (no destroy/recreate)
+    if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+      ytPlayer.loadVideoById(id);
+      this.updateQueueAndButtons();
+      this.fetchTitle(id);
+      return;
+    }
     if (this._currentIdx >= 0) {
-      this._queue = FEATURED;
-      this._queueIdx = this._currentIdx;
-      this.renderQueue(FEATURED, this._currentIdx);
+    this._queue = FEATURED;
+    this._queueIdx = this._currentIdx;
+    this.renderQueue(FEATURED, this._currentIdx);
     } else {
       this._queue = [];
       this._queueIdx = -1;
@@ -803,73 +810,65 @@ const MusicPage = {
       if (qq) qq.style.display = 'none';
     }
 
-    document.getElementById('ms-title').textContent = '▶ Loading...';
-    document.getElementById('ms-status').textContent = 'Starting player...';
+    if (!ytPlayer) {
+      // Create player container
+      const container = document.getElementById('ms-frame-container');
+      container.style.cssText = 'width:0;height:0;overflow:hidden';
+      container.innerHTML = '<div id="yt-player"></div>';
+
+      if (!window.YT) {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      }
+
+      const onReady = () => {
+        document.getElementById('ms-title').textContent = '▶ Playing';
+        document.getElementById('ms-status').textContent = 'Connected';
+      };
+      const createPlayer = () => {
+        if (document.getElementById('yt-player') && window.YT && window.YT.Player && !ytPlayer) {
+          ytPlayer = new YT.Player('yt-player', {
+            height: '0', width: '0',
+            videoId: id,
+            playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
+            events: { onReady }
+          });
+        }
+      };
+      if (window.YT && window.YT.Player) createPlayer();
+      else { window.onYouTubeIframeAPIReady = createPlayer; setTimeout(createPlayer, 1500); }
+    }
+  },
+
+  updateQueueAndButtons() {
+    const q = (this._queue && this._queue.length > 0) ? this._queue : (this._currentIdx >= 0 ? FEATURED : []);
+    const qi = this._queueIdx >= 0 ? this._queueIdx : this._currentIdx;
+    if (qi < 0) return;
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-pause').textContent = '⏸ Pause';
-
-    // Create player container
-    const container = document.getElementById('ms-frame-container');
-    container.style.cssText = 'width:0;height:0;overflow:hidden';
-    container.innerHTML = '<div id="yt-player"></div>';
-
-    // Load YouTube IFrame API if needed
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.head.appendChild(tag);
-    }
-
+    const prev = document.getElementById('ms-prev');
+    const next = document.getElementById('ms-next');
+    if (prev) { prev.disabled = qi <= 0; prev.onclick = () => { if (qi > 0) this.playFromQueue(qi - 1); }; }
+    if (next) { next.disabled = qi < 0 || qi >= q.length - 1; next.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); }; }
+    if (q.length > 0) this.renderQueue(q, qi);
+  },
     const q = (this._queue && this._queue.length > 0) ? this._queue : (this._currentIdx >= 0 ? FEATURED : []);
     const qi = this._queueIdx >= 0 ? this._queueIdx : this._currentIdx;
-    const prevBtn = document.getElementById('ms-prev');
-    const nextBtn = document.getElementById('ms-next');
-    prevBtn.disabled = qi <= 0;
-    nextBtn.disabled = qi < 0 || qi >= q.length - 1;
-    prevBtn.onclick = () => { if (qi > 0) this.playFromQueue(qi - 1); };
-    nextBtn.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); };
-    document.getElementById('ms-pause').onclick = () => {
-      if (ytPlayer) {
-        if (ytPlayer.getPlayerState() === 1) { ytPlayer.pauseVideo(); document.getElementById('ms-pause').textContent = '▶ Resume'; }
-        else { ytPlayer.playVideo(); document.getElementById('ms-pause').textContent = '⏸ Pause'; }
-      }
-    };
-    document.getElementById('ms-stop').onclick = () => {
-      try { if (ytPlayer) ytPlayer.stopVideo(); } catch {}
-      document.getElementById('ms-pause').disabled = true;
-      document.getElementById('ms-stop').disabled = true;
-      document.getElementById('ms-title').textContent = 'No track playing';
-      document.getElementById('ms-frame-container').style.cssText = 'width:0;height:0;overflow:hidden';
-      document.getElementById('ms-frame-container').innerHTML = '';
-      const qq = document.getElementById('ms-queue');
-      if (qq) qq.style.display = 'none';
-      const bar = document.getElementById('music-bar');
-      if (bar) bar.remove();
-    };
-    const onReady = () => {
-      document.getElementById('ms-title').textContent = '▶ Playing';
-      document.getElementById('ms-status').textContent = 'Connected';
-    };
-    const createPlayer = () => {
-      if (document.getElementById('yt-player') && window.YT && window.YT.Player && !ytPlayer) {
-        ytPlayer = new YT.Player('yt-player', {
-          height: '0', width: '0',
-          videoId: id,
-          playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, modestbranding: 1 },
-          events: { onReady }
-        });
-      }
-    };
-    if (window.YT && window.YT.Player) {
-      createPlayer();
-    } else {
-      window.onYouTubeIframeAPIReady = createPlayer;
-    }
-    // Retry in case API loads but callback already fired
-    setTimeout(createPlayer, 1500);
+    document.getElementById('ms-pause').disabled = false;
+    document.getElementById('ms-stop').disabled = false;
+    document.getElementById('ms-pause').textContent = '⏸ Pause';
+    const prev = document.getElementById('ms-prev');
+    const next = document.getElementById('ms-next');
+    if (prev) { prev.disabled = qi <= 0; prev.onclick = () => { if (qi > 0) this.playFromQueue(qi - 1); }; }
+    if (next) { next.disabled = qi < 0 || qi >= q.length - 1; next.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); }; }
+    if (q.length > 0) this.renderQueue(q, qi);
+  },
 
-    // Fetch title
+  fetchTitle(id) {
+    document.getElementById('ms-title').textContent = '▶ Loading...';
+    document.getElementById('ms-status').textContent = 'Starting...';
     fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`)
       .then(r => r.ok ? r.json() : null)
       .then(d => {
