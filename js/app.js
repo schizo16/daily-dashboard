@@ -1385,10 +1385,13 @@ async function loadWeather() {
     // Set weather type for effects
     let wtype = 'clear';
     if (code >= 51 && code <= 67) wtype = 'drizzle';
-    else if (code >= 71 && code <= 77) wtype = 'snow';
+    else if (code >= 61 && code <= 65) wtype = 'rain';
     else if (code >= 80 && code <= 82) wtype = 'rain';
+    else if (code >= 71 && code <= 77) wtype = 'snow';
     else if (code >= 95 && code <= 99) wtype = 'thunderstorm';
     else if (code >= 41 && code <= 49) wtype = 'fog';
+    else if (code >= 2 && code <= 4) wtype = 'cloudy';
+    if (cw.windspeed > 20) wtype = 'wind';
     document.documentElement.setAttribute('data-weather', wtype);
   } catch {
     el.innerHTML = '';
