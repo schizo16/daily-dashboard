@@ -387,6 +387,7 @@ const t = Storage.getTheme();
 document.documentElement.setAttribute('data-theme', t);
 document.getElementById('theme-btn').textContent = t === 'dark' ? '☀️' : '🌙';
 document.getElementById('theme-btn').onclick = () => {
+  window._themeManuallySet = true;
   const n = Storage.getTheme() === 'dark' ? 'light' : 'dark';
   Storage.setTheme(n);
   document.documentElement.setAttribute('data-theme', n);
@@ -1420,7 +1421,7 @@ function initSearch() {
   };
 }
 
-/* ─── Dynamic background ─── */
+/* ─── Dynamic background + auto theme ─── */
 let _timeOverride = null;
 function updateTimeBackground() {
   const h = new Date().getHours();
@@ -1431,6 +1432,17 @@ function updateTimeBackground() {
   else if (h >= 18 && h < 22) period = 'evening';
   else period = 'night';
   document.documentElement.setAttribute('data-time', period);
+  // Auto theme: light for day, dark for evening/night
+  // Auto theme: light for day, dark for night (only if not manually toggled)
+  if (!_timeOverride && !window._themeManuallySet) {
+    const autoTheme = (period === 'morning' || period === 'afternoon') ? 'light' : 'dark';
+    if (Storage.getTheme() !== autoTheme) {
+      Storage.setTheme(autoTheme);
+      document.documentElement.setAttribute('data-theme', autoTheme);
+      const btn = document.getElementById('theme-btn');
+      if (btn) btn.textContent = autoTheme === 'dark' ? '☀️' : '🌙';
+    }
+  }
 }
 // Debug: click 🌙/☀️ on footer to cycle time
 document.addEventListener('DOMContentLoaded', () => {
