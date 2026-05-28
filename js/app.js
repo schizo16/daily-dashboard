@@ -1,45 +1,35 @@
 const Games = {
-  load(container) {
-    container.innerHTML = `
-      <div class="section-header"><h2>Games</h2></div>
-      <div class="game-selector">
-        <button class="game-tab active" data-game="wordle">Wordle</button>
-        <button class="game-tab" data-game="quiz">Movie Quiz</button>
-      </div>
-      <div id="game-container"></div>
-    `;
-    const gc = document.getElementById('game-container');
-    const current = Storage.get('currentGame', 'wordle');
-    this.switch(current, gc);
-    document.querySelectorAll('[data-game]').forEach(b => {
-      b.addEventListener('click', () => {
-        document.querySelectorAll('[data-game]').forEach(x => x.classList.toggle('active', x === b));
+  load(c) {
+    c.innerHTML = `<div class="game-bar"><button class="game-bt active" data-game="wordle">Wordle</button><button class="game-bt" data-game="quiz">Movie Quiz</button></div><div id="gc"></div>`;
+    const gc = document.getElementById('gc');
+    const cur = Storage.get('currentGame', 'wordle');
+    this.sw(cur, gc);
+    c.querySelectorAll('[data-game]').forEach(b => {
+      b.onclick = () => {
+        c.querySelectorAll('[data-game]').forEach(x => x.classList.toggle('active', x === b));
         Storage.set('currentGame', b.dataset.game);
-        this.switch(b.dataset.game, gc);
-      });
+        this.sw(b.dataset.game, gc);
+      };
     });
   },
-  switch(game, c) {
-    if (game === 'wordle') Wordle.init(c);
-    else if (game === 'quiz') Quiz.init(c);
+  sw(g, c) {
+    if (g === 'wordle') Wordle.init(c);
+    else if (g === 'quiz') Quiz.init(c);
   }
 };
 
 const App = {
   tab: 'radar',
   init() {
-    const theme = Storage.getTheme();
-    document.documentElement.setAttribute('data-theme', theme);
-    document.getElementById('theme-toggle').textContent = theme === 'dark' ? '☀️' : '🌙';
+    const t = Storage.getTheme();
+    document.documentElement.setAttribute('data-theme', t);
+    document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
 
-    const pin = Storage.getPinnedTab();
-    if (pin && document.querySelector(`[data-tab="${pin}"]`)) this.switch(pin);
+    const p = Storage.getPinnedTab();
+    if (p && document.querySelector(`[data-tab="${p}"]`)) this.switch(p);
 
-    document.querySelectorAll('.tab').forEach(b => {
-      b.addEventListener('click', () => this.switch(b.dataset.tab));
-    });
-    document.getElementById('theme-toggle').addEventListener('click', () => this.toggle());
-
+    document.querySelectorAll('.tab').forEach(b => { b.onclick = () => this.switch(b.dataset.tab); });
+    document.getElementById('theme-toggle').onclick = () => this.toggle();
     this.load();
   },
 
@@ -49,9 +39,7 @@ const App = {
       b.classList.toggle('active', b.dataset.tab === t);
       b.setAttribute('aria-selected', b.dataset.tab === t);
     });
-    document.querySelectorAll('.tab-content').forEach(e => {
-      e.classList.toggle('active', e.id === 'tab-' + t);
-    });
+    document.querySelectorAll('.tab-content').forEach(e => e.classList.toggle('active', e.id === 'tab-' + t));
     this.load();
   },
 
@@ -63,9 +51,9 @@ const App = {
   },
 
   toggle() {
-    const next = Storage.getTheme() === 'dark' ? 'light' : 'dark';
-    Storage.setTheme(next);
-    document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    const n = Storage.getTheme() === 'dark' ? 'light' : 'dark';
+    Storage.setTheme(n);
+    document.getElementById('theme-toggle').textContent = n === 'dark' ? '☀️' : '🌙';
   }
 };
 

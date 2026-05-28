@@ -1,84 +1,69 @@
 const AiRadar = {
-  async load(container) {
-    container.innerHTML = '<div class="loading">Loading...</div>';
+  async load(c) {
+    c.innerHTML = '<div class="loading">Loading...</div>';
     try {
-      const [repos, stories] = await Promise.all([
-        this.fetchGithubTrending(),
-        this.fetchHackerNews()
-      ]);
-      container.innerHTML = '';
-      container.appendChild(this.box('Trending Today', 'github.com/trending', this.repos(repos)));
-      container.appendChild(this.box('HackerNews', 'news.ycombinator.com', this.stories(stories)));
-    } catch (err) {
-      container.innerHTML = `<div class="loading error">Failed to load. <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">Retry</button></div>`;
+      const [repos, stories] = await Promise.all([this.repos(), this.hn()]);
+      c.innerHTML = '';
+      c.appendChild(this.box('Trending Today', 'github.com/trending', this.rl(repos)));
+      c.appendChild(this.box('HackerNews', 'news.ycombinator.com', this.hl(stories)));
+    } catch (e) {
+      c.innerHTML = `<div class="loading error">Failed to load. <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">Retry</button></div>`;
     }
   },
 
-  box(title, link, content) {
+  box(t, l, html) {
     const s = document.createElement('div');
     s.className = 'section';
-    s.innerHTML = `<div class="section-header"><h2>${title}</h2><a class="section-link" href="https://${link}" target="_blank">${link} ↗</a></div>`;
-    s.appendChild(content);
+    s.innerHTML = `<div class="section-h"><h2>${t}</h2><a href="https://${l}" target="_blank">${l} ↗</a></div>`;
+    s.appendChild(html);
     return s;
   },
 
-  async fetchGithubTrending() {
-    const d = new Date();
-    d.setDate(d.getDate() - 7);
-    const ds = d.toISOString().split('T')[0];
-    const r = await fetch(`https://api.github.com/search/repositories?q=created:>${ds}&sort=stars&order=desc&per_page=8`, {
+  async repos() {
+    const d = new Date(); d.setDate(d.getDate() - 7);
+    const r = await fetch(`https://api.github.com/search/repositories?q=created:>${d.toISOString().split('T')[0]}&sort=stars&order=desc&per_page=8`, {
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     });
     if (!r.ok) throw new Error('GitHub API error');
-    const data = await r.json();
-    return (data.items || []).map(x => ({
-      name: x.full_name, url: x.html_url,
-      desc: x.description || '',
-      stars: x.stargazers_count, forks: x.forks_count, lang: x.language
+    return (await r.json()).items.map(x => ({
+      n: x.full_name, u: x.html_url, d: x.description || '',
+      s: x.stargazers_count, f: x.forks_count, l: x.language
     }));
   },
 
-  async fetchHackerNews() {
+  async hn() {
     const r = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
     const ids = (await r.json()).slice(0, 15);
-    const items = await Promise.all(
-      ids.slice(0, 6).map(id =>
-        fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(r => r.json())
-      )
-    );
+    const items = await Promise.all(ids.slice(0, 6).map(id =>
+      fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`).then(x => x.json())
+    ));
     return items.filter(i => i && i.title).slice(0, 5).map(i => ({
-      title: i.title, url: i.url || `https://news.ycombinator.com/item?id=${i.id}`,
-      points: i.score || 0, by: i.by || '?', comments: i.descendants || 0
+      t: i.title, u: i.url || `https://news.ycombinator.com/item?id=${i.id}`,
+      p: i.score || 0, c: i.descendants || 0
     }));
   },
 
-  repos(list) {
+  rl(list) {
     const d = document.createElement('div');
     list.forEach(r => {
-      const e = document.createElement('div');
-      e.className = 'entry';
-      e.innerHTML = `<div class="entry-body">
-        <div class="entry-title"><a href="${this.ea(r.url)}" target="_blank">${this.eh(r.name)}</a></div>
-        ${r.desc ? `<div class="entry-desc">${this.eh(r.desc)}</div>` : ''}
-        <div class="entry-meta">
-          ${r.lang ? `<span>${this.eh(r.lang)}</span>` : ''}
-          <span>${this.fmt(r.stars)} stars</span>
-          <span>${this.fmt(r.forks)} forks</span>
-        </div>
+      const e = document.createElement('div'); e.className = 'entry';
+      e.innerHTML = `<span class="entry-dot"></span><div class="entry-body">
+        <div class="entry-title"><a href="${this.ea(r.u)}" target="_blank">${this.eh(r.n)}</a></div>
+        ${r.d ? `<div class="entry-desc">${this.eh(r.d)}</div>` : ''}
+        <div class="entry-meta">${r.l ? `<span>${this.eh(r.l)}</span>` : ''}<span>${this.fmt(r.s)} stars</span><span>${this.fmt(r.f)} forks</span></div>
       </div>`;
       d.appendChild(e);
     });
     return d;
   },
 
-  stories(list) {
+  hl(list) {
     const d = document.createElement('div');
     list.forEach(s => {
-      const e = document.createElement('div');
-      e.className = 'entry';
-      e.innerHTML = `<div class="entry-body">
-        <div class="entry-title"><a href="${this.ea(s.url)}" target="_blank">${this.eh(s.title)}</a></div>
-        <div class="entry-meta"><span>${s.points} points</span><span>${s.comments} comments</span></div>
+      const e = document.createElement('div'); e.className = 'entry';
+      e.innerHTML = `<span class="entry-dot"></span><div class="entry-body">
+        <div class="entry-title"><a href="${this.ea(s.u)}" target="_blank">${this.eh(s.t)}</a></div>
+        <div class="entry-meta"><span>${s.p} points</span><span>${s.c} comments</span></div>
       </div>`;
       d.appendChild(e);
     });

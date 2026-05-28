@@ -1,4 +1,4 @@
-const QUIZ_DATA = [
+const QDATA = [
   { q: 'Which movie features a character named "Neo"?', a: 'The Matrix', o: ['The Matrix', 'Inception', 'Avatar', 'Tron'] },
   { q: 'Who directed "Pulp Fiction"?', a: 'Quentin Tarantino', o: ['Quentin Tarantino', 'Steven Spielberg', 'Martin Scorsese', 'David Fincher'] },
   { q: 'What year was "The Shawshank Redemption" released?', a: '1994', o: ['1992', '1994', '1996', '1998'] },
@@ -17,10 +17,10 @@ const QUIZ_DATA = [
 ];
 
 const Quiz = {
-  questions: [], idx: 0, score: 0, answered: false, container: null,
+  questions: [], idx: 0, score: 0, answered: false, c: null,
 
-  init(c) {
-    this.container = c;
+  init(con) {
+    this.c = con;
     const s = Storage.getGameState('quiz');
     if (s && s.date === this.today()) {
       this.questions = s.questions || this.pick(); this.idx = s.idx || 0;
@@ -32,51 +32,48 @@ const Quiz = {
   },
 
   today() { return new Date().toISOString().slice(0, 10); },
-  pick() { return [...QUIZ_DATA].sort(() => Math.random() - 0.5).slice(0, 5); },
+  pick() { return [...QDATA].sort(() => Math.random() - 0.5).slice(0, 5); },
 
   save() {
     Storage.setGameState('quiz', { date: this.today(), questions: this.questions, idx: this.idx, score: this.score, answered: this.answered });
   },
 
   render() {
-    if (!this.container) return;
+    if (!this.c) return;
     if (this.idx >= this.questions.length) { this.done(); return; }
 
     const q = this.questions[this.idx];
-    const shuffled = [...q.o].sort(() => Math.random() - 0.5);
+    const sh = [...q.o].sort(() => Math.random() - 0.5);
 
-    this.container.innerHTML = `
+    this.c.innerHTML = `
       <div class="section">
-        <div class="section-header"><h2>Movie Quiz</h2><span class="section-link">${this.idx + 1} / ${this.questions.length}</span></div>
-        <div class="quiz-progress">Score: ${this.score}</div>
-        <div class="quiz-question">${this.eh(q.q)}</div>
-        ${shuffled.map(o => `<button class="quiz-option" data-v="${this.ea(o)}">${this.eh(o)}</button>`).join('')}
-        <div class="quiz-feedback" id="q-fb"></div>
-      </div>
-    `;
+        <div class="section-h"><h2>Movie Quiz</h2><span class="section-h-link">${this.idx + 1} / ${this.questions.length}</span></div>
+        <div class="quiz-prog">Score: ${this.score}</div>
+        <div class="quiz-q">${this.eh(q.q)}</div>
+        ${sh.map(o => `<button class="quiz-opt" data-v="${this.ea(o)}">${this.eh(o)}</button>`).join('')}
+        <div class="quiz-feedback" id="qfb"></div>
+      </div>`;
 
-    if (this.answered) this.showAnswer(q.a);
+    if (this.answered) this.show(q.a);
 
-    this.container.querySelectorAll('.quiz-option').forEach(b => {
-      b.addEventListener('click', () => this.check(b.dataset.v, q.a));
+    this.c.querySelectorAll('.quiz-opt').forEach(b => {
+      b.onclick = () => this.check(b.dataset.v, q.a);
     });
   },
 
-  check(selected, correct) {
+  check(sel, correct) {
     if (this.answered) return;
     this.answered = true;
-    if (selected === correct) this.score++;
+    if (sel === correct) this.score++;
     this.save();
-    this.showAnswer(correct);
-    const f = document.getElementById('q-fb');
-    if (f) {
-      f.textContent = selected === correct ? 'Correct.' : `Nope — ${correct}`;
-    }
+    this.show(correct);
+    const f = document.getElementById('qfb');
+    if (f) f.textContent = sel === correct ? 'Correct.' : 'Nope — ' + correct;
     setTimeout(() => { this.idx++; this.answered = false; this.save(); this.render(); }, 1400);
   },
 
-  showAnswer(correct) {
-    this.container.querySelectorAll('.quiz-option').forEach(b => {
+  show(correct) {
+    this.c.querySelectorAll('.quiz-opt').forEach(b => {
       b.disabled = true;
       if (b.dataset.v === correct) b.classList.add('correct');
       else b.classList.add('wrong');
@@ -84,20 +81,14 @@ const Quiz = {
   },
 
   done() {
-    this.container.innerHTML = `
+    this.c.innerHTML = `
       <div class="section" style="text-align:center;padding:32px 20px">
-        <div class="section-header" style="justify-content:center"><h2>Movie Quiz</h2></div>
+        <div class="section-h" style="justify-content:center;border:none;margin-bottom:0"><h2>Movie Quiz</h2></div>
         <div style="font-size:2.2rem;font-weight:700;margin:16px 0 4px">${this.score}/${this.questions.length}</div>
-        <div style="color:var(--text-dim);font-size:0.88rem;margin-bottom:20px">
-          ${this.score === this.questions.length ? 'Perfect.' : this.score >= 3 ? 'Nice.' : 'Try again.'}
-        </div>
-        <button class="btn btn-primary" id="q-restart">Play Again</button>
-      </div>
-    `;
-    document.getElementById('q-restart').addEventListener('click', () => {
-      Storage.remove('game_quiz');
-      this.init(this.container);
-    });
+        <div style="color:var(--text-2);font-size:0.88rem;margin-bottom:20px">${this.score === this.questions.length ? 'Perfect.' : this.score >= 3 ? 'Nice.' : 'Try again.'}</div>
+        <button class="btn btn-primary" id="qr">Play Again</button>
+      </div>`;
+    document.getElementById('qr').onclick = () => { Storage.remove('game_quiz'); this.init(this.c); };
   },
 
   eh(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; },

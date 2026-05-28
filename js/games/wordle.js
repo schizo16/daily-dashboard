@@ -2,10 +2,10 @@ const WORDLE_WORDS = ['apple','beach','crane','dance','eagle','flame','grape','h
 const WL_MAX = 6;
 
 const Wordle = {
-  answer: '', guesses: [], current: '', over: false, container: null,
+  answer: '', guesses: [], current: '', over: false, c: null,
 
-  init(c) {
-    this.container = c;
+  init(con) {
+    this.c = con;
     const s = Storage.getGameState('wordle');
     if (s && s.date === this.today()) {
       this.guesses = s.guesses || []; this.current = s.current || '';
@@ -24,38 +24,35 @@ const Wordle = {
   },
 
   render() {
-    if (!this.container) return;
-    this.container.innerHTML = `
+    if (!this.c) return;
+    this.c.innerHTML = `
       <div class="section">
-        <div class="section-header"><h2>Wordle</h2><span class="section-link" style="cursor:pointer" id="wl-reset">New word →</span></div>
-        <div class="wordle-grid" id="wl-grid"></div>
-        <div class="wordle-input-area">
-          <input type="text" id="wl-input" class="wordle-input" maxlength="5" placeholder="guess" autocomplete="off" spellcheck="false">
-          <button class="btn btn-primary" id="wl-submit">Guess</button>
+        <div class="section-h"><h2>Wordle</h2><span class="section-h-link" style="cursor:pointer" id="wl-rst">New word →</span></div>
+        <div class="w-grid" id="wl-g"></div>
+        <div class="w-input-area">
+          <input type="text" id="wl-inp" class="w-inp" maxlength="5" placeholder="guess" autocomplete="off" spellcheck="false">
+          <button class="btn btn-primary" id="wl-sub">Guess</button>
         </div>
-        <div class="wordle-status" id="wl-status"></div>
-      </div>
-    `;
+        <div class="w-status" id="wl-st"></div>
+      </div>`;
     this.grid();
     if (this.over) {
-      document.getElementById('wl-input').disabled = true;
-      document.getElementById('wl-submit').disabled = true;
-      const s = document.getElementById('wl-status');
-      s.textContent = this.guesses.includes(this.answer)
-        ? `Got it! (${this.guesses.length}/6)`
-        : `Word was ${this.answer.toUpperCase()}`;
+      document.getElementById('wl-inp').disabled = true;
+      document.getElementById('wl-sub').disabled = true;
+      const s = document.getElementById('wl-st');
+      s.textContent = this.guesses.includes(this.answer) ? `Got it! (${this.guesses.length}/${WL_MAX})` : `Word was ${this.answer.toUpperCase()}`;
     }
-    document.getElementById('wl-input').addEventListener('keydown', e => { if (e.key === 'Enter') this.guess(); });
-    document.getElementById('wl-submit').addEventListener('click', () => this.guess());
-    document.getElementById('wl-reset').addEventListener('click', () => {
+    document.getElementById('wl-inp').onkeydown = e => { if (e.key === 'Enter') this.guess(); };
+    document.getElementById('wl-sub').onclick = () => this.guess();
+    document.getElementById('wl-rst').onclick = () => {
       Storage.remove('game_wordle');
       this.guesses = []; this.current = ''; this.over = false; this.answer = this.pick();
       this.save(); this.render();
-    });
+    };
   },
 
   grid() {
-    const g = document.getElementById('wl-grid');
+    const g = document.getElementById('wl-g');
     if (!g) return;
     g.innerHTML = '';
     for (let i = 0; i < WL_MAX; i++) {
@@ -77,10 +74,10 @@ const Wordle = {
 
   guess() {
     if (this.over) return;
-    const inp = document.getElementById('wl-input');
+    const inp = document.getElementById('wl-inp');
     if (!inp) return;
     const g = inp.value.toLowerCase().trim();
-    if (g.length !== 5) { document.getElementById('wl-status').textContent = '5 letters needed'; return; }
+    if (g.length !== 5) { document.getElementById('wl-st').textContent = '5 letters needed'; return; }
     this.current = g; this.guesses.push(g);
     if (g === this.answer || this.guesses.length >= WL_MAX) this.over = true;
     this.current = ''; this.save(); this.render();

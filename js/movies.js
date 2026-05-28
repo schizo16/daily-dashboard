@@ -1,89 +1,57 @@
-const TMDB_API_KEY = 'YOUR_TMDB_API_KEY';
-const TMDB_IMG = 'https://image.tmdb.org/t/p/w92';
+const TMDB_KEY = 'YOUR_TMDB_API_KEY';
 
 const Movies = {
-  async load(container) {
-    container.innerHTML = '<div class="loading">Loading...</div>';
+  async load(c) {
+    c.innerHTML = '<div class="loading">Loading...</div>';
     try {
-      container.innerHTML = `<div class="section">
-        <div class="section-header">
-          <h2>Trending Movies</h2>
-          <button id="watchlist-toggle" class="watchlist-toggle">Watchlist</button>
-        </div>
-        <div id="movies-grid"></div>
-        <div id="movies-watchlist" style="display:none"></div>
-      </div>`;
-      const movies = await this.fetch();
-      this.grid(container.querySelector('#movies-grid'), movies);
-      this.wl(container.querySelector('#movies-watchlist'));
-
-      document.getElementById('watchlist-toggle').addEventListener('click', () => {
-        const g = document.getElementById('movies-grid');
-        const w = document.getElementById('movies-watchlist');
-        const b = document.getElementById('watchlist-toggle');
-        const show = w.style.display !== 'none';
-        g.style.display = show ? '' : 'none';
-        w.style.display = show ? 'none' : '';
-        b.textContent = show ? 'Watchlist' : 'Movies';
-      });
-    } catch (err) {
-      container.innerHTML = `<div class="loading error">${err.message}. <button class="btn" onclick="Movies.load(this.parentElement.parentElement)">Retry</button></div>`;
+      c.innerHTML = `<div class="section"><div class="section-h"><h2>Trending Movies</h2><button id="wl-tog" class="wl-toggle">Watchlist</button></div><div id="mg"></div><div id="mw" style="display:none"></div></div>`;
+      const m = await this.fetch();
+      this.grid(document.getElementById('mg'), m);
+      this.wl(document.getElementById('mw'));
+      document.getElementById('wl-tog').onclick = () => {
+        const g = document.getElementById('mg'), w = document.getElementById('mw'), b = document.getElementById('wl-tog');
+        const s = w.style.display !== 'none';
+        g.style.display = s ? '' : 'none';
+        w.style.display = s ? 'none' : '';
+        b.textContent = s ? 'Watchlist' : 'Movies';
+      };
+    } catch (e) {
+      c.innerHTML = `<div class="loading error">${e.message}. <button class="btn" onclick="Movies.load(this.parentElement.parentElement)">Retry</button></div>`;
     }
   },
 
   async fetch() {
-    const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
+    const r = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_KEY}`);
     if (!r.ok) throw new Error('TMDB API error');
-    const d = await r.json();
-    return d.results.slice(0, 10).map(m => ({
-      id: m.id, title: m.title, overview: m.overview,
-      poster: m.poster_path, rating: m.vote_average,
-      year: m.release_date ? m.release_date.slice(0, 4) : ''
+    return (await r.json()).results.slice(0, 10).map(m => ({
+      id: m.id, t: m.title, o: m.overview,
+      p: m.poster_path, r: m.vote_average,
+      y: m.release_date ? m.release_date.slice(0, 4) : ''
     }));
   },
 
   grid(c, movies) {
     c.innerHTML = '';
     movies.forEach(m => {
-      const e = document.createElement('div');
-      e.className = 'movie-entry';
-      e.innerHTML = `
-        <div class="movie-icon">🎬</div>
-        <div class="movie-info">
-          <div class="movie-name">${this.eh(m.title)}</div>
-          <div class="movie-sub">${m.year}${m.overview ? ' · ' + this.eh(m.overview.slice(0, 70)) + '...' : ''}</div>
-        </div>
-        <span class="movie-score">${m.rating ? m.rating.toFixed(1) : ''}</span>
-        <button class="watchlist-btn" data-id="${m.id}" data-title="${this.ea(m.title)}" data-rating="${m.rating || 0}">Save</button>
-      `;
-      e.querySelector('.watchlist-btn').addEventListener('click', (ev) => {
+      const e = document.createElement('div'); e.className = 'movie-e';
+      e.innerHTML = `<div class="movie-ic">🎬</div><div class="movie-body"><div class="movie-name">${this.eh(m.t)}</div><div class="movie-sub">${m.y}${m.o ? ' · ' + this.eh(m.o.slice(0, 70)) + '...' : ''}</div></div><span class="movie-sc">${m.r ? m.r.toFixed(1) : ''}</span><button class="wl-btn" data-id="${m.id}" data-t="${this.ea(m.t)}" data-r="${m.r || 0}">Save</button>`;
+      e.querySelector('.wl-btn').onclick = (ev) => {
         const b = ev.currentTarget;
-        Storage.addToWatchlist({ id: m.id, title: m.title, poster_path: m.poster, vote_average: m.rating });
+        Storage.addToWatchlist({ id: m.id, title: m.t, poster_path: m.p, vote_average: m.r });
         b.textContent = 'Saved'; b.disabled = true;
-      });
+      };
       c.appendChild(e);
     });
   },
 
   wl(c) {
     const items = Storage.getWatchlist();
-    if (items.length === 0) { c.innerHTML = '<div class="empty" style="padding:24px 0">Nothing saved yet.</div>'; return; }
+    if (!items.length) { c.innerHTML = '<div class="empty" style="padding:20px 0">Nothing saved yet.</div>'; return; }
     c.innerHTML = '';
     items.forEach(m => {
-      const e = document.createElement('div');
-      e.className = 'movie-entry';
-      e.innerHTML = `
-        <div class="movie-icon">🎬</div>
-        <div class="movie-info">
-          <div class="movie-name">${this.eh(m.title)}</div>
-          <div class="movie-sub">⭐ ${m.rating ? Number(m.rating).toFixed(1) : 'N/A'}</div>
-        </div>
-        <button class="remove-btn" data-id="${m.id}">Remove</button>
-      `;
-      e.querySelector('.remove-btn').addEventListener('click', () => {
-        Storage.removeFromWatchlist(m.id);
-        this.wl(c);
-      });
+      const e = document.createElement('div'); e.className = 'movie-e';
+      e.innerHTML = `<div class="movie-ic">🎬</div><div class="movie-body"><div class="movie-name">${this.eh(m.title)}</div><div class="movie-sub">⭐ ${m.rating ? Number(m.rating).toFixed(1) : 'N/A'}</div></div><button class="rm-btn" data-id="${m.id}">Remove</button>`;
+      e.querySelector('.rm-btn').onclick = () => { Storage.removeFromWatchlist(m.id); this.wl(c); };
       c.appendChild(e);
     });
   },
