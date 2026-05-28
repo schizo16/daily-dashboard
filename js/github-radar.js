@@ -11,11 +11,11 @@ const AiRadar = {
     }
   },
 
-  box(t, l, html) {
+  box(t, l, el) {
     const s = document.createElement('div');
     s.className = 'section';
     s.innerHTML = `<div class="section-h"><h2>${t}</h2><a href="https://${l}" target="_blank">${l} ↗</a></div>`;
-    s.appendChild(html);
+    s.appendChild(el);
     return s;
   },
 
@@ -47,11 +47,9 @@ const AiRadar = {
     const d = document.createElement('div');
     list.forEach(r => {
       const e = document.createElement('div'); e.className = 'entry';
-      e.innerHTML = `<span class="entry-dot"></span><div class="entry-body">
-        <div class="entry-title"><a href="${this.ea(r.u)}" target="_blank">${this.eh(r.n)}</a></div>
+      e.innerHTML = `<div class="entry-title"><a href="${this.ea(r.u)}" target="_blank">${this.eh(r.n)}</a></div>
         ${r.d ? `<div class="entry-desc">${this.eh(r.d)}</div>` : ''}
-        <div class="entry-meta">${r.l ? `<span>${this.eh(r.l)}</span>` : ''}<span>${this.fmt(r.s)} stars</span><span>${this.fmt(r.f)} forks</span></div>
-      </div>`;
+        <div class="entry-meta">${r.l ? `<span>${this.eh(r.l)}</span>` : ''}<span>${this.fmt(r.s)} stars</span><span>${this.fmt(r.f)} forks</span></div>`;
       d.appendChild(e);
     });
     return d;
@@ -61,10 +59,8 @@ const AiRadar = {
     const d = document.createElement('div');
     list.forEach(s => {
       const e = document.createElement('div'); e.className = 'entry';
-      e.innerHTML = `<span class="entry-dot"></span><div class="entry-body">
-        <div class="entry-title"><a href="${this.ea(s.u)}" target="_blank">${this.eh(s.t)}</a></div>
-        <div class="entry-meta"><span>${s.p} points</span><span>${s.c} comments</span></div>
-      </div>`;
+      e.innerHTML = `<div class="entry-title"><a href="${this.ea(s.u)}" target="_blank">${this.eh(s.t)}</a></div>
+        <div class="entry-meta"><span>${s.p} points</span><span>${s.c} comments</span></div>`;
       d.appendChild(e);
     });
     return d;

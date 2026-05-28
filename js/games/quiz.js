@@ -1,4 +1,4 @@
-const QDATA = [
+const QD = [
   { q: 'Which movie features a character named "Neo"?', a: 'The Matrix', o: ['The Matrix', 'Inception', 'Avatar', 'Tron'] },
   { q: 'Who directed "Pulp Fiction"?', a: 'Quentin Tarantino', o: ['Quentin Tarantino', 'Steven Spielberg', 'Martin Scorsese', 'David Fincher'] },
   { q: 'What year was "The Shawshank Redemption" released?', a: '1994', o: ['1992', '1994', '1996', '1998'] },
@@ -17,25 +17,25 @@ const QDATA = [
 ];
 
 const Quiz = {
-  questions: [], idx: 0, score: 0, answered: false, c: null,
+  questions: [], idx: 0, score: 0, ans: false, c: null,
 
   init(con) {
     this.c = con;
     const s = Storage.getGameState('quiz');
     if (s && s.date === this.today()) {
       this.questions = s.questions || this.pick(); this.idx = s.idx || 0;
-      this.score = s.score || 0; this.answered = s.answered || false;
+      this.score = s.score || 0; this.ans = s.ans || false;
     } else {
-      this.questions = this.pick(); this.idx = 0; this.score = 0; this.answered = false;
+      this.questions = this.pick(); this.idx = 0; this.score = 0; this.ans = false;
     }
     this.render();
   },
 
   today() { return new Date().toISOString().slice(0, 10); },
-  pick() { return [...QDATA].sort(() => Math.random() - 0.5).slice(0, 5); },
+  pick() { return [...QD].sort(() => Math.random() - 0.5).slice(0, 5); },
 
   save() {
-    Storage.setGameState('quiz', { date: this.today(), questions: this.questions, idx: this.idx, score: this.score, answered: this.answered });
+    Storage.setGameState('quiz', { date: this.today(), questions: this.questions, idx: this.idx, score: this.score, ans: this.ans });
   },
 
   render() {
@@ -51,10 +51,10 @@ const Quiz = {
         <div class="quiz-prog">Score: ${this.score}</div>
         <div class="quiz-q">${this.eh(q.q)}</div>
         ${sh.map(o => `<button class="quiz-opt" data-v="${this.ea(o)}">${this.eh(o)}</button>`).join('')}
-        <div class="quiz-feedback" id="qfb"></div>
+        <div id="qfb" style="margin-top:12px;font-size:0.85rem"></div>
       </div>`;
 
-    if (this.answered) this.show(q.a);
+    if (this.ans) this.reveal(q.a);
 
     this.c.querySelectorAll('.quiz-opt').forEach(b => {
       b.onclick = () => this.check(b.dataset.v, q.a);
@@ -62,17 +62,17 @@ const Quiz = {
   },
 
   check(sel, correct) {
-    if (this.answered) return;
-    this.answered = true;
+    if (this.ans) return;
+    this.ans = true;
     if (sel === correct) this.score++;
     this.save();
-    this.show(correct);
+    this.reveal(correct);
     const f = document.getElementById('qfb');
-    if (f) f.textContent = sel === correct ? 'Correct.' : 'Nope — ' + correct;
-    setTimeout(() => { this.idx++; this.answered = false; this.save(); this.render(); }, 1400);
+    if (f) f.textContent = sel === correct ? '✓ Correct' : '✗ ' + correct;
+    setTimeout(() => { this.idx++; this.ans = false; this.save(); this.render(); }, 1400);
   },
 
-  show(correct) {
+  reveal(correct) {
     this.c.querySelectorAll('.quiz-opt').forEach(b => {
       b.disabled = true;
       if (b.dataset.v === correct) b.classList.add('correct');
@@ -82,10 +82,10 @@ const Quiz = {
 
   done() {
     this.c.innerHTML = `
-      <div class="section" style="text-align:center;padding:32px 20px">
-        <div class="section-h" style="justify-content:center;border:none;margin-bottom:0"><h2>Movie Quiz</h2></div>
-        <div style="font-size:2.2rem;font-weight:700;margin:16px 0 4px">${this.score}/${this.questions.length}</div>
-        <div style="color:var(--text-2);font-size:0.88rem;margin-bottom:20px">${this.score === this.questions.length ? 'Perfect.' : this.score >= 3 ? 'Nice.' : 'Try again.'}</div>
+      <div class="section" style="text-align:center;padding-top:16px">
+        <div class="section-h" style="justify-content:center;margin-bottom:12px"><h2>Movie Quiz</h2></div>
+        <div style="font-size:2rem;font-weight:700">${this.score}/${this.questions.length}</div>
+        <div style="color:var(--text-2);margin:8px 0 20px">${this.score === this.questions.length ? 'Perfect.' : this.score >= 3 ? 'Nice.' : 'Try again.'}</div>
         <button class="btn btn-primary" id="qr">Play Again</button>
       </div>`;
     document.getElementById('qr').onclick = () => { Storage.remove('game_quiz'); this.init(this.c); };
