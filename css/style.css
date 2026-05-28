@@ -24,6 +24,26 @@
   0%, 100% { opacity: 0.3; }
   50% { opacity: 1; }
 }
+@keyframes meteor {
+  0% { transform: translate(0, 0) rotate(-35deg); opacity: 0; }
+  5% { opacity: 0.6; }
+  15% { opacity: 0; }
+  100% { transform: translate(-300px, 200px) rotate(-35deg); opacity: 0; }
+}
+.shooting-star {
+  position: fixed; z-index: -1; pointer-events: none;
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, rgba(212,197,169,0.4), transparent);
+  border-radius: 1px;
+  opacity: 0;
+  display: none;
+}
+[data-time="night"] .shooting-star {
+  display: block;
+}
+[data-time="night"] .shooting-star:nth-child(1) { top: 15%; left: 70%; animation: meteor 4s ease-in 10s infinite; }
+[data-time="night"] .shooting-star:nth-child(2) { top: 25%; left: 60%; animation: meteor 3.5s ease-in 25s infinite; }
+[data-time="night"] .shooting-star:nth-child(3) { top: 10%; left: 80%; animation: meteor 5s ease-in 45s infinite; }
 .stars {
   position: fixed; inset: 0; z-index: -1; pointer-events: none;
   display: none;
