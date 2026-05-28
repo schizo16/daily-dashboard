@@ -103,14 +103,16 @@ const GamesPage = {
     const items = data[genre.key]?.items?.slice(0, 10);
     if (!items || !items.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
     items.forEach(g => {
-      const e = document.createElement('div'); e.className = 'movie-e';
+      const appId = g.id;
+      const steamUrl = `https://store.steampowered.com/app/${appId}/`;
+      const e = document.createElement('a'); e.className = 'movie-e'; e.href = steamUrl; e.target = '_blank'; e.style.textDecoration = 'none'; e.style.display = 'flex'; e.style.cursor = 'pointer';
       const img = g.capsule_small || g.header_image || '';
       const pct = g.discount_percent || 0;
       const hasDisc = pct > 0;
       const finalP = g.final_price !== undefined ? g.final_price / 100 : null;
       const origP = g.original_price !== undefined ? g.original_price / 100 : null;
       e.innerHTML = `<div class="movie-thumb" style="width:60px;height:34px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
-        <div class="movie-body"><div class="movie-name">${esc(g.name || '')}</div>
+        <div class="movie-body"><div class="movie-name" style="color:var(--text)">${esc(g.name || '')}</div>
         <div class="movie-sub">${hasDisc ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${origP ? `<s>$${origP.toFixed(2)}</s> ` : ''}${finalP !== null ? `<span style="font-weight:600">$${finalP.toFixed(2)}</span>` : '<span style="color:var(--accent)">Free</span>'}</div></div>`;
       grid.appendChild(e);
     });
