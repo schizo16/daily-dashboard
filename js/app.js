@@ -89,18 +89,24 @@ const WatchlistPage = {
   }
 };
 
-/* ─── AI Translator ─── */
-async function translate(text, from = 'en', to = 'vi') {
-  if (!text || text.length > 2000) return text;
+/* ─── AI Journalist ─── */
+const AI_KEY = 'AIzaSyCDUdpLXKQzx_exXm5RIG7l8Gq5RjdjPcU';
+
+async function aiWrite(title, content) {
+  if (!content) return '';
+  const prompt = `Bạn là biên tập viên báo điện tử. Viết lại tin sau thành bài báo tiếng Việt chuyên nghiệp, hấp dẫn. Giữ nguyên sự thật, thêm ngữ cảnh. Dài 2-3 đoạn ngắn. Có tiêu đề phụ.
+
+Tin gốc (tiếng Anh):
+Tiêu đề: ${title}
+Nội dung: ${content.slice(0, 2000)}`;
   try {
-    const r = await fetch('https://libretranslate.com/translate', {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${AI_KEY}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ q: text.slice(0, 1500), source: from, target: to })
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 800 } })
     });
-    if (!r.ok) return text;
     const d = await r.json();
-    return d.translatedText || text;
-  } catch { return text; }
+    return d.candidates?.[0]?.content?.parts?.[0]?.text || content;
+  } catch { return content; }
 }
 
 /* ─── Inline Reader ─── */
@@ -113,9 +119,9 @@ function showReader(container, title, content, sourceUrl) {
   panel.style.cssText = 'position:fixed;inset:0;z-index:1000;background:var(--bg);overflow-y:auto;padding:24px;animation:fadeIn 0.2s ease-out';
   panel.innerHTML = `
     <div style="max-width:640px;margin:0 auto;position:relative">
-      <button id="reader-close" style="position:fixed;top:16px;right:16px;z-index:10;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.75rem;color:var(--text-2)">✕ Close</button>
-      <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;padding-right:80px">${esc(title)}</h2>
-      <div id="reader-content" style="font-size:0.92rem;line-height:1.7;color:var(--text-2)"><div class="loading">${_('loading')}</div></div>
+      <button id="reader-close" style="position:fixed;top:16px;right:16px;z-index:10;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.75rem;color:var(--text-2)">✕ Đóng</button>
+      <div id="reader-title" style="font-size:1.2rem;font-weight:700;margin-bottom:16px;padding-right:80px">${esc(title)}</div>
+      <div id="reader-content" style="font-size:0.92rem;line-height:1.7;color:var(--text-2)"><div class="loading">AI đang viết bài...</div></div>
       <div style="margin-top:20px;font-size:0.72rem;color:var(--text-3)"><a href="${esc(sourceUrl)}" target="_blank" style="color:var(--accent)">${_('viewOriginal')} ↗</a></div>
     </div>`;
   document.body.appendChild(panel);
@@ -123,8 +129,9 @@ function showReader(container, title, content, sourceUrl) {
   panel.addEventListener('click', (e) => { if (e.target === panel) panel.remove(); });
 
   (async () => {
-    const translated = await translate(content);
-    document.getElementById('reader-content').innerHTML = `<p>${esc(translated)}</p>`;
+    const article = await aiWrite(title, content);
+    const parts = article.split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom:12px">${esc(p)}</p>`).join('');
+    document.getElementById('reader-content').innerHTML = parts || `<p>${esc(article)}</p>`;
   })();
 }
 
