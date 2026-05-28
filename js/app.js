@@ -292,7 +292,7 @@ function show(page) {
   else if (page === 'games') GamesPage.load(el);
   else if (page === 'watchlist') WatchlistPage.load(el);
   else if (page === 'tools') ToolsPage.load(el);
-  else if (page === 'music') MusicPage.load(el);
+  else if (page === 'radio') RadioPage.load(el);
   startAutoRefresh(page);
 }
 
@@ -340,7 +340,7 @@ document.getElementById('theme-btn').onclick = () => {
   document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
 };
 
-/* ─── Music ─── */
+/* ─── Radio ─── */
 const STATIONS = [
   { name: 'Chill Lo-Fi', url: 'https://ice1.somafm.com/groovesalad-128-mp3', icon: '🎧', group: '🌍 International' },
   { name: 'Jazz', url: 'https://ice2.somafm.com/jazzradio-128-mp3', icon: '🎷', group: '🌍 International' },
@@ -356,11 +356,11 @@ const STATIONS = [
   { name: '🇨🇳 Chinese Pop', url: 'https://ice1.somafm.com/poptron-128-mp3', icon: '🇨🇳', group: '🇨🇳 Trung Quốc' },
 ];
 
-const MusicPage = {
+const RadioPage = {
   _audio: null, _station: null,
   load(c) {
     c.innerHTML = `<div class="card">
-      <div class="section-h"><h2>🎵 Music</h2></div>
+      <div class="section-h"><h2>📻 Radio</h2></div>
       <div id="music-now" style="text-align:center;padding:24px 0">
         <div style="font-size:2.5rem;margin-bottom:8px" id="music-icon">🎧</div>
         <div style="font-size:1rem;font-weight:600;margin-bottom:4px" id="music-title">No station playing</div>
@@ -382,6 +382,14 @@ const MusicPage = {
           </div>`).join('')}
       </div>
       <div style="margin-top:16px;padding:10px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
+        <strong>🎵 Tìm nhạc trên YouTube</strong>
+        <div style="display:flex;gap:4px;margin-top:6px">
+          <input type="text" id="music-search" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.78rem" placeholder="Search song name...">
+          <button class="btn btn-primary" id="music-search-btn">Search</button>
+        </div>
+        <div id="music-search-results" style="margin-top:8px;font-size:0.8rem"></div>
+      </div>
+      <div style="margin-top:8px;padding:10px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
         🔗 Or paste audio URL: <input type="url" id="music-url" class="w-inp" style="width:100%;text-transform:none;text-align:left;font-size:0.78rem;margin-top:6px" placeholder="https://example.com/audio.mp3">
         <button class="btn" id="music-url-btn" style="margin-top:4px;width:100%">Play URL</button>
       </div>
