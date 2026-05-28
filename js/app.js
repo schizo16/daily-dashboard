@@ -786,6 +786,10 @@ const MusicPage = {
       const bar = document.getElementById('music-bar');
       if (bar) bar.remove();
     };
+    const onReady = () => {
+      document.getElementById('ms-title').textContent = '▶ Playing';
+      document.getElementById('ms-status').textContent = 'Connected';
+    };
     const createPlayer = () => {
       if (document.getElementById('yt-player') && window.YT && window.YT.Player && !ytPlayer) {
         ytPlayer = new YT.Player('yt-player', {
