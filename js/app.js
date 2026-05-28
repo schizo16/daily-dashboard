@@ -1506,22 +1506,23 @@ function initNotes() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  applyI18n();
+
   // Hamburger menu
   const hamburger = document.getElementById('nav-hamburger');
   const dropdown = document.getElementById('nav-dropdown');
   if (hamburger && dropdown) {
-    // Populate dropdown with nav links
     const links = document.querySelectorAll('.nav a:not(.nav-logo)');
     links.forEach(a => {
       const clone = a.cloneNode(true);
-      clone.onclick = (e) => { dropdown.classList.remove('active'); hamburger.textContent = '☰'; };
+      clone.removeAttribute('data-i18n');
+      clone.onclick = () => { dropdown.classList.remove('active'); hamburger.textContent = '☰'; };
       dropdown.appendChild(clone);
     });
     hamburger.onclick = () => {
       dropdown.classList.toggle('active');
       hamburger.textContent = dropdown.classList.contains('active') ? '✕' : '☰';
     };
-    // Close dropdown on page click
     document.addEventListener('click', (e) => {
       if (!e.target.closest('.nav') && dropdown.classList.contains('active')) {
         dropdown.classList.remove('active');
@@ -1530,7 +1531,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  applyI18n();
   route();
   updateClock();
   updateTimeBackground();
