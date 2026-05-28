@@ -13,7 +13,7 @@
   --accent-soft: #2a221b;
   --radius: 0;
   font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  font-size: 17px; line-height: 1.65;
+  font-size: 18px; line-height: 1.7;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -190,7 +190,7 @@ body::after {
 }
 .nav a:not(.nav-logo) {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
   text-decoration: none; color: var(--text-2);
   padding: 2px 0; transition: color 0.15s;
   position: relative;
@@ -234,12 +234,12 @@ body::after {
 }
 .section-h h2 {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em;
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
   color: var(--text-2); font-weight: 500;
 }
 .section-h a, .section-h-link {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem; color: var(--text-3); text-decoration: none;
+  font-size: 0.68rem; color: var(--text-3); text-decoration: none;
   text-transform: uppercase; letter-spacing: 0.05em;
   transition: color 0.15s;
 }
@@ -296,14 +296,14 @@ body::after {
 }
 
 /* ─── Entry ─── */
-.entry-title { font-size: 0.92rem; font-weight: 600; line-height: 1.45; }
+.entry-title { font-size: 1rem; font-weight: 600; line-height: 1.5; }
 .entry-title a { color: inherit; text-decoration: none; }
 .entry-title a:hover { color: var(--accent); }
-.entry-desc { font-size: 0.82rem; color: var(--text-2); margin-top: 2px; }
+.entry-desc { font-size: 0.88rem; color: var(--text-2); margin-top: 2px; }
 .entry-meta {
   font-family: 'JetBrains Mono', monospace;
   display: flex; gap: 14px; margin-top: 5px;
-  font-size: 0.65rem; color: var(--text-3);
+  font-size: 0.72rem; color: var(--text-3);
 }
 
 /* ─── Movie ─── */
