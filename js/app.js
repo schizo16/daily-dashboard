@@ -616,11 +616,13 @@ const MusicPage = {
       if (!raw) return;
       const lower = raw.toLowerCase();
       const ytMatch = raw.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
-      const spMatch = raw.match(/open\.spotify\.com\/(track|playlist)\/([a-zA-Z0-9]+)/);
+      const ytPlaylist = raw.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+      const spMatch = raw.match(/open\.spotify\.com\/(track|playlist|album)\/([a-zA-Z0-9]+)/);
       const scMatch = raw.match(/soundcloud\.com\/([^\/]+\/[^\/]+)/);
       const audioMatch = raw.match(/\.(mp3|wav|ogg|m4a|flac)(\?|$)/i);
 
-      if (ytMatch) MusicPage.playYT(ytMatch[1]);
+      if (ytPlaylist && raw.includes('playlist')) MusicPage.playYTPlaylist(ytPlaylist[1]);
+      else if (ytMatch) MusicPage.playYT(ytMatch[1]);
       else if (spMatch) MusicPage.playSpotify(spMatch[2], spMatch[1]);
       else if (scMatch) MusicPage.playSoundCloud(scMatch[1]);
       else if (audioMatch || raw.startsWith('http')) MusicPage.playAudio(raw);
@@ -667,20 +669,32 @@ const MusicPage = {
     if (platform === 'yt' || !platform) this.playYT(id);
   },
 
+  playYTPlaylist(listId) {
+    document.getElementById('ms-title').textContent = '▶ Playlist';
+    document.getElementById('ms-status').textContent = 'Loading playlist...';
+    document.getElementById('ms-pause').disabled = false;
+    document.getElementById('ms-stop').disabled = false;
+    document.getElementById('ms-frame-container').innerHTML = `
+      <iframe src="https://www.youtube.com/embed/videoseries?list=${listId}&autoplay=1&controls=0&disablekb=1" style="width:0;height:0;border:none" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    this.showMusicBar('📋 YouTube Playlist', 'Playlist');
+  },
+
   playSpotify(id, type) {
     document.getElementById('ms-title').textContent = '▶ Spotify';
     document.getElementById('ms-status').textContent = `Loading ${type}...`;
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
+    const height = type === 'playlist' ? '352' : '80';
     document.getElementById('ms-frame-container').innerHTML = `
-      <iframe src="https://open.spotify.com/embed/${type}/${id}" style="width:100%;height:80px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+      <iframe src="https://open.spotify.com/embed/${type}/${id}" style="width:100%;height:${height}px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     document.getElementById('ms-pause').textContent = '⏸ Pause';
     document.getElementById('ms-pause').onclick = () => {};
     document.getElementById('ms-stop').onclick = () => {
       document.getElementById('ms-frame-container').innerHTML = '';
       document.getElementById('ms-title').textContent = 'No track playing';
     };
-    this.showMusicBar('Spotify', `${type} ${id.slice(0, 8)}...`);
+    const label = type === 'playlist' ? '📋 Spotify Playlist' : type === 'album' ? '💿 Spotify Album' : '🎵 Spotify Track';
+    this.showMusicBar(label, '');
   },
 
   playSoundCloud(url) {
