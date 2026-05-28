@@ -49,6 +49,8 @@ const GamesPage = {
       c.appendChild(div);
       this.renderGenreBar();
       const data = await this.fetchSteam();
+      this._allData = data;
+      this._page = 1;
       this.renderGrid(data, 'topsellers');
     } catch (_) {}
   },
@@ -70,7 +72,7 @@ const GamesPage = {
         b.classList.add('active');
         b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)';
         const cached = window.__steamData;
-        if (cached) this.renderGrid(cached, g.id);
+        if (cached) { this._page = 1; this.renderGrid(cached, g.id); }
       };
       if (g.id === 'topsellers') { b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)'; }
       bar.appendChild(b);
@@ -91,10 +93,12 @@ const GamesPage = {
     if (!genre) return;
     let items = data[genre.key]?.items || [];
     if (genre.filter) items = items.filter(genre.filter);
-    items = items.slice(0, 10);
-    if (!items.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
+    const totalPages = Math.max(1, Math.ceil(items.length / 10));
+    const pg = Math.min(this._page || 1, totalPages);
+    const pageItems = items.slice((pg - 1) * 10, pg * 10);
+    if (!pageItems.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
     const isVn = currentLocale === 'vi';
-    items.forEach(g => {
+    pageItems.forEach(g => {
       const appId = g.id;
       const steamUrl = `https://store.steampowered.com/app/${appId}/`;
       const e = document.createElement('a'); e.className = 'movie-e'; e.href = steamUrl; e.target = '_blank'; e.style.textDecoration = 'none'; e.style.display = 'flex'; e.style.cursor = 'pointer';
@@ -108,6 +112,18 @@ const GamesPage = {
         <div class="movie-sub">${hasDisc ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${(origP !== undefined && origP !== finalP) ? `<s>${fmtPrice(origP, isVn)}</s> ` : ''}${finalP !== undefined ? `<span style="font-weight:600">${fmtPrice(finalP, isVn)}</span>` : (isVn ? 'Miễn phí' : 'Free')}</div></div>`;
       grid.appendChild(e);
     });
+    if (totalPages > 1) {
+      const nav = document.createElement('div');
+      nav.style.cssText = 'display:flex;gap:4px;margin-top:12px;justify-content:center;flex-wrap:wrap';
+      for (let p = 1; p <= totalPages; p++) {
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.style.cssText = `padding:2px 8px;border:1px solid var(--border);border-radius:3px;background:${p === pg ? 'var(--accent)' : 'transparent'};color:${p === pg ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem`;
+        btn.onclick = () => { this._page = p; this.renderGrid(this._allData, section); };
+        nav.appendChild(btn);
+      }
+      grid.parentElement.appendChild(nav);
+    }
   },
   async loadNews(c) {
     try {
