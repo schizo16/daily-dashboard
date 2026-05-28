@@ -37,8 +37,9 @@ function toggleAIHub() {
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.createElement('button');
   btn.id = 'ai-hub-btn';
-  btn.textContent = '🤖';
+  btn.textContent = '✦';
   btn.title = 'AI Chat';
+  btn.style.fontSize = '1rem';
   btn.style.cssText = 'position:fixed;bottom:24px;right:20px;z-index:998;width:44px;height:44px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.2);transition:all 0.15s';
   btn.onmouseover = () => { btn.style.transform = 'scale(1.1)'; };
   btn.onmouseout = () => { btn.style.transform = 'scale(1)'; };
