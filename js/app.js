@@ -451,34 +451,63 @@ const ToolsPage = {
   dlUI() {
     this.render('Video Downloader', `<div style="margin-bottom:12px">
       <input type="url" id="tdl" class="w-inp" style="width:100%;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Paste YouTube, TikTok, Instagram, Facebook URL...">
-      <button class="btn btn-primary" id="tdlb" style="margin-top:6px;width:100%">Get Download Links</button>
+      <button class="btn btn-primary" id="tdlb" style="margin-top:6px;width:100%">Fetch & Download</button>
     </div>
     <div id="tdlo" style="font-size:0.82rem"></div>
-    <div style="margin-top:12px;padding:12px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
-      <strong>Supported platforms:</strong><br>
-      📺 YouTube · 🎵 TikTok · 📸 Instagram · 📘 Facebook · 🐦 Twitter/X · 🎬 Vimeo · 📹 Dailymotion
+    <div style="margin-top:8px;font-size:0.72rem;color:var(--text-3);line-height:1.5" id="tdl-help">
+      ⚡ Paste URL → click Fetch → chọn chất lượng → download trực tiếp
     </div>`);
-    document.getElementById('tdlb').onclick = () => {
+    document.getElementById('tdlb').onclick = async () => {
       const url = document.getElementById('tdl').value.trim();
       if (!url) return;
       const out = document.getElementById('tdlo');
+      const help = document.getElementById('tdl-help');
+      out.innerHTML = '<div class="loading">Fetching video info...</div>';
+
+      let videoId = '', platform = 'youtube';
+      const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
+      if (ytMatch) { videoId = ytMatch[1]; platform = 'youtube'; }
+      else if (url.includes('tiktok')) platform = 'tiktok';
+      else if (url.includes('instagram')) platform = 'instagram';
+      else if (url.includes('facebook') || url.includes('fb.com')) platform = 'facebook';
+
+      if (platform === 'youtube' && videoId) {
+        try {
+          const r = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+          if (r.ok) {
+            const data = await r.json();
+            const encoded = encodeURIComponent(url);
+
+            out.innerHTML = `
+              <div style="display:flex;gap:12px;margin-bottom:12px;align-items:flex-start">
+                <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" alt="" style="width:120px;border-radius:4px;flex-shrink:0">
+                <div style="flex:1;min-width:0">
+                  <div style="font-weight:600;margin-bottom:4px">${esc(data.title || '')}</div>
+                  <div style="font-size:0.75rem;color:var(--text-2)">${esc(data.author_name || '')}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <a href="https://www.youtube.com/embed/${videoId}?autoplay=1" target="_blank" class="btn" style="text-align:center;text-decoration:none">▶ Watch Online</a>
+                <a href="https://en.savefrom.net/?url=${encoded}" target="_blank" class="btn" style="text-align:center;text-decoration:none">⬇ Download via SaveFrom</a>
+                <a href="https://yt1s.com/${encoded}" target="_blank" class="btn" style="text-align:center;text-decoration:none">⬇ Download via YT1s</a>
+              </div>`;
+            help.textContent = '📌 Click Watch để xem, hoặc Download để tải qua dịch vụ bên thứ ba.';
+            return;
+          }
+        } catch {}
+      }
+
+      // Fallback for other platforms or failed fetch
       const encoded = encodeURIComponent(url);
-      let html = '<div style="margin-bottom:8px;font-weight:500">Choose a downloader:</div><div style="display:flex;flex-direction:column;gap:4px">';
-
       const services = [
-        { name: '🎯 SaveFrom.net', url: `https://en.savefrom.net/?url=${encoded}` },
-        { name: '🎯 Y2Mate', url: `https://www.y2mate.com/?url=${encoded}` },
-        { name: '🎯 SnapSave (IG/TikTok)', url: `https://snapsave.app/?url=${encoded}` },
-        { name: '🎯 SSSTik (TikTok)', url: `https://ssstik.io/en?url=${encoded}` },
-        { name: '🎯 YT1s (YouTube)', url: `https://yt1s.com/?url=${encoded}` },
-        { name: '🎯 VideoTak (all)', url: `https://videotak.com/?url=${encoded}` },
+        { name: 'SaveFrom.net', url: `https://en.savefrom.net/?url=${encoded}` },
+        { name: platform === 'tiktok' ? 'SSSTik.io' : 'Y2Mate', url: platform === 'tiktok' ? `https://ssstik.io/en?url=${encoded}` : `https://www.y2mate.com/?url=${encoded}` },
+        { name: 'VideoTak', url: `https://videotak.com/?url=${encoded}` },
       ];
-
-      services.forEach(s => {
-        html += `<a href="${s.url}" target="_blank" class="btn" style="text-align:center;text-decoration:none;font-size:0.78rem">${s.name}</a>`;
-      });
-      html += '</div><div style="margin-top:8px;font-size:0.7rem;color:var(--text-3)">Opens in new tab. Some sites may have ads.</div>';
-      out.innerHTML = html;
+      out.innerHTML = `<div style="margin-bottom:6px;font-weight:500">Download via:</div>` +
+        services.map(s => `<a href="${s.url}" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;margin-bottom:4px;font-size:0.78rem">⬇ ${s.name}</a>`).join('') +
+        `<div style="margin-top:6px;font-size:0.7rem;color:var(--text-3)">Opens in new tab</div>`;
+      help.textContent = '⚠ Could not fetch video info. Use download links above.';
     };
   },
   colorUI() {
