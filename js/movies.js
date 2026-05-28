@@ -102,17 +102,27 @@ const Movies = {
     });
   },
 
+  _gridPage: 1, _moodId: 'all',
+
   async loadMovies(moodId) {
+    this._gridPage = 1;
+    this._moodId = moodId;
+    if (this._navEl) { this._navEl.remove(); this._navEl = null; }
+    await this.loadPage();
+  },
+
+  async loadPage() {
     const grid = document.getElementById('mg');
     if (!grid) return;
+    if (this._navEl) { this._navEl.remove(); this._navEl = null; }
     grid.innerHTML = `<div class="loading" style="padding:20px 0">${_('loading')}</div>`;
     try {
-      const mood = MOODS.find(m => m.id === moodId) || MOODS[0];
+      const mood = MOODS.find(m => m.id === this._moodId) || MOODS[0];
       let url;
       if (mood.genres) {
-        url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_KEY}&with_genres=${mood.genres}&sort_by=popularity.desc&vote_count.gte=50&language=en-US`;
+        url = `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_KEY}&with_genres=${mood.genres}&sort_by=popularity.desc&vote_count.gte=50&language=en-US&page=${this._gridPage}`;
       } else {
-        url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_KEY}&language=en-US`;
+        url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_KEY}&language=en-US&page=${this._gridPage}`;
       }
       const r = await fetch(url);
       if (!r.ok) throw new Error('API error');
@@ -122,6 +132,21 @@ const Movies = {
         r: m.vote_average, y: m.release_date ? m.release_date.slice(0, 4) : ''
       }));
       this.grd(grid, movies);
+      if (data.total_pages > 1) {
+        const nav = document.createElement('div');
+        nav.style.cssText = 'display:flex;gap:4px;margin-top:12px;justify-content:center;flex-wrap:wrap';
+        const maxP = Math.min(data.total_pages, 25);
+        for (let p = 1; p <= maxP; p++) {
+          const btn = document.createElement('button');
+          btn.dataset.p = p;
+          btn.textContent = p;
+          btn.style.cssText = `padding:2px 8px;border:1px solid var(--border);border-radius:3px;background:${p === this._gridPage ? 'var(--accent)' : 'transparent'};color:${p === this._gridPage ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem`;
+          btn.onclick = () => { this._gridPage = Number(btn.dataset.p); this.loadPage(); };
+          nav.appendChild(btn);
+        }
+        grid.parentElement.appendChild(nav);
+        this._navEl = nav;
+      }
     } catch (e) {
       grid.innerHTML = `<div class="empty" style="padding:20px 0">${_('failed')}</div>`;
     }

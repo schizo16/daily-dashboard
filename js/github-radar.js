@@ -1,26 +1,55 @@
 const AiRadar = {
+  _page: 1,
+
   async load(c) {
     c.innerHTML = `<div class="loading">${_('loading')}</div>`;
     try {
-      const [repos, stories] = await Promise.all([this.repos(), this.hn()]);
-      c.innerHTML = '';
-      c.appendChild(this.box(_('trending'), 'github.com/trending', this.rl(repos)));
-      c.appendChild(this.box(_('hackernews'), 'news.ycombinator.com', this.hl(stories)));
+      this._c = c;
+      this._page = 1;
+      await this.loadPage();
     } catch (e) {
       c.innerHTML = `<div class="loading error">${_('failed')} <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">${_('retry')}</button></div>`;
     }
   },
 
-  box(t, l, el) {
+  async loadPage() {
+    const c = this._c;
+    c.innerHTML = `<div class="loading">${_('loading')}</div>`;
+    try {
+      const [repos, stories] = await Promise.all([this.repos(this._page), this.hn()]);
+      c.innerHTML = '';
+      c.appendChild(this.box(_('trending'), 'github.com/trending', this.rl(repos), this._page));
+      c.appendChild(this.box(_('hackernews'), 'news.ycombinator.com', this.hl(stories), null));
+    } catch (e) {
+      c.innerHTML = `<div class="loading error">${_('failed')} <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">${_('retry')}</button></div>`;
+    }
+  },
+
+  box(t, l, el, page) {
     const d = document.createElement('div'); d.className = 'card';
+    let nav = '';
+    if (page) {
+      nav = `<div style="display:flex;gap:4px;margin-top:12px;justify-content:center;flex-wrap:wrap">${[1,2,3,4,5].map(p =>
+        `<button class="page-btn" data-p="${p}" style="padding:2px 8px;border:1px solid var(--border);border-radius:3px;background:${p === page ? 'var(--accent)' : 'transparent'};color:${p === page ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem">${p}</button>`
+      ).join('')}</div>`;
+    }
     d.innerHTML = `<div class="section-h"><h2>${t}</h2><a href="https://${l}" target="_blank">${l} ↗</a></div>`;
     d.appendChild(el);
+    if (nav) {
+      d.insertAdjacentHTML('beforeend', nav);
+      d.querySelectorAll('.page-btn').forEach(btn => {
+        btn.onclick = () => {
+          this._page = Number(btn.dataset.p);
+          this.loadPage();
+        };
+      });
+    }
     return d;
   },
 
-  async repos() {
+  async repos(page) {
     const d = new Date(); d.setDate(d.getDate() - 7);
-    const r = await fetch(`https://api.github.com/search/repositories?q=created:>${d.toISOString().split('T')[0]}&sort=stars&order=desc&per_page=8`, {
+    const r = await fetch(`https://api.github.com/search/repositories?q=created:>${d.toISOString().split('T')[0]}&sort=stars&order=desc&per_page=8&page=${page}`, {
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     });
     if (!r.ok) throw new Error(_('githubError'));
