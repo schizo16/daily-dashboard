@@ -427,7 +427,7 @@ body::after {
 }
 
 /* ─── States ─── */
-.speak-btn { background: none; border: none; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-3); padding: 0; } .speak-btn:hover { color: var(--accent); }
+.read-btn { background: none; border: none; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-3); padding: 0; } .read-btn:hover { color: var(--accent); }
 
 .loading, .error, .empty { text-align: center; padding: 48px 0; color: var(--text-2); font-size: 0.85rem; }
 .error { color: #a33; }

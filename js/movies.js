@@ -54,8 +54,8 @@ const Movies = {
       posts.forEach(p => {
         const e = document.createElement('div'); e.className = 'entry';
         e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
-          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="speak-btn" data-text="${esc(p.t)}">🔊 ${_('readAloud')}</button></div>`;
-        e.querySelector('.speak-btn').onclick = () => speak(p.t);
+          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="read-btn" data-text="${esc(p.t)}">📖 ${_('readAloud')}</button></div>`;
+        e.querySelector('.read-btn').onclick = () => showReader(c, p.t, p.t, p.u);
         list.appendChild(e);
       });
       div.appendChild(list);

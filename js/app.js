@@ -55,8 +55,8 @@ const GamesPage = {
       posts.forEach(p => {
         const e = document.createElement('div'); e.className = 'entry';
         e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
-          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="speak-btn" data-text="${esc(p.t)}">🔊 ${_('readAloud')}</button></div>`;
-        e.querySelector('.speak-btn').onclick = () => speak(p.t);
+          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="read-btn" data-text="${esc(p.t)}">📖 ${_('readAloud')}</button></div>`;
+        e.querySelector('.read-btn').onclick = () => showReader(c, p.t, p.t, p.u);
         list.appendChild(e);
       });
       div.appendChild(list);
@@ -89,17 +89,43 @@ const WatchlistPage = {
   }
 };
 
-/* ─── Read Aloud ─── */
-function speak(text) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = currentLocale === 'vi' ? 'vi-VN' : 'en-US';
-  u.rate = 0.9;
-  const voices = window.speechSynthesis.getVoices();
-  const viVoice = voices.find(v => v.lang.startsWith('vi'));
-  if (viVoice) u.voice = viVoice;
-  window.speechSynthesis.speak(u);
+/* ─── AI Translator ─── */
+async function translate(text, from = 'en', to = 'vi') {
+  if (!text || text.length > 2000) return text;
+  try {
+    const r = await fetch('https://libretranslate.com/translate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: text.slice(0, 1500), source: from, target: to })
+    });
+    if (!r.ok) return text;
+    const d = await r.json();
+    return d.translatedText || text;
+  } catch { return text; }
+}
+
+/* ─── Inline Reader ─── */
+function showReader(container, title, content, sourceUrl) {
+  const existing = document.getElementById('reader-panel');
+  if (existing) existing.remove();
+
+  const panel = document.createElement('div');
+  panel.id = 'reader-panel';
+  panel.style.cssText = 'position:fixed;inset:0;z-index:1000;background:var(--bg);overflow-y:auto;padding:24px;animation:fadeIn 0.2s ease-out';
+  panel.innerHTML = `
+    <div style="max-width:640px;margin:0 auto;position:relative">
+      <button id="reader-close" style="position:fixed;top:16px;right:16px;z-index:10;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.75rem;color:var(--text-2)">✕ Close</button>
+      <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;padding-right:80px">${esc(title)}</h2>
+      <div id="reader-content" style="font-size:0.92rem;line-height:1.7;color:var(--text-2)"><div class="loading">${_('loading')}</div></div>
+      <div style="margin-top:20px;font-size:0.72rem;color:var(--text-3)"><a href="${esc(sourceUrl)}" target="_blank" style="color:var(--accent)">${_('viewOriginal')} ↗</a></div>
+    </div>`;
+  document.body.appendChild(panel);
+  document.getElementById('reader-close').onclick = () => panel.remove();
+  panel.addEventListener('click', (e) => { if (e.target === panel) panel.remove(); });
+
+  (async () => {
+    const translated = await translate(content);
+    document.getElementById('reader-content').innerHTML = `<p>${esc(translated)}</p>`;
+  })();
 }
 
 /* ─── Tech News (Vietnamese + global) ─── */
@@ -129,9 +155,9 @@ async function loadTechNews(c) {
     const list = document.createElement('div');
     allPosts.forEach(p => {
       const e = document.createElement('div'); e.className = 'entry';
-      e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
-        <div class="entry-meta"><span>${p.lang}</span><span>${p.s} points</span><button class="speak-btn" data-text="${esc(p.t)}">🔊 ${_('readAloud')}</button></div>`;
-      e.querySelector('.speak-btn').onclick = () => speak(p.t);
+        e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
+          <div class="entry-meta"><span>${p.lang}</span><span>${p.s} points</span><button class="read-btn" data-text="${esc(p.t)}">📖 ${_('readAloud')}</button></div>`;
+      e.querySelector('.read-btn').onclick = () => showReader(c, p.t, p.t, p.u);
       list.appendChild(e);
     });
     div.appendChild(list);

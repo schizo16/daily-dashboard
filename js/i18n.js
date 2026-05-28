@@ -68,6 +68,8 @@ const LOCALE = {
     gameNews: 'Tin game',
     techNews: 'AI & Công nghệ',
     readAloud: 'Đọc',
+    viewOriginal: 'Xem gốc',
+    readerTitle: 'Đọc bài',
 
     footer: 'bảng tin · js thuần · 2026',
   },
@@ -140,7 +142,8 @@ const LOCALE = {
     movieNews: 'Movie News',
     gameNews: 'Game News',
     techNews: 'AI & Tech',
-    readAloud: 'Listen',
+    readAloud: 'Read',
+    viewOriginal: 'View original',
 
     footer: 'dashboard · vanilla js · 2026',
   }
