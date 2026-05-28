@@ -33,9 +33,9 @@ const Movies = {
         g.style.display = s ? '' : 'none'; w.style.display = s ? 'none' : '';
         b.textContent = s ? _('navWatchlist') : _('movies');
       };
-      document.querySelectorAll('.ms-btn').forEach(btn => {
+      document.querySelectorAll('#ms-type .ms-btn').forEach(btn => {
         btn.onclick = () => {
-          document.querySelectorAll('.ms-btn').forEach(x => x.classList.toggle('active', x === btn));
+          document.querySelectorAll('#ms-type .ms-btn').forEach(x => x.classList.toggle('active', x === btn));
           this._mediaType = btn.dataset.type;
           this._gridPage = 1;
           document.getElementById('ms-title').textContent = this._mediaType === 'movie' ? _('trendingMovies') : '📺 TV Series';
