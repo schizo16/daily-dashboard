@@ -1391,7 +1391,8 @@ async function loadWeather() {
     else if (code >= 95 && code <= 99) wtype = 'thunderstorm';
     else if (code >= 41 && code <= 49) wtype = 'fog';
     else if (code >= 2 && code <= 4) wtype = 'cloudy';
-    if (cw.windspeed > 20) wtype = 'wind';
+    if (cw.windspeed > 10) wtype = 'wind';
+    else if (code >= 95 && code <= 99) wtype = 'wind';
     document.documentElement.setAttribute('data-weather', wtype);
   } catch {
     el.innerHTML = '';
