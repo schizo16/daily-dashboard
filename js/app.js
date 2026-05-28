@@ -731,15 +731,27 @@ const MusicPage = {
   playYT(id) {
     this._currentId = id;
     this._currentIdx = FEATURED.findIndex(f => f.vid === id);
-    this._queue = FEATURED;
-    this._queueIdx = this._currentIdx;
-    this.renderQueue(FEATURED, this._currentIdx);
+    if (this._currentIdx >= 0) {
+      this._queue = FEATURED;
+      this._queueIdx = this._currentIdx;
+      this.renderQueue(FEATURED, this._currentIdx);
+    } else {
+      this._queue = [];
+      this._queueIdx = -1;
+      const qq = document.getElementById('ms-queue');
+      if (qq) qq.style.display = 'none';
+    }
 
     document.getElementById('ms-title').textContent = '▶ Loading...';
     document.getElementById('ms-status').textContent = 'Starting player...';
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-pause').textContent = '⏸ Pause';
+
+    // Create player container
+    const container = document.getElementById('ms-frame-container');
+    container.style.cssText = 'width:0;height:0;overflow:hidden';
+    container.innerHTML = '<div id="yt-player"></div>';
 
     const q = (this._queue && this._queue.length > 0) ? this._queue : (this._currentIdx >= 0 ? FEATURED : []);
     const qi = this._queueIdx >= 0 ? this._queueIdx : this._currentIdx;
