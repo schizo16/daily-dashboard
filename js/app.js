@@ -854,17 +854,6 @@ const MusicPage = {
     if (next) { next.disabled = qi < 0 || qi >= q.length - 1; next.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); }; }
     if (q.length > 0) this.renderQueue(q, qi);
   },
-    const q = (this._queue && this._queue.length > 0) ? this._queue : (this._currentIdx >= 0 ? FEATURED : []);
-    const qi = this._queueIdx >= 0 ? this._queueIdx : this._currentIdx;
-    document.getElementById('ms-pause').disabled = false;
-    document.getElementById('ms-stop').disabled = false;
-    document.getElementById('ms-pause').textContent = '⏸ Pause';
-    const prev = document.getElementById('ms-prev');
-    const next = document.getElementById('ms-next');
-    if (prev) { prev.disabled = qi <= 0; prev.onclick = () => { if (qi > 0) this.playFromQueue(qi - 1); }; }
-    if (next) { next.disabled = qi < 0 || qi >= q.length - 1; next.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); }; }
-    if (q.length > 0) this.renderQueue(q, qi);
-  },
 
   fetchTitle(id) {
     document.getElementById('ms-title').textContent = '▶ Loading...';
