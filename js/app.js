@@ -535,14 +535,14 @@ const RadioPage = {
 
 /* ─── Music ─── */
 const FEATURED = [
-  { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8', platform: 'yt' },
-  { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k', platform: 'yt' },
-  { title: '🇯🇵 J-Pop Mix', vid: 'sXwL65mzLvM', platform: 'yt' },
-  { title: '🇻🇳 Nhạc Việt', vid: 'dI3q-rW8bWY', platform: 'yt' },
-  { title: '🎧 Lo-Fi Chill', vid: 'jfKfPfyJRdk', platform: 'yt' },
-  { title: '🎤 Rap US', vid: 'JGwWNGJdvx8', platform: 'yt' },
-  { title: '🎷 Jazz Relax', vid: 'jfKfPfyJRdk', platform: 'yt' },
-  { title: '🌌 Ambient', vid: 'sXwL65mzLvM', platform: 'yt' },
+  { title: '🇺🇸 US Top Hits', vid: 'JGwWNGJdvx8', platform: 'yt', icon: '📺' },
+  { title: '🇰🇷 K-Pop Mix', vid: '4W6qY0fMk6k', platform: 'yt', icon: '📺' },
+  { title: '🇻🇳 Nhạc Việt', vid: 'dI3q-rW8bWY', platform: 'yt', icon: '📺' },
+  { title: '🎧 Lo-Fi Chill', vid: 'jfKfPfyJRdk', platform: 'yt', icon: '📺' },
+  { title: '🟢 Spotify Chill', vid: '37i9dQZF1DX3Ogo9pFvBkY', platform: 'sp', type: 'playlist', icon: '🟢' },
+  { title: '🟢 Spotify K-Pop', vid: '37i9dQZF1DX9tPFwDMOaN1', platform: 'sp', type: 'playlist', icon: '🟢' },
+  { title: '🎵 Lo-Fi Radio', vid: 'https://ice1.somafm.com/groovesalad-128-mp3', platform: 'audio', icon: '🎵' },
+  { title: '🎵 Jazz Radio', vid: 'https://ice2.somafm.com/jazzradio-128-mp3', platform: 'audio', icon: '🎵' },
 ];
 
 let ytPlayer = null;
@@ -561,7 +561,7 @@ const MusicPage = {
 
       <div style="margin-bottom:16px">
         <div style="display:flex;gap:4px">
-          <input type="text" id="ms-q" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Paste YouTube URL or search...">
+          <input type="text" id="ms-q" class="w-inp" style="flex:1;text-transform:none;text-align:left;font-size:0.82rem" placeholder="📺 YouTube / 🟢 Spotify / 🔵 SoundCloud / .mp3 URL...">
           <button class="btn btn-primary" id="ms-play-btn">▶ Play</button>
         </div>
         <a id="ms-search-link" href="https://www.youtube.com/results?search_query=" target="_blank" style="font-size:0.65rem;color:var(--text-3);margin-top:4px;display:inline-block">Search on YouTube ↗</a>
@@ -586,8 +586,9 @@ const MusicPage = {
       <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">🎧 QUICK LISTEN</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
         ${FEATURED.map(m => `
-          <div class="ms-feat" data-vid="${m.vid}" style="padding:12px;border:1px solid var(--border);border-radius:6px;text-align:center;cursor:pointer;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:0.82rem;font-weight:500">${m.title}</div>
+          <div class="ms-feat" data-vid="${m.vid}" data-platform="${m.platform}" data-type="${m.type || ''}" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;text-align:center;cursor:pointer;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:0.72rem;font-weight:500">${m.title}</div>
+            <div style="font-size:0.55rem;color:var(--text-3);margin-top:2px">${m.icon} ${m.platform === 'sp' ? 'Spotify' : m.platform === 'audio' ? 'Direct' : 'YouTube'}</div>
           </div>`).join('')}
       </div>
     </div>`;
@@ -618,7 +619,12 @@ const MusicPage = {
     };
 
     document.querySelectorAll('.ms-feat').forEach(el => {
-      el.onclick = () => MusicPage.playYT(el.dataset.vid);
+      el.onclick = () => {
+        const p = el.dataset.platform;
+        if (p === 'sp') MusicPage.playSpotify(el.dataset.vid, el.dataset.type || 'playlist');
+        else if (p === 'audio') MusicPage.playAudio(el.dataset.vid);
+        else MusicPage.playYT(el.dataset.vid);
+      };
     });
 
     document.getElementById('ms-pause').onclick = () => {
