@@ -753,6 +753,13 @@ const MusicPage = {
     container.style.cssText = 'width:0;height:0;overflow:hidden';
     container.innerHTML = '<div id="yt-player"></div>';
 
+    // Load YouTube IFrame API if needed
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+    }
+
     const q = (this._queue && this._queue.length > 0) ? this._queue : (this._currentIdx >= 0 ? FEATURED : []);
     const qi = this._queueIdx >= 0 ? this._queueIdx : this._currentIdx;
     const prevBtn = document.getElementById('ms-prev');
@@ -779,13 +786,6 @@ const MusicPage = {
       const bar = document.getElementById('music-bar');
       if (bar) bar.remove();
     };
-    document.getElementById('mb-prev').onclick = () => {
-      if (qi > 0) this.playFromQueue(qi - 1);
-    };
-    document.getElementById('mb-next').onclick = () => {
-      if (qi < q.length - 1) this.playFromQueue(qi + 1);
-    };
-
     if (window.YT && window.YT.Player) {
       ytPlayer = new YT.Player('yt-player', {
         height: '0', width: '0',
