@@ -353,6 +353,7 @@ const ToolsPage = {
         ${this.tile('b64','Base64','Encode / decode Base64')}
         ${this.tile('json','JSON','Format and validate JSON')}
         ${this.tile('typing','Typing','Test your typing speed')}
+        ${this.tile('dl','Downloader','YouTube, TikTok, IG download links')}
         ${this.tile('color','Color','HEX / RGB color converter')}
       </div></div>`;
     this._c.querySelectorAll('.tool-tile').forEach(t => { t.onclick = () => this.showTool(t.dataset.tool); });
@@ -369,6 +370,7 @@ const ToolsPage = {
       qr: () => this.qrUI(), pw: () => this.pwUI(), counter: () => this.counterUI(),
       random: () => this.randomUI(), b64: () => this.b64UI(), json: () => this.jsonUI(),
       typing: () => this.typingUI(), color: () => this.colorUI(),
+      dl: () => this.dlUI(),
     };
     (f[t] || (() => this.showGrid()))();
   },
@@ -445,6 +447,39 @@ const ToolsPage = {
     n();
     i.oninput=()=>{if(!start&&i.value.length===1)start=Date.now();if(i.value===target){const ms=(Date.now()-start)/1000;s.textContent='✅ Done! '+Math.round((target.split(' ').length/ms)*60)+' WPM';i.disabled=true;setTimeout(()=>{i.disabled=false;n();},2000);}else{s.textContent=target.startsWith(i.value)?`${i.value.length}/${target.length}`:'❌ Wrong';}};
     document.getElementById('ttypn').onclick=n;
+  },
+  dlUI() {
+    this.render('Video Downloader', `<div style="margin-bottom:12px">
+      <input type="url" id="tdl" class="w-inp" style="width:100%;text-transform:none;text-align:left;font-size:0.82rem" placeholder="Paste YouTube, TikTok, Instagram, Facebook URL...">
+      <button class="btn btn-primary" id="tdlb" style="margin-top:6px;width:100%">Get Download Links</button>
+    </div>
+    <div id="tdlo" style="font-size:0.82rem"></div>
+    <div style="margin-top:12px;padding:12px;background:var(--surface-2);border-radius:6px;font-size:0.72rem;color:var(--text-2);line-height:1.5">
+      <strong>Supported platforms:</strong><br>
+      📺 YouTube · 🎵 TikTok · 📸 Instagram · 📘 Facebook · 🐦 Twitter/X · 🎬 Vimeo · 📹 Dailymotion
+    </div>`);
+    document.getElementById('tdlb').onclick = () => {
+      const url = document.getElementById('tdl').value.trim();
+      if (!url) return;
+      const out = document.getElementById('tdlo');
+      const encoded = encodeURIComponent(url);
+      let html = '<div style="margin-bottom:8px;font-weight:500">Choose a downloader:</div><div style="display:flex;flex-direction:column;gap:4px">';
+
+      const services = [
+        { name: '🎯 SaveFrom.net', url: `https://en.savefrom.net/?url=${encoded}` },
+        { name: '🎯 Y2Mate', url: `https://www.y2mate.com/?url=${encoded}` },
+        { name: '🎯 SnapSave (IG/TikTok)', url: `https://snapsave.app/?url=${encoded}` },
+        { name: '🎯 SSSTik (TikTok)', url: `https://ssstik.io/en?url=${encoded}` },
+        { name: '🎯 YT1s (YouTube)', url: `https://yt1s.com/?url=${encoded}` },
+        { name: '🎯 VideoTak (all)', url: `https://videotak.com/?url=${encoded}` },
+      ];
+
+      services.forEach(s => {
+        html += `<a href="${s.url}" target="_blank" class="btn" style="text-align:center;text-decoration:none;font-size:0.78rem">${s.name}</a>`;
+      });
+      html += '</div><div style="margin-top:8px;font-size:0.7rem;color:var(--text-3)">Opens in new tab. Some sites may have ads.</div>';
+      out.innerHTML = html;
+    };
   },
   colorUI() {
     this.render('Color Converter', `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
