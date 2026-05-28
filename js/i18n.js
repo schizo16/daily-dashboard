@@ -64,6 +64,8 @@ const LOCALE = {
     moodHorror: 'Kinh dị',
     moodScifi: 'Viễn tưởng',
     moodRomance: 'Lãng mạn',
+    movieNews: 'Tin phim',
+    gameNews: 'Tin game',
 
     footer: 'bảng tin · js thuần · 2026',
   },
@@ -133,6 +135,8 @@ const LOCALE = {
     moodHorror: 'Horror',
     moodScifi: 'Sci-fi',
     moodRomance: 'Romance',
+    movieNews: 'Movie News',
+    gameNews: 'Game News',
 
     footer: 'dashboard · vanilla js · 2026',
   }

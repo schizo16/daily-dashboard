@@ -33,10 +33,34 @@ const GamesPage = {
         this.switch(b.dataset.game, gc);
       };
     });
+    this.loadNews(container);
   },
   switch(g, c) {
     if (g === 'wordle') Wordle.init(c);
     else if (g === 'quiz') Quiz.init(c);
+  },
+  async loadNews(c) {
+    try {
+      const r = await fetch('https://www.reddit.com/r/gaming/hot.json?limit=5');
+      if (!r.ok) return;
+      const data = await r.json();
+      const posts = data.data.children.filter(x => !x.data.stickied).slice(0, 5).map(x => ({
+        t: x.data.title, u: x.data.url, s: x.data.score, c: x.data.num_comments
+      }));
+      if (!posts.length) return;
+      const div = document.createElement('div'); div.className = 'card';
+      div.style.marginTop = '12px';
+      div.innerHTML = `<div class="section-h"><h2>${_('gameNews')}</h2><a href="https://reddit.com/r/gaming" target="_blank">r/gaming ↗</a></div>`;
+      const list = document.createElement('div');
+      posts.forEach(p => {
+        const e = document.createElement('div'); e.className = 'entry';
+        e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
+          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span></div>`;
+        list.appendChild(e);
+      });
+      div.appendChild(list);
+      c.appendChild(div);
+    } catch (_) {}
   }
 };
 

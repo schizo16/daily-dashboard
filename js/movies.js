@@ -32,9 +32,34 @@ const Movies = {
         w.style.display = s ? 'none' : '';
         b.textContent = s ? _('navWatchlist') : _('movies');
       };
+      this.loadNews(c);
     } catch (e) {
       c.innerHTML = `<div class="loading error">${_('tmdbError')}. <button class="btn" onclick="Movies.load(this.parentElement.parentElement)">${_('retry')}</button></div>`;
     }
+  },
+
+  async loadNews(c) {
+    try {
+      const r = await fetch('https://www.reddit.com/r/movies/hot.json?limit=5');
+      if (!r.ok) return;
+      const data = await r.json();
+      const posts = data.data.children.filter(x => !x.data.stickied).slice(0, 5).map(x => ({
+        t: x.data.title, u: x.data.url, s: x.data.score, c: x.data.num_comments
+      }));
+      if (!posts.length) return;
+      const div = document.createElement('div'); div.className = 'card';
+      div.style.marginTop = '12px';
+      div.innerHTML = `<div class="section-h"><h2>${_('movieNews')}</h2><a href="https://reddit.com/r/movies" target="_blank">r/movies ↗</a></div>`;
+      const list = document.createElement('div');
+      posts.forEach(p => {
+        const e = document.createElement('div'); e.className = 'entry';
+        e.innerHTML = `<div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
+          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span></div>`;
+        list.appendChild(e);
+      });
+      div.appendChild(list);
+      c.appendChild(div);
+    } catch (_) {}
   },
 
   renderMoods() {
@@ -43,7 +68,7 @@ const Movies = {
     bar.style.cssText = 'display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap';
     MOODS.forEach(m => {
       const b = document.createElement('button');
-      b.className = 'mood-btn' + (m.id === 'all' ? ' active' : '');
+      b.className = 'mood-btn';
       b.dataset.mood = m.id;
       b.textContent = _(m.label);
       b.style.cssText = 'padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.12s';
@@ -64,6 +89,7 @@ const Movies = {
         this.loadMovies(m.id);
       };
       if (m.id === 'all') {
+        b.classList.add('active');
         b.style.background = 'var(--accent)';
         b.style.color = 'var(--bg)';
         b.style.borderColor = 'var(--accent)';
