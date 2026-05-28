@@ -573,6 +573,8 @@ function onYouTubeIframeAPIReady() {
 
 const MusicPage = {
   _loaded: false,
+  _shuffle: false,
+  _loop: false,
   load(c) {
     this._loaded = true;
     c.innerHTML = `<div class="card">
@@ -592,11 +594,15 @@ const MusicPage = {
         <div style="font-size:0.78rem;color:var(--text-2);margin-top:4px" id="ms-status">Paste a YouTube URL and press Play</div>
       </div>
 
-        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:6px">
-        <button class="btn" id="ms-prev" disabled>⏮ Prev</button>
-        <button class="btn" id="ms-pause" disabled>⏸ Pause</button>
-        <button class="btn" id="ms-stop" disabled>⏹ Stop</button>
-        <button class="btn" id="ms-next" disabled>Next ⏭</button>
+        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:4px">
+        <button class="btn" id="ms-prev" disabled>⏮</button>
+        <button class="btn" id="ms-pause" disabled>⏸</button>
+        <button class="btn" id="ms-stop" disabled>⏹</button>
+        <button class="btn" id="ms-next" disabled>⏭</button>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:6px">
+        <button class="btn" id="ms-shuffle" style="font-size:0.7rem;padding:2px 10px">🔀</button>
+        <button class="btn" id="ms-loop" style="font-size:0.7rem;padding:2px 10px">🔁</button>
       </div>
       <div id="ms-time" style="text-align:center;font-family:JetBrains Mono,monospace;font-size:0.65rem;color:var(--text-3);margin-bottom:12px">0:00 / 0:00</div>
 
@@ -641,6 +647,22 @@ const MusicPage = {
     document.getElementById('ms-q').onkeydown = (e) => {
       if (e.key === 'Enter') document.getElementById('ms-play-btn').click();
     };
+
+    // Shuffle & Loop buttons
+    const shuffBtn = document.getElementById('ms-shuffle');
+    const loopBtn = document.getElementById('ms-loop');
+    this._shuffle = false; this._loop = false;
+    shuffBtn.onclick = () => {
+      this._shuffle = !this._shuffle;
+      shuffBtn.style.opacity = this._shuffle ? '1' : '0.4';
+    };
+    shuffBtn.style.opacity = '0.4';
+    loopBtn.onclick = () => {
+      this._loop = !this._loop;
+      loopBtn.textContent = this._loop === true ? '🔂' : '🔁';
+      loopBtn.style.opacity = this._loop ? '1' : '0.4';
+    };
+    loopBtn.style.opacity = '0.4';
 
 
 
@@ -940,11 +962,23 @@ const MusicPage = {
 
   playFromQueue(idx) {
     const q = this._queue || FEATURED;
-    if (idx < 0 || idx >= q.length) return;
+    if (q.length === 0) return;
+
+    // Loop one
+    if (this._loop && idx >= q.length) { idx = 0; }
+    else if (this._loop && idx < 0) { idx = q.length - 1; }
+    // No loop
+    else if (idx < 0 || idx >= q.length) {
+      if (this._loop === false) { // Loop off — stop at end
+        if (ytPlayer) ytPlayer.stopVideo();
+        return;
+      }
+      idx = idx < 0 ? q.length - 1 : 0;
+    }
+
     this._queueIdx = idx;
     const item = q[idx];
     if (item.vid) {
-      // Update queue highlight
       this.renderQueue(q, idx);
       this.playYT(item.vid);
     }
@@ -964,11 +998,13 @@ const MusicPage = {
           <div style="font-size:0.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">🎵 ${esc(title || 'Playing')}</div>
           <div style="font-size:0.65rem;color:var(--text-3)">👤 ${esc(author || 'YouTube')}</div>
         </div>
-        <div style="display:flex;gap:4px">
-          <button class="btn" id="mb-prev" style="padding:4px 8px;font-size:0.7rem">⏮</button>
-          <button class="btn" id="mb-play" style="padding:4px 10px;font-size:0.75rem">⏸</button>
-          <button class="btn" id="mb-next" style="padding:4px 8px;font-size:0.7rem">⏭</button>
-          <button class="btn" id="mb-stop" style="padding:4px 10px;font-size:0.75rem">⏹</button>
+        <div style="display:flex;gap:3px">
+          <button class="btn" id="mb-prev" style="padding:3px 6px;font-size:0.7rem">⏮</button>
+          <button class="btn" id="mb-play" style="padding:3px 8px;font-size:0.7rem">⏸</button>
+          <button class="btn" id="mb-next" style="padding:3px 6px;font-size:0.7rem">⏭</button>
+          <button class="btn" id="mb-stop" style="padding:3px 8px;font-size:0.7rem">⏹</button>
+          <button class="btn" id="mb-shuffle" style="padding:3px 6px;font-size:0.65rem;opacity:0.4">🔀</button>
+          <button class="btn" id="mb-loop" style="padding:3px 6px;font-size:0.65rem;opacity:0.4">🔁</button>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
@@ -1010,6 +1046,19 @@ const MusicPage = {
       const q4 = document.getElementById('ms-queue');
       if (q4) q4.style.display = 'none';
       bar.remove();
+    };
+    document.getElementById('mb-shuffle').onclick = () => {
+      this._shuffle = !this._shuffle;
+      document.getElementById('mb-shuffle').style.opacity = this._shuffle ? '1' : '0.4';
+      document.getElementById('ms-shuffle').style.opacity = this._shuffle ? '1' : '0.4';
+    };
+    document.getElementById('mb-loop').onclick = () => {
+      this._loop = !this._loop;
+      const txt = this._loop ? '🔂' : '🔁';
+      document.getElementById('mb-loop').textContent = txt;
+      document.getElementById('mb-loop').style.opacity = this._loop ? '1' : '0.4';
+      document.getElementById('ms-loop').textContent = txt;
+      document.getElementById('ms-loop').style.opacity = this._loop ? '1' : '0.4';
     };
     document.getElementById('mb-vol').oninput = (e) => {
       const v = e.target.value;
