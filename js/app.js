@@ -695,8 +695,13 @@ const MusicPage = {
     document.getElementById('ms-pause').textContent = '⏸ Pause';
     document.getElementById('ms-pause').onclick = () => {};
     document.getElementById('ms-stop').onclick = () => {
-      document.getElementById('ms-frame-container').innerHTML = '';
+      if (ytPlayer) ytPlayer.stopVideo();
+      document.getElementById('ms-pause').disabled = true;
+      document.getElementById('ms-stop').disabled = true;
       document.getElementById('ms-title').textContent = 'No track playing';
+      const q = document.getElementById('ms-queue');
+      if (q) q.style.display = 'none';
+      bar.remove();
     };
     const label = type === 'playlist' ? '📋 Spotify Playlist' : type === 'album' ? '💿 Spotify Album' : '🎵 Spotify Track';
     this.showMusicBar(label, '');
@@ -822,6 +827,7 @@ const MusicPage = {
     if (!list) return;
     const start = Math.max(0, currentIdx - 2);
     const items = queue.slice(start, currentIdx + 6);
+    list.style.display = '';
     list.innerHTML = items.map((item, i) => {
       const realIdx = start + i;
       const isCurrent = realIdx === currentIdx;
