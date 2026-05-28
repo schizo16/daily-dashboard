@@ -41,7 +41,9 @@ body::before {
       transparent 2px,
       rgba(255,255,255,0.006) 2px,
       rgba(255,255,255,0.006) 3px
-    );
+    ),
+    repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(166,124,82,0.015) 100px, rgba(166,124,82,0.015) 101px, transparent 101px, transparent 200px),
+    repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(166,124,82,0.01) 100px, rgba(166,124,82,0.01) 101px, transparent 101px, transparent 200px);
   pointer-events: none;
 }
 
@@ -49,6 +51,7 @@ body::before {
 body::after {
   content: '';
   position: fixed; inset: 0; z-index: -1;
+  pointer-events: none;
   background-image:
     radial-gradient(1px 1px at 10% 20%, rgba(212,197,169,0.15) 0%, transparent 100%),
     radial-gradient(1px 1px at 30% 60%, rgba(212,197,169,0.1) 0%, transparent 100%),
@@ -58,7 +61,6 @@ body::after {
     radial-gradient(1.5px 1.5px at 15% 85%, rgba(212,197,169,0.08) 0%, transparent 100%),
     radial-gradient(1px 1px at 90% 70%, rgba(212,197,169,0.06) 0%, transparent 100%),
     radial-gradient(1px 1px at 45% 40%, rgba(212,197,169,0.1) 0%, transparent 100%);
-  pointer-events: none;
   animation: dustFloat 20s ease-in-out infinite alternate;
 }
 
@@ -68,10 +70,15 @@ body::after {
   100% { transform: translate(-3px, 4px); opacity: 0.7; }
 }
 
-/* ─── Decorative corner ─── */
+/* ─── Container ─── */
 .container {
   max-width: 640px; margin: 0 auto; padding: 0 24px; width: 100%;
   position: relative;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  min-height: 100vh;
+  background: var(--bg);
+  box-shadow: 0 0 60px rgba(0,0,0,0.3);
 }
 .container::before {
   content: '✦';
