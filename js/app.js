@@ -44,6 +44,18 @@ const App = {
 
     document.getElementById('theme-toggle').addEventListener('click', () => this.toggleTheme());
 
+    const pinBtn = document.createElement('button');
+    pinBtn.className = 'tab';
+    pinBtn.style.cssText = 'flex:0;padding:6px 12px;margin-top:4px';
+    pinBtn.textContent = '📌';
+    pinBtn.title = 'Pin current tab as default';
+    pinBtn.addEventListener('click', () => {
+      Storage.setPinnedTab(this.currentTab);
+      pinBtn.textContent = '📌 Pinned!';
+      setTimeout(() => { pinBtn.textContent = '📌'; }, 2000);
+    });
+    document.querySelector('.tab-bar').after(pinBtn);
+
     this.loadCurrentTab();
   },
 
