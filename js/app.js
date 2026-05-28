@@ -601,7 +601,14 @@ const MusicPage = {
       <div id="ms-player"></div>
       <div id="ms-frame-container" style="width:0;height:0;overflow:hidden"></div>
 
-      <div id="ms-queue" style="margin-bottom:12px;display:none"></div>
+      <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">🎧 QUICK LISTEN</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        ${FEATURED.map(m => `
+          <div class="ms-feat" data-vid="${m.vid}" data-platform="${m.platform}" data-type="${m.type || ''}" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;text-align:center;cursor:pointer;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="font-size:0.72rem;font-weight:500">${m.title}</div>
+            <div style="font-size:0.55rem;color:var(--text-3);margin-top:2px">${m.icon} ${m.platform === 'sp' ? 'Spotify' : m.platform === 'audio' ? 'Direct' : 'YouTube'}</div>
+          </div>`).join('')}
+      </div>
     </div>`;
 
     document.getElementById('ms-play-btn').onclick = () => {
@@ -635,6 +642,7 @@ const MusicPage = {
 
     document.querySelectorAll('.ms-feat').forEach(el => {
       el.onclick = () => {
+        MusicPage._queue = FEATURED;
         const p = el.dataset.platform;
         if (p === 'sp') MusicPage.playSpotify(el.dataset.vid, el.dataset.type || 'playlist');
         else if (p === 'audio') MusicPage.playAudio(el.dataset.vid);
@@ -668,11 +676,11 @@ const MusicPage = {
     document.getElementById('ms-pause').disabled = false;
     document.getElementById('ms-stop').disabled = false;
     document.getElementById('ms-frame-container').innerHTML = `
-      <iframe src="https://www.youtube.com/embed?listType=playlist&list=${listId}&autoplay=1" style="width:100%;height:120px;border:none;border-radius:8px" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+      <iframe src="https://www.youtube.com/embed?listType=playlist&list=${listId}&autoplay=1" style="width:0;height:0;border:none" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
     this._queue = FEATURED;
     this._queueIdx = 0;
-    this.showMusicBar('📋 YouTube Playlist', '');
     this.renderQueue(FEATURED, 0);
+    this.showMusicBar('📋 YouTube Playlist', '');
   },
 
   playSpotify(id, type) {
@@ -724,23 +732,9 @@ const MusicPage = {
   playYT(id) {
     this._currentId = id;
     this._currentIdx = FEATURED.findIndex(f => f.vid === id);
-    // Build queue from FEATURED
-    if (this._currentIdx >= 0) {
-      this._queue = FEATURED;
-      this._queueIdx = this._currentIdx;
-      this.renderQueue(FEATURED, this._currentIdx);
-    } else {
-      // Check SONG_DB
-      const dbIdx = SONG_DB.findIndex(s => s.vid === id);
-      if (dbIdx >= 0) {
-        this._queue = SONG_DB;
-        this._queueIdx = dbIdx;
-        this.renderQueue(SONG_DB, dbIdx);
-      } else {
-        this._queue = [];
-        this._queueIdx = -1;
-      }
-    }
+    this._queue = FEATURED;
+    this._queueIdx = this._currentIdx;
+    this.renderQueue(FEATURED, this._currentIdx);
 
     document.getElementById('ms-title').textContent = '▶ Loading...';
     document.getElementById('ms-status').textContent = 'Starting player...';
@@ -756,21 +750,11 @@ const MusicPage = {
     nextBtn.disabled = qi < 0 || qi >= q.length - 1;
     prevBtn.onclick = () => { if (qi > 0) this.playFromQueue(qi - 1); };
     nextBtn.onclick = () => { if (qi < q.length - 1) this.playFromQueue(qi + 1); };
-
-    // Load YouTube IFrame API if needed
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      document.head.appendChild(tag);
-    }
-
-    const container = document.getElementById('ms-frame-container');
-    container.innerHTML = '<div id="yt-player"></div>';
-
-    const onReady = () => {
-      ytPlayer.setVolume(70);
-      ytPlayer.playVideo();
-      document.getElementById('ms-title').textContent = '▶ Playing...';
+    document.getElementById('mb-prev').onclick = () => {
+      if (qi > 0) this.playFromQueue(qi - 1);
+    };
+    document.getElementById('mb-next').onclick = () => {
+      if (qi < q.length - 1) this.playFromQueue(qi + 1);
     };
 
     if (window.YT && window.YT.Player) {
@@ -804,31 +788,30 @@ const MusicPage = {
       .catch(() => this.showMusicBar('Playing', 'YouTube'));
   },
 
+  renderQueue(queue, currentIdx) {
+    const list = document.getElementById('ms-queue');
+    if (!list || !queue) return;
+    list.style.display = '';
+    const start = Math.max(0, currentIdx - 2);
+    const items = queue.slice(start, currentIdx + 6);
+    list.innerHTML = '<div style="font-size:0.6rem;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin-bottom:6px">Queue</div>' +
+      items.map((item, i) => {
+        const realIdx = start + i;
+        const isCurrent = realIdx === currentIdx;
+        const t = item.t || item.title || 'Unknown';
+        return `<div style="padding:5px 8px;border-radius:4px;background:${isCurrent ? 'var(--accent-soft)' : 'transparent'};font-size:0.78rem;display:flex;align-items:center;gap:6px;cursor:pointer" onclick="MusicPage.playFromQueue(${realIdx})">
+          <span style="font-family:JetBrains Mono,monospace;font-size:0.6rem;color:${isCurrent ? 'var(--accent)' : 'var(--text-3)'}">${isCurrent ? '▶' : '🎵'}</span>
+          <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:${isCurrent ? '600' : '400'}">${esc(t)}</span>
+        </div>`;
+      }).join('');
+  },
+
   playFromQueue(idx) {
     const q = this._queue || FEATURED;
     if (idx < 0 || idx >= q.length) return;
     this._queueIdx = idx;
     const item = q[idx];
-    const vid = item.vid || item.id;
-    if (vid) this.playYT(vid);
-  },
-
-  renderQueue(queue, currentIdx) {
-    const list = document.getElementById('ms-queue');
-    if (!list) return;
-    const start = Math.max(0, currentIdx - 2);
-    const items = queue.slice(start, currentIdx + 6);
-    list.style.display = '';
-    list.innerHTML = items.map((item, i) => {
-      const realIdx = start + i;
-      const isCurrent = realIdx === currentIdx;
-      const icon = isCurrent ? '▶' : '🎵';
-      const t = item.t || item.title || 'Unknown';
-      return `<div style="padding:6px 8px;border-radius:4px;background:${isCurrent ? 'var(--accent-soft)' : 'transparent'};font-size:0.78rem;display:flex;align-items:center;gap:8px;cursor:pointer" onclick="MusicPage.playFromQueue(${realIdx})">
-        <span style="font-family:JetBrains Mono,monospace;font-size:0.6rem;color:${isCurrent ? 'var(--accent)' : 'var(--text-3)'}">${icon}</span>
-        <span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:${isCurrent ? '600' : '400'}">${esc(t)}</span>
-      </div>`;
-    }).join('');
+    if (item.vid) this.playYT(item.vid);
   },
 
   showMusicBar(title, author) {
