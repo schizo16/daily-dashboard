@@ -1,13 +1,13 @@
 const AiRadar = {
   async load(c) {
-    c.innerHTML = '<div class="loading">Loading...</div>';
+    c.innerHTML = `<div class="loading">${_('loading')}</div>`;
     try {
       const [repos, stories] = await Promise.all([this.repos(), this.hn()]);
       c.innerHTML = '';
-      c.appendChild(this.box('Trending', 'github.com/trending', this.rl(repos)));
-      c.appendChild(this.box('HackerNews', 'news.ycombinator.com', this.hl(stories)));
+      c.appendChild(this.box(_('trending'), 'github.com/trending', this.rl(repos)));
+      c.appendChild(this.box(_('hackernews'), 'news.ycombinator.com', this.hl(stories)));
     } catch (e) {
-      c.innerHTML = `<div class="loading error">Failed to load. <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">Retry</button></div>`;
+      c.innerHTML = `<div class="loading error">${_('failed')} <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">${_('retry')}</button></div>`;
     }
   },
 
@@ -23,7 +23,7 @@ const AiRadar = {
     const r = await fetch(`https://api.github.com/search/repositories?q=created:>${d.toISOString().split('T')[0]}&sort=stars&order=desc&per_page=8`, {
       headers: { 'Accept': 'application/vnd.github.v3+json' }
     });
-    if (!r.ok) throw new Error('GitHub API error');
+    if (!r.ok) throw new Error(_('githubError'));
     return (await r.json()).items.map(x => ({
       n: x.full_name, u: x.html_url, d: x.description || '',
       s: x.stargazers_count, f: x.forks_count, l: x.language

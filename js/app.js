@@ -1,13 +1,25 @@
+/* ─── i18n ─── */
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    el.textContent = _(key);
+  });
+  document.getElementById('locale-btn').textContent = currentLocale === 'vi' ? 'EN' : 'VI';
+}
+document.getElementById('locale-btn').onclick = () => {
+  setLocale(currentLocale === 'vi' ? 'en' : 'vi');
+};
+
 /* ─── Page Loaders ─── */
 
 const GamesPage = {
   current: 'wordle',
   load(container) {
     container.innerHTML = `
-      <div class="card"><div class="section-h"><h2>Games</h2></div>
+      <div class="card"><div class="section-h"><h2>${_('games')}</h2></div>
         <div class="games-picker">
-          <button class="active" data-game="wordle">Wordle</button>
-          <button data-game="quiz">Movie Quiz</button>
+          <button class="active" data-game="wordle">${_('wordle')}</button>
+          <button data-game="quiz">${_('movieQuiz')}</button>
         </div>
         <div id="games-container"></div>
       </div>`;
@@ -31,19 +43,18 @@ const GamesPage = {
 const WatchlistPage = {
   load(container) {
     const items = Storage.getWatchlist();
-    let html = '<div class="card"><div class="section-h"><h2>Watchlist</h2></div>';
+    let html = `<div class="card"><div class="section-h"><h2>${_('navWatchlist')}</h2></div>`;
     if (!items.length) {
-      html += '<div class="empty" style="padding:16px 0">Nothing saved. Browse <a href="#movies" style="color:var(--accent)">Movies</a> to add some.</div>';
+      html += `<div class="empty" style="padding:16px 0">${_('nothingSavedBrowse')}</div>`;
     } else {
       html += '<div id="wl-list">';
       items.forEach(m => {
-        html += `<div class="movie-e"><div class="movie-body"><div class="movie-name">${esc(m.title)}</div></div><button class="rm-btn" data-id="${m.id}">Remove</button></div>`;
+        html += `<div class="movie-e"><div class="movie-body"><div class="movie-name">${esc(m.title)}</div></div><button class="rm-btn" data-id="${m.id}">${_('remove')}</button></div>`;
       });
       html += '</div>';
     }
     html += '</div>';
     container.innerHTML = html;
-
     container.querySelectorAll('.rm-btn').forEach(b => {
       b.onclick = () => {
         Storage.removeFromWatchlist(Number(b.dataset.id));
@@ -93,4 +104,7 @@ document.getElementById('theme-btn').onclick = () => {
   document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
 };
 
-document.addEventListener('DOMContentLoaded', route);
+document.addEventListener('DOMContentLoaded', () => {
+  applyI18n();
+  route();
+});

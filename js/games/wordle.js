@@ -26,15 +26,18 @@ const Wordle = {
   render() {
     if (!this.c) return;
     this.c.innerHTML = `
-      <div class="section-h"><h2>Wordle</h2><span class="section-h-link" style="cursor:pointer" id="wr">New word →</span></div>
+      <div class="section-h"><h2>${_('wordle')}</h2><span class="section-h-link" style="cursor:pointer" id="wr">${_('newWord')}</span></div>
       <div class="w-grid" id="wg"></div>
-      <div class="w-inp-area"><input type="text" id="wi" class="w-inp" maxlength="5" placeholder="guess" autocomplete="off" spellcheck="false"><button class="btn btn-primary" id="ws">Guess</button></div>
+      <div class="w-inp-area"><input type="text" id="wi" class="w-inp" maxlength="5" placeholder="guess" autocomplete="off" spellcheck="false"><button class="btn btn-primary" id="ws">${_('guess')}</button></div>
       <div class="w-status" id="wo"></div>`;
     this.grid();
     if (this.over) {
       document.getElementById('wi').disabled = true;
       document.getElementById('ws').disabled = true;
-      document.getElementById('wo').textContent = this.guesses.includes(this.answer) ? `Got it! (${this.guesses.length}/6)` : `Word: ${this.answer.toUpperCase()}`;
+      const msg = this.guesses.includes(this.answer)
+        ? `${_('gotIt')} (${this.guesses.length}/6)`
+        : `${_('wordWas')} ${this.answer.toUpperCase()}`;
+      document.getElementById('wo').textContent = msg;
     }
     document.getElementById('wi').onkeydown = e => { if (e.key === 'Enter') this.guess(); };
     document.getElementById('ws').onclick = () => this.guess();
@@ -71,7 +74,7 @@ const Wordle = {
     const i = document.getElementById('wi');
     if (!i) return;
     const g = i.value.toLowerCase().trim();
-    if (g.length !== 5) { document.getElementById('wo').textContent = '5 letters'; return; }
+    if (g.length !== 5) { document.getElementById('wo').textContent = _('letters5'); return; }
     this.cur = g; this.guesses.push(g);
     if (g === this.answer || this.guesses.length >= WMAX) this.over = true;
     this.cur = ''; this.save(); this.render();

@@ -31,16 +31,57 @@ body::before {
   content: '';
   position: fixed; inset: 0; z-index: -1;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(166,124,82,0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 80%, rgba(166,124,82,0.025) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(166,124,82,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 100%, rgba(166,124,82,0.04) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 100%, rgba(166,124,82,0.03) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 50%, transparent 0%, rgba(0,0,0,0.4) 100%),
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 2px,
-      rgba(255,255,255,0.008) 2px,
-      rgba(255,255,255,0.008) 3px
+      rgba(255,255,255,0.006) 2px,
+      rgba(255,255,255,0.006) 3px
     );
   pointer-events: none;
+}
+
+/* ─── Ambient Particles ─── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: -1;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(212,197,169,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 60%, rgba(212,197,169,0.1) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 60% 15%, rgba(212,197,169,0.12) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 45%, rgba(212,197,169,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 80%, rgba(212,197,169,0.1) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 15% 85%, rgba(212,197,169,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 70%, rgba(212,197,169,0.06) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 40%, rgba(212,197,169,0.1) 0%, transparent 100%);
+  pointer-events: none;
+  animation: dustFloat 20s ease-in-out infinite alternate;
+}
+
+@keyframes dustFloat {
+  0% { transform: translate(0, 0); opacity: 0.6; }
+  50% { transform: translate(5px, -8px); opacity: 1; }
+  100% { transform: translate(-3px, 4px); opacity: 0.7; }
+}
+
+/* ─── Decorative corner ─── */
+.container {
+  max-width: 640px; margin: 0 auto; padding: 0 24px; width: 100%;
+  position: relative;
+}
+.container::before {
+  content: '✦';
+  display: block;
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--text-3);
+  letter-spacing: 0.3em;
+  padding: 4px 0 0;
+  opacity: 0.4;
 }
 
 [data-theme="light"] {
@@ -57,19 +98,27 @@ body::before {
 }
 [data-theme="light"] body::before {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(139,94,52,0.03) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(139,94,52,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(139,94,52,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, transparent 0%, rgba(0,0,0,0.1) 100%),
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 2px,
-      rgba(0,0,0,0.02) 2px,
-      rgba(0,0,0,0.02) 3px
+      rgba(0,0,0,0.015) 2px,
+      rgba(0,0,0,0.015) 3px
     );
+}
+[data-theme="light"] body::after {
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(45,36,24,0.1) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 15%, rgba(45,36,24,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 80%, rgba(45,36,24,0.06) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 70%, rgba(45,36,24,0.05) 0%, transparent 100%);
+  animation: dustFloat 25s ease-in-out infinite alternate;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-.container { max-width: 640px; margin: 0 auto; padding: 0 24px; width: 100%; }
 
 /* ─── Animations ─── */
 @keyframes fadeIn {
