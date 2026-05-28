@@ -18,7 +18,7 @@ async function showMovieDetail(id, type) {
     const d = await r.json();
     const title = isM ? d.title : d.name;
     const year = (d.release_date || d.first_air_date || '').slice(0, 4);
-    const runtime = isM ? (d.runtime ? d.runtime + ' min' : '') : (d.number_of_seasons ? d.seasons + ' seasons' : '');
+    const runtime = isM ? (d.runtime ? d.runtime + ' min' : '') : (d.number_of_seasons ? d.number_of_seasons + ' seasons' : '');
     const genres = (d.genres || []).map(g => g.name).join(', ');
     const cast = (d.credits?.cast || []).slice(0, 8).map(p => p.name).join(', ');
     const poster = d.poster_path ? `<img src="https://image.tmdb.org/t/p/w185${d.poster_path}" alt="" style="width:100px;border-radius:6px;float:left;margin:0 14px 12px 0">` : '';
