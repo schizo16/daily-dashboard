@@ -3,26 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>dashboard</title>
+<title>dashboard — personal hub</title>
+<meta name="description" content="Daily dashboard for dev news, movies, and games.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="app-header">
-    <h1 class="app-title">dashboard</h1>
-    <button id="theme-toggle" class="theme-btn" aria-label="Toggle theme">○</button>
-  </header>
-
-  <nav class="tab-bar" role="tablist">
-    <button class="tab active" data-tab="radar" role="tab" aria-selected="true">AI Radar</button>
-    <button class="tab" data-tab="movies" role="tab" aria-selected="false">Movies</button>
-    <button class="tab" data-tab="games" role="tab" aria-selected="false">Games</button>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">dashboard</a>
+      <a href="#home" data-page="home">Home</a>
+      <a href="#radar" data-page="radar">Radar</a>
+      <a href="#movies" data-page="movies">Movies</a>
+      <a href="#games" data-page="games">Games</a>
+      <a href="#watchlist" data-page="watchlist">Watchlist</a>
+      <button class="theme-btn-small" id="theme-btn" aria-label="Theme">🌙</button>
+    </div>
   </nav>
 
-  <main>
-    <section id="tab-radar" class="tab-content active" role="tabpanel"></section>
-    <section id="tab-movies" class="tab-content" role="tabpanel"></section>
-    <section id="tab-games" class="tab-content" role="tabpanel"></section>
+  <main class="container">
+    <!-- HOME -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <h1>Hello.</h1>
+        <p>A personal dashboard — AI trending, movie picks, and daily games. Built with vanilla JS, no frameworks, no slop.</p>
+        <div class="hero-links">
+          <a href="#radar">AI Radar →</a>
+          <a href="#movies">Movies →</a>
+          <a href="#games">Games →</a>
+          <a href="https://github.com/yourname/daily-dashboard" target="_blank">GitHub ↗</a>
+        </div>
+      </div>
+
+      <p style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:12px">Quick Links</p>
+      <div class="grid-2">
+        <a class="tile" href="#radar">
+          <div class="tile-icon">🔴</div>
+          <div class="tile-title">AI Radar</div>
+          <div class="tile-desc">GitHub trending repos and top HackerNews stories, updated daily.</div>
+        </a>
+        <a class="tile" href="#movies">
+          <div class="tile-icon">🎬</div>
+          <div class="tile-title">Movies</div>
+          <div class="tile-desc">Trending movies, ratings, and your personal watchlist.</div>
+        </a>
+        <a class="tile" href="#games">
+          <div class="tile-icon">🎮</div>
+          <div class="tile-title">Games</div>
+          <div class="tile-desc">Wordle and movie quiz — daily challenges with persistent scores.</div>
+        </a>
+        <a class="tile" href="#watchlist">
+          <div class="tile-icon">📋</div>
+          <div class="tile-title">Watchlist</div>
+          <div class="tile-desc">Movies you've saved. One click to remove.</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- RADAR -->
+    <section id="page-radar" class="page"></section>
+
+    <!-- MOVIES -->
+    <section id="page-movies" class="page"></section>
+
+    <!-- GAMES -->
+    <section id="page-games" class="page"></section>
+
+    <!-- WATCHLIST -->
+    <section id="page-watchlist" class="page"></section>
   </main>
+
+  <footer class="footer">
+    <div class="container">dashboard · vanilla js · 2026</div>
+  </footer>
 
   <script src="js/storage.js"></script>
   <script src="js/github-radar.js"></script>

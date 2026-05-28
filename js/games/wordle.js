@@ -26,12 +26,10 @@ const Wordle = {
   render() {
     if (!this.c) return;
     this.c.innerHTML = `
-      <div class="section">
-        <div class="section-h"><h2>Wordle</h2><span class="section-h-link" style="cursor:pointer" id="wr">New word →</span></div>
-        <div class="w-grid" id="wg"></div>
-        <div class="w-inp-area"><input type="text" id="wi" class="w-inp" maxlength="5" placeholder="guess" autocomplete="off" spellcheck="false"><button class="btn btn-primary" id="ws">Guess</button></div>
-        <div class="w-status" id="wo"></div>
-      </div>`;
+      <div class="section-h"><h2>Wordle</h2><span class="section-h-link" style="cursor:pointer" id="wr">New word →</span></div>
+      <div class="w-grid" id="wg"></div>
+      <div class="w-inp-area"><input type="text" id="wi" class="w-inp" maxlength="5" placeholder="guess" autocomplete="off" spellcheck="false"><button class="btn btn-primary" id="ws">Guess</button></div>
+      <div class="w-status" id="wo"></div>`;
     this.grid();
     if (this.over) {
       document.getElementById('wi').disabled = true;

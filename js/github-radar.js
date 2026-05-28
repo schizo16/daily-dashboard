@@ -4,7 +4,7 @@ const AiRadar = {
     try {
       const [repos, stories] = await Promise.all([this.repos(), this.hn()]);
       c.innerHTML = '';
-      c.appendChild(this.box('Trending Today', 'github.com/trending', this.rl(repos)));
+      c.appendChild(this.box('Trending', 'github.com/trending', this.rl(repos)));
       c.appendChild(this.box('HackerNews', 'news.ycombinator.com', this.hl(stories)));
     } catch (e) {
       c.innerHTML = `<div class="loading error">Failed to load. <button class="btn" onclick="AiRadar.load(this.parentElement.parentElement)">Retry</button></div>`;
@@ -12,11 +12,10 @@ const AiRadar = {
   },
 
   box(t, l, el) {
-    const s = document.createElement('div');
-    s.className = 'section';
-    s.innerHTML = `<div class="section-h"><h2>${t}</h2><a href="https://${l}" target="_blank">${l} ↗</a></div>`;
-    s.appendChild(el);
-    return s;
+    const d = document.createElement('div'); d.className = 'card';
+    d.innerHTML = `<div class="section-h"><h2>${t}</h2><a href="https://${l}" target="_blank">${l} ↗</a></div>`;
+    d.appendChild(el);
+    return d;
   },
 
   async repos() {
@@ -66,7 +65,7 @@ const AiRadar = {
     return d;
   },
 
-  eh(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; },
+  eh(s) { return esc(s); },
   ea(s) { return String(s).replace(/"/g, '&quot;'); },
   fmt(n) { return n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n); }
 };

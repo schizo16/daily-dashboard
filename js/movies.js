@@ -4,7 +4,7 @@ const Movies = {
   async load(c) {
     c.innerHTML = '<div class="loading">Loading...</div>';
     try {
-      c.innerHTML = `<div class="section"><div class="section-h"><h2>Trending Movies</h2><button id="wl-tog" class="wl-toggle">Watchlist</button></div><div id="mg"></div><div id="mw" style="display:none"></div></div>`;
+      c.innerHTML = `<div class="card"><div class="section-h"><h2>Trending Movies</h2><button id="wl-tog" class="wl-toggle">Watchlist</button></div><div id="mg"></div><div id="mw" style="display:none"></div></div>`;
       const m = await this.fetch();
       this.grd(document.getElementById('mg'), m);
       this.wl(document.getElementById('mw'));
@@ -33,7 +33,7 @@ const Movies = {
     c.innerHTML = '';
     movies.forEach(m => {
       const e = document.createElement('div'); e.className = 'movie-e';
-      e.innerHTML = `<div class="movie-body"><div class="movie-name">${this.eh(m.t)}</div><div class="movie-sub">${m.y}${m.o ? ' · ' + this.eh(m.o.slice(0, 60)) + '...' : ''} · ${m.r ? m.r.toFixed(1) : 'N/A'}</div></div><button class="wl-btn" data-id="${m.id}" data-t="${this.ea(m.t)}">Save</button>`;
+      e.innerHTML = `<div class="movie-body"><div class="movie-name">${esc(m.t)}</div><div class="movie-sub">${m.y}${m.o ? ' · ' + esc(m.o.slice(0, 60)) + '...' : ''} · ${m.r ? m.r.toFixed(1) : 'N/A'}</div></div><button class="wl-btn" data-id="${m.id}">Save</button>`;
       e.querySelector('.wl-btn').onclick = (ev) => {
         const b = ev.currentTarget;
         Storage.addToWatchlist({ id: m.id, title: m.t });
@@ -49,11 +49,9 @@ const Movies = {
     c.innerHTML = '';
     items.forEach(m => {
       const e = document.createElement('div'); e.className = 'movie-e';
-      e.innerHTML = `<div class="movie-body"><div class="movie-name">${this.eh(m.title)}</div></div><button class="rm-btn" data-id="${m.id}">Remove</button>`;
-      e.querySelector('.rm-btn').onclick = () => { Storage.removeFromWatchlist(m.id); this.wl(c); };
+      e.innerHTML = `<div class="movie-body"><div class="movie-name">${esc(m.title)}</div></div><button class="rm-btn" data-id="${m.id}">Remove</button>`;
+      e.querySelector('.rm-btn').onclick = () => { Storage.removeFromWatchlist(m.id); Movies.wl(c); };
       c.appendChild(e);
     });
   },
-
-  eh(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; },
-}
+};

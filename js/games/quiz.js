@@ -46,13 +46,11 @@ const Quiz = {
     const sh = [...q.o].sort(() => Math.random() - 0.5);
 
     this.c.innerHTML = `
-      <div class="section">
-        <div class="section-h"><h2>Movie Quiz</h2><span class="section-h-link">${this.idx + 1} / ${this.questions.length}</span></div>
-        <div class="quiz-prog">Score: ${this.score}</div>
-        <div class="quiz-q">${this.eh(q.q)}</div>
-        ${sh.map(o => `<button class="quiz-opt" data-v="${this.ea(o)}">${this.eh(o)}</button>`).join('')}
-        <div id="qfb" style="margin-top:12px;font-size:0.85rem"></div>
-      </div>`;
+      <div class="section-h"><h2>Movie Quiz</h2><span class="section-h-link">${this.idx + 1} / ${this.questions.length}</span></div>
+      <div class="quiz-prog">Score: ${this.score}</div>
+      <div class="quiz-q">${esc(q.q)}</div>
+      ${sh.map(o => `<button class="quiz-opt" data-v="${o.replace(/"/g, '&quot;')}">${esc(o)}</button>`).join('')}
+      <div id="qfb" style="margin-top:12px;font-size:0.85rem"></div>`;
 
     if (this.ans) this.reveal(q.a);
 
@@ -82,7 +80,7 @@ const Quiz = {
 
   done() {
     this.c.innerHTML = `
-      <div class="section" style="text-align:center;padding-top:16px">
+      <div style="text-align:center;padding:16px 0">
         <div class="section-h" style="justify-content:center;margin-bottom:12px"><h2>Movie Quiz</h2></div>
         <div style="font-size:2rem;font-weight:700">${this.score}/${this.questions.length}</div>
         <div style="color:var(--text-2);margin:8px 0 20px">${this.score === this.questions.length ? 'Perfect.' : this.score >= 3 ? 'Nice.' : 'Try again.'}</div>
@@ -90,7 +88,4 @@ const Quiz = {
       </div>`;
     document.getElementById('qr').onclick = () => { Storage.remove('game_quiz'); this.init(this.c); };
   },
-
-  eh(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; },
-  ea(s) { return String(s).replace(/"/g, '&quot;'); }
 };
