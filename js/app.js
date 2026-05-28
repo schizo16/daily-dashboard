@@ -601,15 +601,6 @@ const MusicPage = {
       <div id="ms-player"></div>
       <div id="ms-frame-container" style="width:0;height:0;overflow:hidden"></div>
       <div id="ms-queue" style="margin-bottom:12px;display:none"></div>
-
-      <div style="font-size:0.72rem;color:var(--text-2);margin-bottom:8px;font-family:JetBrains Mono,monospace">🎧 QUICK LISTEN</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        ${FEATURED.map(m => `
-          <div class="ms-feat" data-vid="${m.vid}" data-platform="${m.platform}" data-type="${m.type || ''}" style="padding:10px 12px;border:1px solid var(--border);border-radius:6px;text-align:center;cursor:pointer;transition:all 0.12s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
-            <div style="font-size:0.72rem;font-weight:500">${m.title}</div>
-            <div style="font-size:0.55rem;color:var(--text-3);margin-top:2px">${m.icon} ${m.platform === 'sp' ? 'Spotify' : m.platform === 'audio' ? 'Direct' : 'YouTube'}</div>
-          </div>`).join('')}
-      </div>
     </div>`;
 
     document.getElementById('ms-play-btn').onclick = () => {
@@ -641,15 +632,7 @@ const MusicPage = {
       if (e.key === 'Enter') document.getElementById('ms-play-btn').click();
     };
 
-    document.querySelectorAll('.ms-feat').forEach(el => {
-      el.onclick = () => {
-        MusicPage._queue = FEATURED;
-        const p = el.dataset.platform;
-        if (p === 'sp') MusicPage.playSpotify(el.dataset.vid, el.dataset.type || 'playlist');
-        else if (p === 'audio') MusicPage.playAudio(el.dataset.vid);
-        else MusicPage.playYT(el.dataset.vid);
-      };
-    });
+
 
     document.getElementById('ms-pause').onclick = () => {
       const frame = document.getElementById('ms-frame');
