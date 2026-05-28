@@ -624,17 +624,64 @@ const MusicPage = {
     document.getElementById('ms-pause').textContent = '⏸ Pause';
     const frame = document.getElementById('ms-frame');
     frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&controls=0&showinfo=0`;
+    this._currentId = id;
 
     // Fetch video title via oembed
     fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`)
       .then(r => r.ok ? r.json() : null)
       .then(d => {
         if (d) {
-          document.getElementById('ms-title').textContent = `🎵 ${esc(d.title || '')}`;
-          document.getElementById('ms-status').textContent = `👤 ${esc(d.author_name || '')}`;
+          const title = d.title || '';
+          const author = d.author_name || '';
+          document.getElementById('ms-title').textContent = `🎵 ${esc(title)}`;
+          document.getElementById('ms-status').textContent = `👤 ${esc(author)}`;
+          this.showMusicBar(title, author);
         }
       })
       .catch(() => {});
+  },
+
+  showMusicBar(title, author) {
+    let bar = document.getElementById('music-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'music-bar';
+      document.body.appendChild(bar);
+    }
+    bar.style.cssText = 'position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:999;background:var(--surface);border:1px solid var(--border);border-top-left-radius:12px;border-top-right-radius:12px;padding:12px 18px;max-width:600px;width:92%;box-shadow:0 -4px 20px rgba(0,0,0,0.15);animation:fadeIn 0.2s ease-out';
+    bar.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:0.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">🎵 ${esc(title || 'Playing')}</div>
+          <div style="font-size:0.65rem;color:var(--text-3)">👤 ${esc(author || 'YouTube')}</div>
+        </div>
+        <div style="display:flex;gap:4px">
+          <button class="btn" id="mb-play" style="padding:4px 10px;font-size:0.75rem">⏸</button>
+          <button class="btn" id="mb-stop" style="padding:4px 10px;font-size:0.75rem">⏹</button>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <span style="font-size:0.6rem;color:var(--text-3)">🔊</span>
+        <input type="range" id="mb-vol" min="0" max="1" step="0.05" value="0.7" style="flex:1;height:4px;accent-color:var(--accent);cursor:pointer">
+        <span id="mb-vol-pct" style="font-size:0.6rem;color:var(--text-3);font-family:JetBrains Mono,monospace;min-width:28px;text-align:right">70%</span>
+      </div>`;
+    document.getElementById('mb-play').onclick = () => {
+      const frame = document.getElementById('ms-frame');
+      const p = frame.src.includes('autoplay=1');
+      frame.src = p ? frame.src.replace('autoplay=1','autoplay=0') : frame.src.replace('autoplay=0','autoplay=1');
+      document.getElementById('mb-play').textContent = p ? '▶' : '⏸';
+    };
+    document.getElementById('mb-stop').onclick = () => {
+      document.getElementById('ms-frame').src = 'https://www.youtube.com/embed/?autoplay=0';
+      document.getElementById('ms-title').textContent = 'No track playing';
+      document.getElementById('ms-pause').disabled = true;
+      document.getElementById('ms-stop').disabled = true;
+      bar.remove();
+    };
+    document.getElementById('mb-vol').oninput = (e) => {
+      document.getElementById('mb-vol-pct').textContent = Math.round(e.target.value * 100) + '%';
+      // YouTube iframe volume is controlled differently - this is visual only
+    };
   }
 };
 
