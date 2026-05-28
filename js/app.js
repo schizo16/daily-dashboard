@@ -442,16 +442,50 @@ const RadioPage = {
     this._currentUrl = url;
     this._currentName = name;
     this._currentCountry = countryName;
+    this._nowPlaying = '';
 
     this._audio.src = url;
     this._audio.play().catch(() => {
       if (status) status.textContent = '❌ Cannot play (CORS or dead link)';
     });
 
-    if (stop) stop.onclick = () => { this._audio.pause(); this._audio.src = ''; if (status) status.textContent = '⏹ Stopped'; this.hidePlayer(); };
+    if (stop) stop.onclick = () => { clearInterval(this._npInterval); this._audio.pause(); this._audio.src = ''; if (status) status.textContent = '⏹ Stopped'; this.hidePlayer(); };
     if (play) play.onclick = () => this._audio.play();
 
     this.showPlayer();
+
+    // Try to fetch now-playing for SomaFM stations
+    const channelMatch = url.match(/https:\/\/(?:ice\d)\.somafm\.com\/(\w+)-128/);
+    if (channelMatch) {
+      const channel = channelMatch[1];
+      this._npInterval = setInterval(async () => {
+        try {
+          const r = await fetch(`https://api.somafm.com/songs/${channel}.json`);
+          if (r.ok) {
+            const d = await r.json();
+            if (d.song && d.song !== this._nowPlaying) {
+              this._nowPlaying = d.song;
+              const np = document.getElementById('bar-nowplaying');
+              if (np) np.textContent = `🎵 ${esc(d.song)}`;
+            }
+          }
+        } catch {}
+      }, 15000);
+      // Fetch immediately
+      setTimeout(async () => {
+        try {
+          const r = await fetch(`https://api.somafm.com/songs/${channel}.json`);
+          if (r.ok) {
+            const d = await r.json();
+            if (d.song) {
+              this._nowPlaying = d.song;
+              const np = document.getElementById('bar-nowplaying');
+              if (np) np.textContent = `🎵 ${esc(d.song)}`;
+            }
+          }
+        } catch {}
+      }, 2000);
+    }
   },
 
   showPlayer() {
@@ -466,7 +500,7 @@ const RadioPage = {
       <div style="display:flex;align-items:center;gap:12px">
         <div style="flex:1;min-width:0">
           <div style="font-size:0.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" id="bar-title">${esc(this._currentName)}</div>
-          <div style="font-size:0.65rem;color:var(--text-3)" id="bar-country">${esc(this._currentCountry || '')}</div>
+          <div style="font-size:0.65rem;color:var(--text-3)" id="bar-nowplaying"></div>
         </div>
         <div style="display:flex;gap:4px;align-items:center">
           <button class="btn" id="bar-play" style="padding:4px 10px;font-size:0.75rem">⏸</button>
