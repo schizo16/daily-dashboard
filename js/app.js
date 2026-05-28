@@ -1,244 +1,544 @@
-/* ─── Tools ─── */
-const ToolsPage = {
-  _current: null,
-  load(c) {
-    this._c = c;
-    this.showGrid();
-  },
+/* ─── i18n ─── */
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    el.textContent = _(key);
+  });
+  document.getElementById('locale-btn').textContent = currentLocale === 'vi' ? 'EN' : 'VI';
+}
+document.getElementById('locale-btn').onclick = () => {
+  setLocale(currentLocale === 'vi' ? 'en' : 'vi');
+};
 
-  showGrid() {
-    this._c.innerHTML = `
-      <div class="card">
-        <div class="section-h"><h2>🧰 Tools</h2></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          ${this.tile('qr', 'QR Code', 'Generate QR codes from URLs or text')}
-          ${this.tile('pw', 'Password', 'Secure random password generator')}
-          ${this.tile('counter', 'Text Count', 'Count words, chars, lines')}
-          ${this.tile('random', 'Random', 'Random numbers & dice rolls')}
-          ${this.tile('base64', 'Base64', 'Encode / decode Base64')}
-          ${this.tile('json', 'JSON', 'Format and validate JSON')}
-          ${this.tile('typing', 'Typing', 'Test your typing speed')}
-          ${this.tile('color', 'Color', 'HEX / RGB color converter')}
-        </div>
-      </div>`;
-    this._c.querySelectorAll('.tool-tile').forEach(t => {
-      t.onclick = () => this.showTool(t.dataset.tool);
+/* ─── Page Loaders ─── */
+
+
+
+const GAME_GENRES = [
+  { id: 'topdeals', label: '⭐🔥 Top deal', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&steamRating=85&pageNumber=' },
+  { id: 'popular', label: '🔥 Phổ biến', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=DealRating&steamRating=60&pageNumber=' },
+  { id: 'deals', label: '🏷️ Giảm giá', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&steamRating=60&pageNumber=' },
+  { id: 'under5', label: '💵 Dưới $5', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&maxPrice=5&pageNumber=' },
+  { id: 'under10', label: '💵 Dưới $10', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Savings&maxPrice=10&pageNumber=' },
+  { id: 'toprated', label: '⭐ Top rate', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Metacritic&steamRating=90&pageNumber=' },
+  { id: 'new', label: '🆕 Mới', url: 'https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=20&sortBy=Release&steamRating=60&pageNumber=' },
+];
+
+const GamesPage = {
+  load(container) {
+    container.innerHTML = '';
+    this.loadGames(container);
+    this.loadNews(container);
+  },
+  async loadGames(c) {
+    try {
+      const div = document.createElement('div'); div.className = 'card';
+      div.style.marginTop = '12px';
+      div.innerHTML = `<div class="section-h"><h2>🎮 Steam Deals</h2><a href="https://www.cheapshark.com" target="_blank">cheapshark ↗</a></div>
+        <div class="mood-bar" id="gp-bar" style="display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap"></div>
+        <div id="gp-grid"></div>`;
+      c.appendChild(div);
+      this._page = 1; this._genre = 'topdeals';
+      this.renderGenreBar();
+      await this.loadPage();
+    } catch (_) {}
+  },
+  renderGenreBar() {
+    const bar = document.getElementById('gp-bar');
+    if (!bar) return;
+    GAME_GENRES.forEach(g => {
+      const b = document.createElement('button');
+      b.className = 'mood-btn';
+      b.textContent = g.label;
+      b.style.cssText = 'padding:4px 10px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text-2);cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.6rem';
+      if (g.id === this._genre) { b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)'; }
+      b.onmouseover = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border-2)'; };
+      b.onmouseout = () => { if (!b.classList.contains('active')) b.style.borderColor = 'var(--border)'; };
+      b.onclick = () => {
+        bar.querySelectorAll('.mood-btn').forEach(x => { x.classList.remove('active'); x.style.background = 'transparent'; x.style.color = 'var(--text-2)'; x.style.borderColor = 'var(--border)'; });
+        b.classList.add('active'); b.style.background = 'var(--accent)'; b.style.color = 'var(--bg)'; b.style.borderColor = 'var(--accent)';
+        this._genre = g.id; this._page = 1; this.loadPage();
+      };
+      bar.appendChild(b);
     });
   },
+  async loadPage() {
+    const grid = document.getElementById('gp-grid');
+    if (!grid) return;
+    // Remove old pagination nav
+    const oldNav = grid.parentElement.querySelector('.gp-nav');
+    if (oldNav) oldNav.remove();
+    grid.innerHTML = '<div class="loading" style="padding:16px 0">Loading...</div>';
+    const genre = GAME_GENRES.find(g => g.id === this._genre);
+    if (!genre) return;
+    try {
+      const r = await fetch(genre.url + this._page);
+      if (!r.ok) throw Error('API error');
+      const deals = await r.json();
+      grid.innerHTML = '';
+      if (!deals || !deals.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No deals</div>'; return; }
+      deals.slice(0, 15).forEach((g, i) => {
+        const e = document.createElement('a'); e.className = 'movie-e';
+        e.style.animation = 'fadeIn 0.3s ease-out both'; e.style.animationDelay = `${i * 0.025}s`;
+        e.href = `https://store.steampowered.com/app/${g.steamAppID}/`; e.target = '_blank';
+        e.style.cssText = 'text-decoration:none;display:flex;cursor:pointer';
+        const img = g.thumb || '';
+        const pct = g.savings ? Math.round(Number(g.savings)) : 0;
+        const rating = g.steamRatingPercent ? `${g.steamRatingPercent}%` : '—';
+        const ratingTxt = g.steamRatingText ? `<span style="color:#4ade80">${esc(g.steamRatingText)}</span>` : '';
+        const price = g.salePrice ? `$${g.salePrice}` : 'Free';
+        const orig = g.normalPrice && g.normalPrice !== g.salePrice ? `<s>$${g.normalPrice}</s>` : '';
+        e.innerHTML = `<div class="movie-thumb" style="width:60px;height:34px">${img ? `<img src="${img}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover">` : '🎮'}</div>
+          <div class="movie-body"><div class="movie-name" style="color:var(--text)">${esc(g.title || g.external || '')}</div>
+          <div class="movie-sub">${pct ? `<span style="background:#4ade80;color:#000;padding:1px 5px;border-radius:3px;font-weight:700">-${pct}%</span> ` : ''}${orig} <span style="font-weight:600">${price}</span> · ⭐ ${rating} ${ratingTxt}</div></div>`;
+        grid.appendChild(e);
+      });
+      const nav = document.createElement('div');
+      nav.className = 'gp-nav';
+      nav.style.cssText = 'display:flex;gap:4px;margin-top:12px;justify-content:center;align-items:center;flex-wrap:wrap';
+      const total = Math.min(50, this._page + 4);
+      const start = Math.max(1, this._page - 2);
+      for (let p = start; p <= Math.min(total, start + 4); p++) {
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        btn.style.cssText = `min-width:28px;height:28px;border:1px solid ${p === this._page ? 'var(--accent)' : 'var(--border)'};border-radius:4px;background:${p === this._page ? 'var(--accent)' : 'transparent'};color:${p === this._page ? 'var(--bg)' : 'var(--text-2)'};cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.65rem;transition:all 0.1s`;
+        btn.onmouseover = () => { if (p !== this._page) btn.style.borderColor = 'var(--text-3)'; };
+        btn.onmouseout = () => { if (p !== this._page) btn.style.borderColor = 'var(--border)'; };
+        btn.onclick = () => { this._page = p; this.loadPage(); };
+        nav.appendChild(btn);
+      }
+      grid.parentElement.appendChild(nav);
+    } catch (e) {
+      grid.innerHTML = '<div class="empty" style="padding:16px 0">Failed to load. <button class="btn" onclick="GamesPage.loadPage()">Retry</button></div>';
+    }
+  },
+  async loadNews(c) {
+    try {
+      const r = await fetch('https://www.reddit.com/r/gaming/hot.json?limit=15');
+      if (!r.ok) return;
+      const data = await r.json();
+      const posts = data.data.children.filter(x => !x.data.stickied).slice(0, 12).map(x => ({
+        t: x.data.title, u: x.data.url, s: x.data.score, c: x.data.num_comments
+      }));
+      if (!posts.length) return;
+      const div = document.createElement('div'); div.className = 'card';
+      div.style.marginTop = '12px';
+      div.innerHTML = `<div class="section-h"><h2>${_('gameNews')}</h2><a href="https://reddit.com/r/gaming" target="_blank">r/gaming ↗</a></div>`;
+      const list = document.createElement('div');
+      posts.forEach((p, i) => {
+        const e = document.createElement('div'); e.className = 'entry';
+        e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${0.03 + i * 0.02}s`;
+        e.innerHTML = `<div class="entry-thumb">🎮</div><div class="entry-body">
+          <div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
+          <div class="entry-meta"><span>${p.s} points</span><span>${p.c} comments</span><button class="read-btn" data-text="${esc(p.t)}">📖 ${_('readAloud')}</button></div>
+        </div>`;
+        e.querySelector('.read-btn').onclick = () => showReader(c, p.t, p.t, p.u);
+        list.appendChild(e);
+      });
+      div.appendChild(list);
+      c.appendChild(div);
+    } catch (_) {}
+  }
+};
 
+const WatchlistPage = {
+  load(container) {
+    const items = Storage.getWatchlist();
+    let html = `<div class="card"><div class="section-h"><h2>${_('navWatchlist')}</h2></div>`;
+    if (!items.length) {
+      html += `<div class="empty" style="padding:16px 0">${_('nothingSavedBrowse')}</div>`;
+    } else {
+      html += '<div id="wl-list">';
+      items.forEach(m => {
+        html += `<div class="movie-e"><div class="movie-body"><div class="movie-name">${esc(m.title)}</div></div><button class="rm-btn" data-id="${m.id}">${_('remove')}</button></div>`;
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+    container.querySelectorAll('.rm-btn').forEach(b => {
+      b.onclick = () => {
+        Storage.removeFromWatchlist(Number(b.dataset.id));
+        WatchlistPage.load(container);
+      };
+    });
+  }
+};
+
+/* ─── AI Journalist ─── */
+const AI_KEY = 'AIzaSyCDUdpLXKQzx_exXm5RIG7l8Gq5RjdjPcU';
+
+async function aiWrite(title, content) {
+  if (!content) return '';
+  // Try Gemini first
+  try {
+    const prompt = `Bạn là biên tập viên báo điện tử. Viết lại tin sau thành bài báo tiếng Việt chuyên nghiệp, hấp dẫn. Giữ nguyên sự thật, thêm ngữ cảnh. Dài 2-3 đoạn ngắn.
+
+Tin gốc (tiếng Anh):
+Tiêu đề: ${title}
+Nội dung: ${content.slice(0, 2000)}`;
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${AI_KEY}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 800 } })
+    });
+    if (r.ok) {
+      const d = await r.json();
+      const t = d.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (t) return t;
+    }
+  } catch {}
+
+  // Fallback: LibreTranslate
+  try {
+    const r = await fetch('https://libretranslate.com/translate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ q: `Tiêu đề: ${title}\n\n${content.slice(0, 1000)}`, source: 'en', target: 'vi' })
+    });
+    if (r.ok) {
+      const d = await r.json();
+      if (d.translatedText) return d.translatedText;
+    }
+  } catch {}
+
+  return content;
+}
+
+/* ─── Inline Reader ─── */
+function showReader(container, title, content, sourceUrl) {
+  const existing = document.getElementById('reader-panel');
+  if (existing) existing.remove();
+
+  const panel = document.createElement('div');
+  panel.id = 'reader-panel';
+  panel.style.cssText = 'position:fixed;inset:0;z-index:1000;background:var(--bg);overflow-y:auto;padding:24px;animation:fadeIn 0.2s ease-out';
+  panel.innerHTML = `
+    <div style="max-width:640px;margin:0 auto;position:relative">
+      <button id="reader-close" style="position:fixed;top:16px;right:16px;z-index:10;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.75rem;color:var(--text-2)">✕ Đóng</button>
+      <div id="reader-title" style="font-size:1.2rem;font-weight:700;margin-bottom:16px;padding-right:80px">${esc(title)}</div>
+      <div id="reader-content" style="font-size:0.92rem;line-height:1.7;color:var(--text-2)"><div class="loading">AI đang viết bài...</div></div>
+      <div style="margin-top:20px;font-size:0.72rem;color:var(--text-3)"><a href="${esc(sourceUrl)}" target="_blank" style="color:var(--accent)">${_('viewOriginal')} ↗</a></div>
+    </div>`;
+  document.body.appendChild(panel);
+  document.getElementById('reader-close').onclick = () => panel.remove();
+  panel.addEventListener('click', (e) => { if (e.target === panel) panel.remove(); });
+
+  (async () => {
+    const article = await aiWrite(title, content);
+    const parts = article.split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom:12px">${esc(p)}</p>`).join('');
+    document.getElementById('reader-content').innerHTML = parts || `<p>${esc(article)}</p>`;
+  })();
+}
+
+/* ─── Tech News (Vietnamese + global) ─── */
+async function loadTechNews(c) {
+  try {
+    const [vnRes, enRes] = await Promise.all([
+      fetch('https://www.reddit.com/r/congnghe/hot.json?limit=8').catch(() => null),
+      fetch('https://www.reddit.com/r/artificial/hot.json?limit=8').catch(() => null)
+    ]);
+    const allPosts = [];
+    if (vnRes && vnRes.ok) {
+      const d = await vnRes.json();
+      d.data.children.filter(x => !x.data.stickied).slice(0, 8).forEach(x => {
+        allPosts.push({ t: x.data.title, u: x.data.url, s: x.data.score, lang: 'VI' });
+      });
+    }
+    if (enRes && enRes.ok) {
+      const d = await enRes.json();
+      d.data.children.filter(x => !x.data.stickied).slice(0, 8).forEach(x => {
+        allPosts.push({ t: x.data.title, u: x.data.url, s: x.data.score, lang: 'EN' });
+      });
+    }
+    if (!allPosts.length) return;
+    const div = document.createElement('div'); div.className = 'card';
+    div.style.marginTop = '12px';
+    div.innerHTML = `<div class="section-h"><h2>${_('techNews')}</h2><a href="https://reddit.com/r/artificial" target="_blank">reddit ↗</a></div>`;
+    const list = document.createElement('div');
+    allPosts.forEach((p, i) => {
+      const e = document.createElement('div'); e.className = 'entry';
+      e.style.animation = 'slideDown 0.3s ease-out both'; e.style.animationDelay = `${0.03 + i * 0.02}s`;
+      const icon = p.lang === 'VI' ? '🇻🇳' : '🤖';
+      e.innerHTML = `<div class="entry-thumb">${icon}</div><div class="entry-body">
+        <div class="entry-title"><a href="${esc(p.u)}" target="_blank">${esc(p.t)}</a></div>
+        <div class="entry-meta"><span>${p.lang}</span><span>${p.s} points</span><button class="read-btn" data-text="${esc(p.t)}">📖 ${_('readAloud')}</button></div>
+      </div>`;
+      e.querySelector('.read-btn').onclick = () => showReader(c, p.t, p.t, p.u);
+      list.appendChild(e);
+    });
+    div.appendChild(list);
+    c.appendChild(div);
+  } catch (_) {}
+}
+
+function esc(s) {
+  if (typeof s !== 'string') s = String(s);
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ─── Router ─── */
+
+function show(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav a[data-page]').forEach(a => a.classList.remove('active'));
+
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+
+  const link = document.querySelector(`.nav a[data-page="${page}"]`);
+  if (link) link.classList.add('active');
+
+  if (page === 'radar') { AiRadar.load(el); loadTechNews(el); }
+  else if (page === 'movies') Movies.load(el);
+  else if (page === 'games') GamesPage.load(el);
+  else if (page === 'watchlist') WatchlistPage.load(el);
+  else if (page === 'tools') ToolsPage.load(el);
+  startAutoRefresh(page);
+}
+
+/* ─── Auto-refresh ─── */
+const REFRESH_INTERVALS = {
+  radar: 5 * 60 * 1000,
+  movies: 30 * 60 * 1000,
+  games: 30 * 60 * 1000,
+};
+let refreshTimers = {};
+
+function startAutoRefresh(page) {
+  stopAutoRefresh();
+  const ms = REFRESH_INTERVALS[page];
+  if (!ms) return;
+  refreshTimers[page] = setTimeout(() => {
+    const el = document.getElementById('page-' + page);
+    if (el && el.classList.contains('active')) {
+      if (page === 'radar') AiRadar.load(el);
+      else if (page === 'movies') Movies.load(el);
+      else if (page === 'games') GamesPage.load(el);
+    }
+  }, ms);
+}
+
+function stopAutoRefresh() {
+  Object.values(refreshTimers).forEach(t => clearTimeout(t));
+  refreshTimers = {};
+}
+
+function route() {
+  show((location.hash.slice(1) || 'home').split('?')[0].split('&')[0]);
+}
+
+window.addEventListener('hashchange', route);
+
+/* ─── Theme ─── */
+const t = Storage.getTheme();
+document.documentElement.setAttribute('data-theme', t);
+document.getElementById('theme-btn').textContent = t === 'dark' ? '☀️' : '🌙';
+document.getElementById('theme-btn').onclick = () => {
+  const n = Storage.getTheme() === 'dark' ? 'light' : 'dark';
+  Storage.setTheme(n);
+  document.documentElement.setAttribute('data-theme', n);
+  document.getElementById('theme-btn').textContent = n === 'dark' ? '☀️' : '🌙';
+};
+
+/* ─── Tools ─── */
+const ToolsPage = {
+  _c: null,
+  load(c) { this._c = c; this.showGrid(); },
+  showGrid() {
+    this._c.innerHTML = `<div class="card"><div class="section-h"><h2>🧰 Tools</h2></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        ${this.tile('qr','QR Code','Generate QR codes from URLs or text')}
+        ${this.tile('pw','Password','Secure random password generator')}
+        ${this.tile('counter','Text Count','Count words, chars, lines')}
+        ${this.tile('random','Random','Random numbers & dice rolls')}
+        ${this.tile('b64','Base64','Encode / decode Base64')}
+        ${this.tile('json','JSON','Format and validate JSON')}
+        ${this.tile('typing','Typing','Test your typing speed')}
+        ${this.tile('color','Color','HEX / RGB color converter')}
+      </div></div>`;
+    this._c.querySelectorAll('.tool-tile').forEach(t => { t.onclick = () => this.showTool(t.dataset.tool); });
+  },
   tile(id, title, desc) {
-    return `<div class="tool-tile" data-tool="${id}" style="padding:14px;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
+    return `<div class="tool-tile" data-tool="${id}" style="padding:14px;border:1px solid var(--border);border-radius:6px;cursor:pointer" onmouseover="this.style.borderColor='var(--border-2)'" onmouseout="this.style.borderColor='var(--border)'">
       <div style="font-size:0.85rem;font-weight:600;margin-bottom:3px">${title}</div>
       <div style="font-size:0.7rem;color:var(--text-2)">${desc}</div>
     </div>`;
   },
-
-  showTool(tool) {
-    const fns = {
-      qr: () => this.qrUI(),
-      pw: () => this.pwUI(),
-      counter: () => this.counterUI(),
-      random: () => this.randomUI(),
-      base64: () => this.b64UI(),
-      json: () => this.jsonUI(),
-      typing: () => this.typingUI(),
-      color: () => this.colorUI(),
+  back() { this.showGrid(); },
+  showTool(t) {
+    const f = {
+      qr: () => this.qrUI(), pw: () => this.pwUI(), counter: () => this.counterUI(),
+      random: () => this.randomUI(), b64: () => this.b64UI(), json: () => this.jsonUI(),
+      typing: () => this.typingUI(), color: () => this.colorUI(),
     };
-    (fns[tool] || (() => this.showGrid()))();
+    (f[t] || (() => this.showGrid()))();
+  },
+  render(title, body) {
+    this._c.innerHTML = `<div style="margin-bottom:12px"><button class="btn" onclick="ToolsPage.back()">← Back</button></div>
+      <div class="card"><div class="section-h"><h2>${title}</h2></div>${body}</div>`;
   },
 
-  backBtn() {
-    return `<div style="margin-bottom:12px"><button class="btn" onclick="ToolsPage.showGrid()">← Back</button></div>`;
-  },
-
-  /* QR */
   qrUI() {
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>QR Code</h2></div>
-      <div style="display:flex;gap:8px"><input type="text" id="t-qr" class="w-inp" style="flex:1;text-transform:none;text-align:left;width:auto" placeholder="URL or text..."><button class="btn btn-primary" id="t-qr-btn">Generate</button></div>
-      <div id="t-qr-out" style="margin-top:12px;text-align:center;min-height:100px"></div></div>`;
-    document.getElementById('t-qr-btn').onclick = () => {
-      const v = document.getElementById('t-qr').value.trim();
-      if (!v) return;
-      document.getElementById('t-qr-out').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(v)}" alt="" style="width:160px;height:160px;border-radius:6px">`;
+    this.render('QR Code', `<div style="display:flex;gap:8px"><input type="text" id="tqr" class="w-inp" style="flex:1;text-transform:none;text-align:left;width:auto" placeholder="URL or text..."><button class="btn btn-primary" id="tqrb">Generate</button></div>
+      <div id="tqro" style="margin-top:12px;text-align:center;min-height:80px"></div>`);
+    document.getElementById('tqrb').onclick = () => {
+      const v = document.getElementById('tqr').value.trim();
+      if (v) document.getElementById('tqro').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(v)}" alt="" style="width:150px;border-radius:6px">`;
     };
   },
-
-  /* Password */
   pwUI() {
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>Password Generator</h2></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
-        <input type="text" id="t-pw" class="w-inp" style="flex:1;text-transform:none;text-align:left;min-width:180px;font-family:JetBrains Mono,monospace" readonly>
-        <button class="btn btn-primary" id="t-pw-btn">Generate</button>
-        <label style="font-family:JetBrains Mono,monospace;font-size:0.65rem;color:var(--text-2);display:flex;align-items:center;gap:4px">
-          <input type="number" id="t-pw-len" value="16" min="4" max="64" style="width:50px;border:1px solid var(--border);border-radius:4px;padding:2px 6px;background:var(--surface);color:var(--text);font-family:JetBrains Mono,monospace;font-size:0.7rem"> chars
-        </label>
-      </div>
-      <button class="btn" id="t-pw-copy">📋 Copy</button></div>`;
+    this.render('Password', `<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <input type="text" id="tpw" class="w-inp" style="flex:1;text-transform:none;min-width:180px;font-family:JetBrains Mono,monospace" readonly>
+      <button class="btn btn-primary" id="tpwb">Generate</button>
+      <label style="font-size:0.65rem;color:var(--text-2);display:flex;align-items:center;gap:4px;font-family:JetBrains Mono,monospace">
+        <input type="number" id="tpwl" value="16" min="4" max="64" style="width:50px;border:1px solid var(--border);border-radius:4px;padding:2px 6px;background:var(--surface);color:var(--text);font-family:JetBrains Mono,monospace;font-size:0.7rem"> chars
+      </label></div>
+      <button class="btn" id="tpwc">📋 Copy</button>`);
     const gen = () => {
-      const len = Number(document.getElementById('t-pw-len').value) || 16;
+      const len = Number(document.getElementById('tpwl').value) || 16;
       const c = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-      let p = '';
-      for (let i = 0; i < len; i++) p += c[Math.floor(Math.random() * c.length)];
-      document.getElementById('t-pw').value = p;
+      let p = ''; for (let i = 0; i < len; i++) p += c[Math.floor(Math.random() * c.length)];
+      document.getElementById('tpw').value = p;
     };
-    document.getElementById('t-pw-btn').onclick = gen;
-    document.getElementById('t-pw-copy').onclick = () => {
-      document.getElementById('t-pw').select(); document.execCommand('copy');
-      const b = document.getElementById('t-pw-copy'); b.textContent = '✓ Copied';
+    document.getElementById('tpwb').onclick = gen; gen();
+    document.getElementById('tpwc').onclick = () => {
+      document.getElementById('tpw').select(); document.execCommand('copy');
+      const b = document.getElementById('tpwc'); b.textContent = '✓ Copied';
       setTimeout(() => { b.textContent = '📋 Copy'; }, 2000);
     };
-    gen();
   },
-
-  /* Text Counter */
   counterUI() {
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>Text Counter</h2></div>
-      <textarea id="t-tc" class="notes-area" style="font-family:inherit;font-size:0.88rem" rows="6" placeholder="Type or paste text..."></textarea>
-      <div id="t-tc-out" style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text-2);margin-top:6px"></div></div>`;
-    const up = () => {
-      const t = document.getElementById('t-tc').value;
-      document.getElementById('t-tc-out').textContent = `${t.trim() ? t.trim().split(/\s+/).length : 0} words · ${t.length} chars · ${t ? t.split('\n').length : 0} lines`;
-    };
-    document.getElementById('t-tc').oninput = up; up();
+    this.render('Text Counter', `<textarea id="ttc" class="notes-area" style="font-family:inherit;font-size:0.88rem" rows="6" placeholder="Type or paste text..."></textarea>
+      <div id="ttco" style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text-2);margin-top:6px"></div>`);
+    const up = () => { const t = document.getElementById('ttc').value; document.getElementById('ttco').textContent = `${t.trim()?t.trim().split(/\s+/).length:0} words · ${t.length} chars · ${t?t.split('\n').length:0} lines`; };
+    document.getElementById('ttc').oninput = up; up();
   },
-
-  /* Random */
   randomUI() {
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>Random Number</h2></div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
-        <label style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text-2)">Min <input type="number" id="t-r-min" value="1" style="width:60px;border:1px solid var(--border);border-radius:4px;padding:4px 6px;background:var(--surface);color:var(--text);font-family:JetBrains Mono,monospace;font-size:0.8rem"></label>
-        <label style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text-2)">Max <input type="number" id="t-r-max" value="100" style="width:60px;border:1px solid var(--border);border-radius:4px;padding:4px 6px;background:var(--surface);color:var(--text);font-family:JetBrains Mono,monospace;font-size:0.8rem"></label>
-        <button class="btn btn-primary" id="t-r-btn">Roll</button>
-      </div>
-      <div id="t-r-out" style="font-size:2.5rem;font-weight:700;text-align:center;padding:16px 0;font-family:JetBrains Mono,monospace">—</div></div>`;
-    document.getElementById('t-r-btn').onclick = () => {
-      const min = Number(document.getElementById('t-r-min').value) || 1;
-      const max = Number(document.getElementById('t-r-max').value) || 100;
-      document.getElementById('t-r-out').textContent = Math.floor(Math.random() * (max - min + 1)) + min;
-    };
+    this.render('Random Number', `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+      <label style="font-size:0.7rem;color:var(--text-2);font-family:JetBrains Mono,monospace">Min <input type="number" id="trmin" value="1" style="width:60px;border:1px solid var(--border);border-radius:4px;padding:4px 6px;background:var(--surface);color:var(--text);font-family:JetBrains Mono,monospace;font-size:0.8rem"></label>
+      <label style="font-size:0.7rem;color:var(--text-2);font-family:JetBrains Mono,monospace">Max <input type="number" id="trmax" value="100" style="width:60px;border:1px solid var(--border);border-radius:4px;padding:4px 6px;background:var(--surface);color:var(--text);font-family:JetBrains Mono,monospace;font-size:0.8rem"></label>
+      <button class="btn btn-primary" id="trb">Roll</button></div>
+      <div id="tro" style="font-size:2.5rem;font-weight:700;text-align:center;padding:16px 0;font-family:JetBrains Mono,monospace">—</div>`);
+    document.getElementById('trb').onclick = () => { const min=Number(document.getElementById('trmin').value)||1, max=Number(document.getElementById('trmax').value)||100; document.getElementById('tro').textContent=Math.floor(Math.random()*(max-min+1))+min; };
   },
-
-  /* Base64 */
   b64UI() {
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>Base64</h2></div>
-      <div style="display:flex;gap:4px;margin-bottom:8px">
-        <button class="btn btn-primary" id="t-b64-enc">Encode →</button>
-        <button class="btn" id="t-b64-dec">← Decode</button>
-      </div>
-      <textarea id="t-b64-in" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.78rem" rows="4" placeholder="Input..."></textarea>
-      <textarea id="t-b64-out" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.78rem" rows="4" placeholder="Output..." readonly></textarea></div>`;
-    document.getElementById('t-b64-enc').onclick = () => {
-      try { document.getElementById('t-b64-out').value = btoa(document.getElementById('t-b64-in').value); }
-      catch { document.getElementById('t-b64-out').value = 'Error: invalid input'; }
-    };
-    document.getElementById('t-b64-dec').onclick = () => {
-      try { document.getElementById('t-b64-out').value = atob(document.getElementById('t-b64-in').value); }
-      catch { document.getElementById('t-b64-out').value = 'Error: invalid Base64'; }
-    };
+    this.render('Base64', `<div style="display:flex;gap:4px;margin-bottom:8px"><button class="btn btn-primary" id="tb64e">Encode →</button><button class="btn" id="tb64d">← Decode</button></div>
+      <textarea id="tb64i" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.78rem" rows="4" placeholder="Input..."></textarea>
+      <textarea id="tb64o" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.78rem" rows="4" placeholder="Output..." readonly></textarea>`);
+    document.getElementById('tb64e').onclick=()=>{try{document.getElementById('tb64o').value=btoa(document.getElementById('tb64i').value)}catch{document.getElementById('tb64o').value='Error'}};
+    document.getElementById('tb64d').onclick=()=>{try{document.getElementById('tb64o').value=atob(document.getElementById('tb64i').value)}catch{document.getElementById('tb64o').value='Error'}};
   },
-
-  /* JSON */
   jsonUI() {
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>JSON Formatter</h2></div>
-      <textarea id="t-json" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.78rem" rows="8" placeholder="Paste JSON..."></textarea>
-      <div style="display:flex;gap:4px;margin-top:6px">
-        <button class="btn btn-primary" id="t-json-fmt">Format</button>
-        <button class="btn" id="t-json-min">Minify</button>
-      </div>
-      <div id="t-json-err" style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:#a33;margin-top:4px"></div></div>`;
-    const fmt = (minify) => {
-      try {
-        const obj = JSON.parse(document.getElementById('t-json').value);
-        document.getElementById('t-json').value = JSON.stringify(obj, null, minify ? 0 : 2);
-        document.getElementById('t-json-err').textContent = '';
-      } catch (e) {
-        document.getElementById('t-json-err').textContent = 'Error: ' + e.message;
-      }
-    };
-    document.getElementById('t-json-fmt').onclick = () => fmt(false);
-    document.getElementById('t-json-min').onclick = () => fmt(true);
+    this.render('JSON Formatter', `<textarea id="tjson" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.78rem" rows="8" placeholder="Paste JSON..."></textarea>
+      <div style="display:flex;gap:4px;margin-top:6px"><button class="btn btn-primary" id="tjsonf">Format</button><button class="btn" id="tjsonm">Minify</button></div>
+      <div id="tjsone" style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:#a33;margin-top:4px"></div>`);
+    const f=(m)=>{try{const o=JSON.parse(document.getElementById('tjson').value);document.getElementById('tjson').value=JSON.stringify(o,null,m?0:2);document.getElementById('tjsone').textContent='';}catch(e){document.getElementById('tjsone').textContent='Error: '+e.message;}};
+    document.getElementById('tjsonf').onclick=()=>f(0); document.getElementById('tjsonm').onclick=()=>f(1);
   },
-
-  /* Typing Test */
   typingUI() {
-    const texts = [
-      'The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.',
-      'Technology is best when it brings people together. The advance of technology is based on making it fit in so that you do not really even notice it.',
-      'In the middle of difficulty lies opportunity. The only way to do great work is to love what you do. Stay hungry, stay foolish.',
-    ];
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>Typing Test</h2></div>
-      <div id="t-typing-text" style="font-size:0.9rem;line-height:1.6;margin-bottom:12px;padding:12px;background:var(--surface-2);border-radius:6px;font-family:JetBrains Mono,monospace"></div>
-      <textarea id="t-typing-in" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.85rem" rows="3" placeholder="Type here..."></textarea>
-      <div style="display:flex;gap:8px;margin-top:6px;align-items:center;flex-wrap:wrap">
-        <button class="btn" id="t-typing-new">New Text</button>
-        <span id="t-typing-stats" style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text-2)"></span>
-      </div></div>`;
-    let startTime = null, target = '';
-    const display = document.getElementById('t-typing-text');
-    const input = document.getElementById('t-typing-in');
-    const stats = document.getElementById('t-typing-stats');
-
-    const newText = () => {
-      target = texts[Math.floor(Math.random() * texts.length)];
-      display.textContent = target;
-      input.value = ''; stats.textContent = '';
-      startTime = null;
-    };
-    newText();
-
-    input.oninput = () => {
-      if (!startTime && input.value.length === 1) startTime = Date.now();
-      if (input.value === target) {
-        const ms = (Date.now() - startTime) / 1000;
-        const wpm = Math.round((target.split(' ').length / ms) * 60);
-        stats.textContent = `✅ Done! ${wpm} WPM`;
-        input.disabled = true;
-        setTimeout(() => { input.disabled = false; newText(); }, 2000);
-      } else {
-        const correct = target.startsWith(input.value);
-        stats.textContent = correct ? `${input.value.length}/${target.length}` : '❌ Wrong key';
-        if (!correct) stats.style.color = '#a33';
-        else stats.style.color = '';
-      }
-    };
-    document.getElementById('t-typing-new').onclick = newText;
+    const texts=['The quick brown fox jumps over the lazy dog.','Technology is best when it brings people together.','In the middle of difficulty lies opportunity.'];
+    this.render('Typing Test', `<div id="ttypt" style="font-size:0.9rem;line-height:1.6;margin-bottom:12px;padding:12px;background:var(--surface-2);border-radius:6px;font-family:JetBrains Mono,monospace"></div>
+      <textarea id="ttypi" class="notes-area" style="font-family:JetBrains Mono,monospace;font-size:0.85rem" rows="3" placeholder="Type here..."></textarea>
+      <div style="display:flex;gap:8px;margin-top:6px;align-items:center;flex-wrap:wrap"><button class="btn" id="ttypn">New Text</button><span id="ttyps" style="font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--text-2)"></span></div>`);
+    let start=null, target='';
+    const d=document.getElementById('ttypt'), i=document.getElementById('ttypi'), s=document.getElementById('ttyps');
+    const n=()=>{target=texts[Math.floor(Math.random()*texts.length)];d.textContent=target;i.value='';s.textContent='';start=null;};
+    n();
+    i.oninput=()=>{if(!start&&i.value.length===1)start=Date.now();if(i.value===target){const ms=(Date.now()-start)/1000;s.textContent='✅ Done! '+Math.round((target.split(' ').length/ms)*60)+' WPM';i.disabled=true;setTimeout(()=>{i.disabled=false;n();},2000);}else{s.textContent=target.startsWith(i.value)?`${i.value.length}/${target.length}`:'❌ Wrong';}};
+    document.getElementById('ttypn').onclick=n;
   },
-
-  /* Color Converter */
   colorUI() {
-    this._c.innerHTML = this.backBtn() + `<div class="card"><div class="section-h"><h2>Color Converter</h2></div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
-        <input type="text" id="t-color-in" class="w-inp" style="flex:1;text-transform:none;text-align:left;width:auto" placeholder="#ff0000 or rgb(255,0,0)" value="#2563eb">
-        <button class="btn btn-primary" id="t-color-btn">Convert</button>
-        <input type="color" id="t-color-picker" value="#2563eb" style="width:40px;height:36px;border:1px solid var(--border);border-radius:4px;cursor:pointer;background:none">
-      </div>
+    this.render('Color Converter', `<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+      <input type="text" id="tci" class="w-inp" style="flex:1;text-transform:none;text-align:left;width:auto" placeholder="#ff0000" value="#2563eb">
+      <button class="btn btn-primary" id="tcib">Convert</button>
+      <input type="color" id="tcip" value="#2563eb" style="width:40px;height:36px;border:1px solid var(--border);border-radius:4px;cursor:pointer;background:none"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:JetBrains Mono,monospace;font-size:0.75rem">
-        <div style="padding:8px;border:1px solid var(--border);border-radius:4px">HEX: <span id="t-color-hex">#2563eb</span></div>
-        <div style="padding:8px;border:1px solid var(--border);border-radius:4px">RGB: <span id="t-color-rgb">rgb(37,99,235)</span></div>
+        <div style="padding:8px;border:1px solid var(--border);border-radius:4px">HEX: <span id="tchex">#2563eb</span></div>
+        <div style="padding:8px;border:1px solid var(--border);border-radius:4px">RGB: <span id="tcrgb">rgb(37,99,235)</span></div>
       </div>
-      <div id="t-color-preview" style="margin-top:8px;height:60px;border-radius:6px;background:#2563eb"></div></div>`;
-    const convert = (val) => {
-      const ctx = document.createElement('canvas').getContext('2d');
-      ctx.fillStyle = val;
-      const c = ctx.fillStyle;
-      const preview = document.getElementById('t-color-preview');
-      if (c) {
-        preview.style.background = c;
-        document.getElementById('t-color-hex').textContent = c;
-        // Parse to RGB
-        const div = document.createElement('div');
-        div.style.color = c;
-        document.body.appendChild(div);
-        const cs = getComputedStyle(div).color;
-        document.body.removeChild(div);
-        document.getElementById('t-color-rgb').textContent = cs;
-      }
-    };
-    document.getElementById('t-color-btn').onclick = () => convert(document.getElementById('t-color-in').value);
-    document.getElementById('t-color-picker').oninput = () => {
-      document.getElementById('t-color-in').value = document.getElementById('t-color-picker').value;
-      convert(document.getElementById('t-color-picker').value);
-    };
-    convert('#2563eb');
+      <div id="tcpr" style="margin-top:8px;height:60px;border-radius:6px;background:#2563eb"></div>`);
+    const cv=(v)=>{const c=new Option().style;c.color=v;const preview=document.getElementById('tcpr');if(c.color){preview.style.background=c.color;document.getElementById('tchex').textContent=c.color;const d=document.createElement('div');d.style.color=c.color;document.body.appendChild(d);document.getElementById('tcrgb').textContent=getComputedStyle(d).color;document.body.removeChild(d);}};
+    document.getElementById('tcib').onclick=()=>cv(document.getElementById('tci').value);
+    document.getElementById('tcip').oninput=()=>{document.getElementById('tci').value=document.getElementById('tcip').value;cv(document.getElementById('tcip').value);};
+    cv('#2563eb');
   }
 };
+
+/* ─── Weather ─── */
+async function loadWeather() {
+  const el = document.getElementById('hero-weather');
+  if (!el) return;
+  try {
+    let lat = 21.0285, lon = 105.8542;
+    const saved = Storage.get('weatherLoc');
+    if (saved) { lat = saved.lat; lon = saved.lon; }
+    else if (navigator.geolocation) {
+      try {
+        const pos = await new Promise((ok, err) => navigator.geolocation.getCurrentPosition(ok, err, { timeout: 3000 }));
+        lat = pos.coords.latitude; lon = pos.coords.longitude;
+        Storage.set('weatherLoc', { lat, lon });
+      } catch {}
+    }
+    const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`);
+    if (!r.ok) throw Error();
+    const d = await r.json();
+    const cw = d.current_weather;
+    const temp = Math.round(cw.temperature);
+    const code = cw.weathercode;
+    const icon = ['☀️','🌤','⛅','🌥','☁️','🌧','🌦','⛈','🌨','🌫'][code <= 1 ? 0 : code <= 2 ? 1 : code <= 3 ? 2 : code <= 4 ? 3 : code <= 10 ? 5 : code <= 20 ? 6 : code <= 30 ? 7 : code <= 40 ? 8 : 9];
+    const unit = '°C';
+    el.innerHTML = `${icon} <span class="weather-temp">${temp}${unit}</span>`;
+  } catch {
+    el.innerHTML = '';
+  }
+}
+
+/* ─── Home widgets ─── */
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, '0');
+  const m = String(now.getMinutes()).padStart(2, '0');
+  const clock = document.getElementById('hero-clock');
+  if (clock) clock.textContent = h + ':' + m;
+
+  const dateEl = document.getElementById('hero-date');
+  if (dateEl) {
+    const opts = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    dateEl.textContent = now.toLocaleDateString(currentLocale === 'vi' ? 'vi-VN' : 'en-US', opts);
+  }
+
+  const greeting = document.getElementById('greeting');
+  if (greeting) {
+    const hour = now.getHours();
+    let msg;
+    if (currentLocale === 'vi') {
+      if (hour < 12) msg = 'Chào buổi sáng. ☀️';
+      else if (hour < 18) msg = 'Chào buổi chiều. 🌤';
+      else msg = 'Chào buổi tối. 🌙';
+    } else {
+      if (hour < 12) msg = 'Good morning. ☀️';
+      else if (hour < 18) msg = 'Good afternoon. 🌤';
+      else msg = 'Good evening. 🌙';
+    }
+    greeting.textContent = msg;
+  }
+}
+
+function initNotes() {
+  const area = document.getElementById('notes-area');
+  if (!area) return;
+  area.value = Storage.get('notes', '');
+  area.oninput = () => Storage.set('notes', area.value);
+  document.getElementById('notes-clear').onclick = () => {
+    area.value = '';
+    Storage.remove('notes');
+  };
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  applyI18n();
+  route();
+  updateClock();
+  setInterval(updateClock, 10000);
+  loadWeather();
+  initNotes();
+});
