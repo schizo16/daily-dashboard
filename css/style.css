@@ -372,9 +372,9 @@ button:focus-visible, a:focus-visible {
 /* ─── Nav ─── */
 .nav {
   border-bottom: 1px solid var(--border);
-  background: color-mix(in srgb, var(--surface) 70%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--surface) 40%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   position: sticky; top: 0; z-index: 10;
 }
 .nav-inner {
@@ -419,7 +419,7 @@ button:focus-visible, a:focus-visible {
 
 /* ─── Card ─── */
 .card {
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
   border: 1px solid var(--border);
   border-radius: var(--radius); padding: 20px; margin-bottom: 12px;
 }
