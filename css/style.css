@@ -70,7 +70,7 @@ body::after {
 
 /* ─── Container ─── */
 .container {
-  max-width: 640px; margin: 0 auto; padding: 0 24px; width: 100%;
+  max-width: 960px; margin: 0 auto; padding: 0 32px; width: 100%;
   position: relative;
 }
 .container::before {
@@ -180,8 +180,8 @@ body::after {
   position: sticky; top: 0; z-index: 10;
 }
 .nav-inner {
-  max-width: 640px; margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; gap: 20px; height: 56px;
+  max-width: 960px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; gap: 24px; height: 56px;
 }
 .nav-logo {
   font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em;
