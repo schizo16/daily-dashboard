@@ -18,6 +18,7 @@ const STEAM_API = 'https://store.steampowered.com/api/featuredcategories';
 const GAME_GENRES = [
   { id: 'topsellers', label: '🔥 Bán chạy', key: 'top_sellers' },
   { id: 'specials', label: '🏷️ Giảm giá', key: 'specials' },
+  { id: 'free', label: '🎁 Miễn phí', key: 'specials', filter: g => g.final_price === 0 || g.discount_percent >= 100 },
   { id: 'newreleases', label: '🆕 Mới ra', key: 'new_releases' },
   { id: 'comingsoon', label: '⏳ Sắp ra', key: 'coming_soon' },
 ];
@@ -100,8 +101,10 @@ const GamesPage = {
     grid.innerHTML = '';
     const genre = GAME_GENRES.find(g => g.id === section);
     if (!genre) return;
-    const items = data[genre.key]?.items?.slice(0, 10);
-    if (!items || !items.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
+    let items = data[genre.key]?.items || [];
+    if (genre.filter) items = items.filter(genre.filter);
+    items = items.slice(0, 10);
+    if (!items.length) { grid.innerHTML = '<div class="empty" style="padding:16px 0">No games</div>'; return; }
     items.forEach(g => {
       const appId = g.id;
       const steamUrl = `https://store.steampowered.com/app/${appId}/`;
