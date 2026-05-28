@@ -1,5 +1,56 @@
 const TMDB_KEY = '64cbee95805bc6f398898e585b312a8c';
 const TMDB_IMG = 'https://image.tmdb.org/t/p/w92';
+const TMDB_IMG_L = 'https://image.tmdb.org/t/p/w342';
+
+async function showMovieDetail(id, type) {
+  const panel = document.createElement('div');
+  panel.style.cssText = 'position:fixed;inset:0;z-index:1000;background:var(--bg);overflow-y:auto;padding:24px;animation:fadeIn 0.2s ease-out';
+    panel.innerHTML = `<div style="max-width:640px;margin:0 auto"><div class="loading">${_('loading')}</div></div>`;
+  document.body.appendChild(panel);
+  panel.onclick = (e) => { if (e.target === panel) panel.remove(); };
+  
+
+  try {
+    const isM = type === 'movie';
+    const r = await fetch(`https://api.themoviedb.org/3/${isM ? 'movie' : 'tv'}/${id}?api_key=${TMDB_KEY}&language=en-US&append_to_response=credits`);
+    if (!r.ok) throw Error('API error');
+    const d = await r.json();
+    const title = isM ? d.title : d.name;
+    const year = (d.release_date || d.first_air_date || '').slice(0, 4);
+    const runtime = isM ? (d.runtime ? d.runtime + ' min' : '') : (d.number_of_seasons ? d.seasons + ' seasons' : '');
+    const genres = (d.genres || []).map(g => g.name).join(', ');
+    const cast = (d.credits?.cast || []).slice(0, 8).map(p => p.name).join(', ');
+    const poster = d.poster_path ? `<img src="https://image.tmdb.org/t/p/w342${d.poster_path}" alt="" style="width:140px;border-radius:6px;float:left;margin:0 16px 16px 0">` : '';
+    const tagline = d.tagline ? `<p style="font-style:italic;color:var(--text-2);margin-bottom:12px">${esc(d.tagline)}</p>` : '';
+    const rating = d.vote_average ? `${d.vote_average.toFixed(1)}/10` : 'N/A';
+    const homepage = d.homepage ? `<a href="${d.homepage}" target="_blank" style="color:var(--accent)">🌐 Website</a>` : '';
+    const tmdbUrl = `https://www.themoviedb.org/${isM ? 'movie' : 'tv'}/${id}`;
+
+    const inner = document.createElement('div');
+    inner.style.cssText = 'max-width:640px;margin:0 auto;position:relative';
+    inner.innerHTML = `
+      <button id="detail-close" style="position:fixed;top:16px;right:16px;z-index:10;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;cursor:pointer;font-family:JetBrains Mono,monospace;font-size:0.75rem;color:var(--text-2)">✕ Close</button>
+      <div style="overflow:hidden">
+        ${poster}
+        <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:4px">${esc(title)} <span style="font-weight:400;color:var(--text-2);font-size:1rem">(${year})</span></h2>
+        ${tagline}
+        <div style="font-size:0.85rem;color:var(--text-2);margin-bottom:12px;display:flex;gap:12px;flex-wrap:wrap">
+          <span>⭐ ${rating}</span>
+          ${runtime ? `<span>⏱ ${runtime}</span>` : ''}
+          ${genres ? `<span>🏷 ${esc(genres)}</span>` : ''}
+          ${homepage}
+        </div>
+      </div>
+      ${d.overview ? `<div style="clear:both;margin-bottom:16px"><h3 style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-2);margin-bottom:6px">Overview</h3><p style="font-size:0.9rem;line-height:1.6;color:var(--text-2)">${esc(d.overview)}</p></div>` : ''}
+      ${cast ? `<div style="margin-bottom:16px"><h3 style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-2);margin-bottom:6px">Cast</h3><p style="font-size:0.85rem;color:var(--text-2)">${esc(cast)}</p></div>` : ''}
+      <div style="font-size:0.75rem;color:var(--text-3)"><a href="${tmdbUrl}" target="_blank" style="color:var(--accent)">TMDB ↗</a></div>`;
+    inner.querySelector('#detail-close').onclick = () => panel.remove();
+    panel.innerHTML = '';
+    panel.appendChild(inner);
+  } catch {
+    panel.innerHTML = `<div style="max-width:640px;margin:0 auto;padding:48px 0;text-align:center;color:var(--text-2)">${_('failed')}</div>`;
+  }
+}
 
 const PERIODS = [
   { id: 'week', label: 'Tuần' },
@@ -130,14 +181,15 @@ const Movies = {
   grd(c, movies, isMovie) {
     c.innerHTML = '';
     movies.forEach(m => {
-      const e = document.createElement('div'); e.className = 'movie-e';
+      const e = document.createElement('div'); e.className = 'movie-e'; e.style.cursor = 'pointer';
       const poster = m.p ? `<div class="movie-thumb"><img src="${TMDB_IMG + m.p}" alt="" loading="lazy" style="width:100%;height:100%;object-fit:cover"></div>` : '<div class="movie-thumb" style="font-size:1.2rem">🎬</div>';
       e.innerHTML = `${poster}<div class="movie-body"><div class="movie-name">${esc(m.t)}</div><div class="movie-sub">${m.y}${m.o ? ' · ' + esc(m.o.slice(0, 50)) + '...' : ''} · ${m.r ? m.r.toFixed(1) : 'N/A'}</div></div><button class="wl-btn" data-id="${m.id}">${_('save')}</button>`;
-      e.querySelector('.wl-btn').onclick = (ev) => {
+      e.querySelector('.wl-btn').onclick = (ev) => { ev.stopPropagation();
         const b = ev.currentTarget;
         Storage.addToWatchlist({ id: m.id, title: m.t });
         b.textContent = _('saved'); b.disabled = true;
       };
+      e.onclick = () => showMovieDetail(m.id, this._mediaType);
       c.appendChild(e);
     });
   },
