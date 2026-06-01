@@ -172,6 +172,8 @@
 /* ─── Background ─── */
 html {
   background: var(--bg);
+  perspective: 800px;
+  overflow-x: hidden;
 }
 body {
   min-height: 100vh; display: flex; flex-direction: column;
@@ -295,8 +297,10 @@ body::before {
 
 /* Tiles */
 .tile {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   animation: fadeInUp 0.4s ease-out both;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 .tile:nth-child(1) { animation-delay: 0.1s; }
 .tile:nth-child(2) { animation-delay: 0.15s; }
@@ -305,10 +309,11 @@ body::before {
 .tile:hover {
   border-color: var(--border-2);
   background: var(--surface-2);
-  transform: translateY(-3px);
+  transform: translateY(-3px) translateZ(8px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 .tile:active {
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(4px);
 }
 
 /* Entries */
@@ -397,11 +402,20 @@ button:focus-visible, a:focus-visible {
 /* ─── Nav ─── */
 .nav {
   border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  background: color-mix(in srgb, var(--surface) 40%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: color-mix(in srgb, var(--surface) 30%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 1px 0 rgba(166,124,82,0.06);
+}
+.nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  width: 40px; height: 1px;
+  background: var(--accent);
+  transform: translateX(-50%);
+  opacity: 0.2;
 }
 .nav-inner {
   max-width: 960px; margin: 0 auto; padding: 0 32px;
@@ -411,6 +425,13 @@ button:focus-visible, a:focus-visible {
   font-size: 0.95rem; font-weight: 700; letter-spacing: 0.05em;
   text-decoration: none; color: var(--text); margin-right: auto;
   font-style: italic;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-logo::before {
+  content: '◆';
+  font-size: 0.5rem;
+  color: var(--accent);
+  opacity: 0.6;
 }
 .nav a:not(.nav-logo) {
   font-family: 'JetBrains Mono', monospace;
@@ -418,6 +439,8 @@ button:focus-visible, a:focus-visible {
   text-decoration: none; color: var(--text-2);
   padding: 2px 6px;
   position: relative;
+  transition: all 0.2s ease;
+  transform-style: preserve-3d;
 }
 .nav a:not(.nav-logo)::after {
   content: '';
@@ -429,7 +452,10 @@ button:focus-visible, a:focus-visible {
 .nav a.active::after {
   transform: scaleX(1);
 }
-.nav a:not(.nav-logo):hover { color: var(--text); }
+.nav a:not(.nav-logo):hover {
+  color: var(--text);
+  transform: translateZ(4px);
+}
 .nav a.active { color: var(--text); }
 
 .theme-btn-sm {
@@ -475,6 +501,18 @@ button:focus-visible, a:focus-visible {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 2.8rem; font-weight: 700; letter-spacing: -0.03em;
   margin-bottom: 8px; font-style: italic;
+  background: linear-gradient(180deg, var(--text) 40%, var(--text-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transform-style: preserve-3d;
+  perspective: 400px;
+}
+[data-theme="light"] .hero h1 {
+  background: linear-gradient(180deg, var(--text) 30%, var(--text-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .hero-tagline {
   font-family: 'Playfair Display', Georgia, serif;
@@ -507,28 +545,49 @@ button:focus-visible, a:focus-visible {
   font-size: 2.8rem; font-weight: 500; color: var(--text);
   letter-spacing: 0.04em; margin-bottom: 4px;
   animation: fadeInUp 0.5s ease-out both; animation-delay: 0.1s;
+  text-shadow: 0 0 40px rgba(166,124,82,0.06);
+  position: relative;
+  display: inline-block;
+}
+.hero-clock::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.15;
 }
 .hero-date {
   font-size: 0.82rem; color: var(--text-2); margin-bottom: 0;
   animation: fadeInUp 0.5s ease-out both; animation-delay: 0.15s;
+  letter-spacing: 0.02em;
 }
 .hero-weather {
   font-size: 0.78rem; color: var(--text-2); margin-top: 4px;
   animation: fadeInUp 0.5s ease-out both; animation-delay: 0.17s;
   display: flex; align-items: center; justify-content: center; gap: 6px;
 }
-.weather-temp { font-size: 1.1rem; font-weight: 500; color: var(--text); }
+.weather-temp {
+  font-size: 1.1rem; font-weight: 500; color: var(--text);
+  display: inline-flex; align-items: center; gap: 2px;
+}
 
 /* Search */
 .hero-search { margin: 20px 0 0; animation: fadeInUp 0.5s ease-out both; animation-delay: 0.2s; }
 .search-input {
   font-family: inherit; font-size: 0.9rem; padding: 10px 16px;
   border: 1.5px solid var(--border); border-radius: 8px;
-  background: var(--surface); color: var(--text);
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  color: var(--text);
   width: 100%; max-width: 360px; outline: none;
-  transition: border-color 0.15s;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
 }
-.search-input:focus { border-color: var(--accent); }
+.search-input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(166,124,82,0.08);
+}
 .search-input::placeholder { color: var(--text-3); }
 
 .search-shortcuts { display: flex; gap: 16px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
@@ -780,5 +839,109 @@ button:focus-visible, a:focus-visible {
   @media (max-width: 380px) {
     .nav a:not(.nav-logo) { font-size: 0.45rem; padding: 2px 2px; }
     .theme-btn-sm, #locale-btn { padding: 2px 4px; font-size: 0.6rem; }
+  }
+}
+
+/* ═══════════════════════════════════════════
+   3D PREMIUM EFFECTS — UI UX PRO MAX
+   Dimensional Layering + Spatial Depth
+   ═══════════════════════════════════════════ */
+
+/* 3D depth variables */
+:root {
+  --z-base: 0;
+  --z-raised: 1;
+  --z-overlay: 2;
+  --z-top: 3;
+  --elevation-1: 0 2px 8px rgba(0,0,0,0.12);
+  --elevation-2: 0 4px 16px rgba(0,0,0,0.15);
+  --elevation-3: 0 8px 32px rgba(0,0,0,0.18);
+  --elevation-4: 0 16px 48px rgba(0,0,0,0.22);
+}
+
+/* 3D floating diamond on hero */
+.hero-rule {
+  display: inline-block;
+  animation: floatDiamond 4s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+@keyframes floatDiamond {
+  0%, 100% { transform: translateY(0) rotate(0deg) translateZ(0); }
+  25% { transform: translateY(-4px) rotate(5deg) translateZ(6px); }
+  50% { transform: translateY(-2px) rotate(-3deg) translateZ(10px); }
+  75% { transform: translateY(-5px) rotate(4deg) translateZ(4px); }
+}
+
+/* 3D hero clock depth */
+.hero-clock {
+  transform-style: preserve-3d;
+}
+
+/* 3D tile hover with perspective tilt */
+.tile {
+  transform-style: preserve-3d;
+}
+.tile-3d {
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+/* 3D card depth on hover */
+.card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.card:hover {
+  transform: translateZ(6px);
+  box-shadow: var(--elevation-3);
+}
+
+/* 3D button press */
+.btn {
+  transform-style: preserve-3d;
+}
+.btn:active {
+  transform: translateZ(-2px) scale(0.98);
+}
+
+/* 3D nav logo depth */
+.nav-logo {
+  transform-style: preserve-3d;
+}
+.nav-logo:hover {
+  transform: translateZ(6px);
+}
+
+/* 3D entry hover lift */
+.entry {
+  transform-style: preserve-3d;
+  transition: all 0.2s ease;
+}
+.entry:hover {
+  transform: translateZ(4px);
+}
+
+/* 3D movie entry */
+.movie-e {
+  transform-style: preserve-3d;
+  transition: all 0.2s ease;
+}
+.movie-e:hover {
+  transform: translateZ(4px);
+}
+
+/* 3D shooting star depth */
+.shooting-star {
+  transform-style: preserve-3d;
+}
+
+/* Reduced motion safety */
+@media (prefers-reduced-motion: reduce) {
+  .tile-3d, .hero-rule, .card, .entry, .movie-e {
+    transform: none !important;
+    transition: none !important;
+  }
+  .hero-rule {
+    animation: none !important;
   }
 }

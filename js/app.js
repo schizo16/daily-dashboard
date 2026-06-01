@@ -1582,4 +1582,67 @@ document.addEventListener('DOMContentLoaded', () => {
   initSearch();
   loadWeather();
   initNotes();
+
+  /* ════════════════════════════════════
+     3D PREMIUM EFFECTS — UI UX PRO MAX
+     ════════════════════════════════════ */
+
+  // ─── 3D Tilt on tiles (mouse parallax) ───
+  document.querySelectorAll('.tile').forEach(tile => {
+    tile.classList.add('tile-3d');
+    tile.addEventListener('mousemove', (e) => {
+      const rect = tile.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      tile.style.transform =
+        `perspective(400px) rotateX(${y * -6}deg) rotateY(${x * 6}deg) translateZ(12px)`;
+      tile.style.boxShadow =
+        `${-x * 10}px ${-y * 10}px 24px rgba(0,0,0,0.12)`;
+    });
+    tile.addEventListener('mouseleave', () => {
+      tile.style.transform = '';
+      tile.style.boxShadow = '';
+    });
+  });
+
+  // ─── 3D Tilt on cards ───
+  document.querySelectorAll('.card:not(.movie-detail)').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform =
+        `perspective(600px) rotateX(${y * -2}deg) rotateY(${x * 2}deg) translateZ(6px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+
+  // ─── 3D Hero parallax (subtle mouse follow) ───
+  const hero = document.querySelector('.hero');
+  if (hero) {
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      const clock = document.getElementById('hero-clock');
+      if (clock) {
+        clock.style.transform =
+          `translateX(${x * 8}px) translateY(${y * 6}px) translateZ(0)`;
+      }
+      const greeting = document.getElementById('greeting');
+      if (greeting) {
+        greeting.style.transform =
+          `translateX(${x * 4}px) translateY(${y * 3}px) translateZ(0)`;
+      }
+    });
+    hero.addEventListener('mouseleave', () => {
+      const clock = document.getElementById('hero-clock');
+      if (clock) clock.style.transform = '';
+      const greeting = document.getElementById('greeting');
+      if (greeting) greeting.style.transform = '';
+    });
+  }
 });
