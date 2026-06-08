@@ -43,6 +43,14 @@ const vi: Record<string, string> = {
   readAloud: 'Đọc',
   viewOriginal: 'Xem gốc',
   searchPlaceholder: 'Tìm kiếm...',
+  week: 'Tuần',
+  month: 'Tháng',
+  year: 'Năm',
+  topRated: 'Top rate',
+  noPoster: 'Không có ảnh',
+  min: 'phút',
+  cast: 'Diễn viên',
+  overview: 'Tổng quan',
 }
 
 export default vi

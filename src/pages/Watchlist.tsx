@@ -8,7 +8,7 @@ interface WatchlistItem {
   title: string
   poster: string | null
   rating: number
-  addedAt: string
+  addedAt: number
   overview: string
 }
 
@@ -25,8 +25,8 @@ function removeFromWatchlist(id: number) {
   localStorage.setItem('dd_watchlist', JSON.stringify(list.filter((m: any) => m.id !== id)))
 }
 
-function formatDate(dateStr: string) {
-  const d = new Date(dateStr)
+function formatDate(ts: number) {
+  const d = new Date(ts)
   return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
 }
 

@@ -43,6 +43,14 @@ const en: Record<string, string> = {
   readAloud: 'Read',
   viewOriginal: 'View original',
   searchPlaceholder: 'Search...',
+  week: 'Week',
+  month: 'Month',
+  year: 'Year',
+  topRated: 'Top Rated',
+  noPoster: 'No poster',
+  min: 'min',
+  cast: 'Cast',
+  overview: 'Overview',
 }
 
 export default en

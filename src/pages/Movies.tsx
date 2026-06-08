@@ -43,8 +43,16 @@ function getYear(date: string) {
   return date ? date.slice(0, 4) : ''
 }
 
+interface WatchlistItem { id: number; title: string; poster: string; rating: number; addedAt: number; overview: string }
+
+function getWatchlist(): WatchlistItem[] {
+  return storage.get<WatchlistItem[]>('watchlist', [])
+}
+function setWatchlist(list: WatchlistItem[]) {
+  storage.set('watchlist', list)
+}
 function isInWatchlist(id: number): boolean {
-  return (storage.get<number[]>('watchlist', [])).includes(id)
+  return getWatchlist().some(m => m.id === id)
 }
 
 export default function Movies() {
@@ -100,10 +108,13 @@ export default function Movies() {
       })
   }
 
-  function toggleWatchlist(id: number) {
-    const list = storage.get<number[]>('watchlist', [])
-    const next = list.includes(id) ? list.filter(x => x !== id) : [...list, id]
-    storage.set('watchlist', next)
+  function toggleWatchlist(movie: Movie) {
+    const list = getWatchlist()
+    if (list.some(m => m.id === movie.id)) {
+      setWatchlist(list.filter(m => m.id !== movie.id))
+    } else {
+      setWatchlist([...list, { id: movie.id, title: movie.title, poster: movie.poster_path, rating: movie.vote_average, addedAt: Date.now(), overview: movie.overview }])
+    }
     forceRender(n => n + 1)
   }
 
@@ -182,7 +193,7 @@ export default function Movies() {
                         </div>
                       )}
                       <button
-                        onClick={e => { e.stopPropagation(); toggleWatchlist(movie.id) }}
+                        onClick={e => { e.stopPropagation(); toggleWatchlist(movie) }}
                         className={cn(
                           'absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs transition-all duration-200 cursor-pointer',
                           saved
@@ -279,7 +290,7 @@ export default function Movies() {
               <div className="flex justify-end mt-2">
                 <Button
                   variant={isInWatchlist(detailMovie.id) ? 'outline' : 'default'}
-                  onClick={() => toggleWatchlist(detailMovie.id)}
+                  onClick={() => toggleWatchlist({ id: detailMovie.id, title: detailMovie.title, poster_path: detailMovie.poster_path, vote_average: detailMovie.vote_average, overview: detailMovie.overview, release_date: detailMovie.release_date, genre_ids: detailMovie.genres?.map(g => g.id) || [] } as Movie)}
                 >
                   {isInWatchlist(detailMovie.id) ? _('remove') : _('save')}
                 </Button>
