@@ -1,0 +1,155 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - main [ref=e5]:
+        - generic [ref=e13]:
+          - generic [ref=e15]:
+            - button "Open sidebar" [ref=e19] [cursor=pointer]:
+              - img
+            - generic [ref=e21]:
+              - button "Components" [ref=e22] [cursor=pointer]
+              - generic [ref=e23]: /
+              - generic [ref=e24]:
+                - button "aceternity" [ref=e25] [cursor=pointer]
+                - generic [ref=e26]: /
+                - generic [ref=e27]: Aurora Background
+            - generic [ref=e28]:
+              - generic:
+                - button "Search":
+                  - img
+                  - generic: Search
+                  - generic:
+                    - img
+                    - generic: K
+              - generic [ref=e29]:
+                - button "Copy prompt" [ref=e30] [cursor=pointer]:
+                  - img [ref=e31]
+                  - generic [ref=e35]: Copy prompt
+                - button "Copy code" [ref=e36] [cursor=pointer]:
+                  - generic [ref=e37]:
+                    - generic:
+                      - img
+                    - img [ref=e39]
+                  - generic [ref=e43]: Copy code
+                - button "View code" [ref=e44] [cursor=pointer]:
+                  - img [ref=e45]
+                  - generic [ref=e48]: View code
+          - generic [ref=e49]:
+            - generic [ref=e50]:
+              - generic [ref=e52]:
+                - button [ref=e53] [cursor=pointer]:
+                  - img
+                - button [ref=e54] [cursor=pointer]:
+                  - generic [ref=e55]:
+                    - generic:
+                      - img
+                    - generic [ref=e56]:
+                      - img
+                - button [ref=e57] [cursor=pointer]:
+                  - img
+              - generic [ref=e59]:
+                - button [ref=e60] [cursor=pointer]:
+                  - img
+                - button [ref=e61] [cursor=pointer]:
+                  - img
+                - button [ref=e63] [cursor=pointer]:
+                  - img
+              - iframe [ref=e67]:
+                - main [ref=f9e7]:
+                  - generic [ref=f9e10]:
+                    - generic [ref=f9e11]: Background lights are cool you know.
+                    - generic [ref=f9e12]: And this, is chemical burn.
+                    - button "Debug now" [ref=f9e13] [cursor=pointer]
+            - generic [ref=e70]:
+              - generic [ref=e72]:
+                - link "Components" [ref=e73] [cursor=pointer]:
+                  - /url: /community/components
+                - generic [ref=e74]: •
+                - link "aceternity" [ref=e75] [cursor=pointer]:
+                  - /url: /community/aceternity
+                - generic [ref=e76]: •
+                - generic [ref=e77]: Aurora Background
+              - heading "Aurora Background" [level=3] [ref=e78]
+              - paragraph [ref=e79]: A subtle Aurora or Southern Lights background for your website.
+              - heading "Created by" [level=3] [ref=e80]
+              - generic [ref=e81]:
+                - link "Aceternity UI" [ref=e82] [cursor=pointer]:
+                  - /url: /community/aceternity
+                  - img "Aceternity UI" [ref=e84]
+                - generic [ref=e85]:
+                  - link "Aceternity UI" [ref=e86] [cursor=pointer]:
+                    - /url: /community/aceternity
+                  - paragraph [ref=e87]: "@aceternity"
+              - heading "Installation" [level=3] [ref=e88]
+              - button "Click to copy code or select text" [ref=e90] [cursor=pointer]:
+                - code [ref=e93]:
+                  - generic [ref=e94]: npx shadcn@latest add https://21st.dev/r/aceternity/aurora-background
+              - generic [ref=e95]:
+                - heading "How to use" [level=3] [ref=e96]
+                - generic [ref=e97]:
+                  - button "Copy prompt" [ref=e98] [cursor=pointer]:
+                    - img [ref=e99]
+                    - text: Copy prompt
+                  - button "Copy code" [ref=e103] [cursor=pointer]:
+                    - generic [ref=e104]:
+                      - generic:
+                        - img
+                      - img [ref=e106]
+                    - text: Copy code
+                  - button "View code" [ref=e110] [cursor=pointer]:
+                    - img [ref=e111]
+                    - text: View code
+                - button "Click to copy code or select text" [ref=e115] [cursor=pointer]:
+                  - code [ref=e118]:
+                    - generic [ref=e119]: "\"use client\";"
+                    - generic [ref=e120]: "import { motion } from \"framer-motion\";"
+                    - generic [ref=e121]: import React from "react";
+                    - generic [ref=e122]: "import { AuroraBackground } from \"@/components/ui/aurora-background\";"
+                    - generic [ref=e123]: "export function AuroraBackgroundDemo() {"
+                    - generic [ref=e124]: return (
+                    - generic [ref=e125]: <AuroraBackground>
+                    - generic [ref=e126]: <motion.div
+                    - generic [ref=e127]: "initial={{ opacity: 0.0, y: 40 }}"
+                    - generic [ref=e128]: "whileInView={{ opacity: 1, y: 0 }}"
+                    - generic [ref=e129]: "transition={{"
+                    - generic [ref=e130]: "delay: 0.3,"
+                    - generic [ref=e131]: "duration: 0.8,"
+                    - generic [ref=e132]: "ease: \"easeInOut\","
+                    - generic [ref=e133]: "}}"
+                    - generic [ref=e134]: className="relative flex flex-col gap-4 items-center justify-center px-4"
+                    - generic [ref=e135]: ">"
+                    - generic [ref=e136]: <div className="text-3xl md:text-7xl font-bold dark:text-white text-center">
+                    - generic [ref=e137]: Background lights are cool you know.
+                    - generic [ref=e138]: </div>
+                    - generic [ref=e139]: <div className="font-extralight text-base md:text-4xl dark:text-neutral-200 py-4">
+                    - generic [ref=e140]: And this, is chemical burn.
+                    - generic [ref=e141]: </div>
+                    - generic [ref=e142]: <button className="bg-black dark:bg-white rounded-full w-fit text-white dark:text-black px-4 py-2">
+                    - generic [ref=e143]: Debug now
+                    - generic [ref=e144]: </button>
+                    - generic [ref=e145]: </motion.div>
+                    - generic [ref=e146]: </AuroraBackground>
+                    - generic [ref=e147]: );
+                    - generic [ref=e148]: "}"
+              - heading "Dependencies" [level=3] [ref=e149]
+              - link "framer-motion" [ref=e151] [cursor=pointer]:
+                - /url: https://www.npmjs.com/package/framer-motion
+                - text: framer-motion
+                - img [ref=e152]
+              - generic [ref=e155]:
+                - heading "Tags" [level=3] [ref=e156]
+                - generic [ref=e157]:
+                  - link "Landing Page" [ref=e158] [cursor=pointer]:
+                    - /url: /community/components/s/landing-page
+                  - link "Backgrounds" [ref=e159] [cursor=pointer]:
+                    - /url: /community/components/s/background
+                  - link "Hero" [ref=e160] [cursor=pointer]:
+                    - /url: /community/components/s/hero
+              - generic [ref=e162]:
+                - generic [ref=e163]: Created 12/23/2024
+                - generic [ref=e164]: Updated 12/23/2024
+    - region "Notifications alt+T"
+  - alert [ref=e166]
+  - generic:
+    - iframe
+    - iframe

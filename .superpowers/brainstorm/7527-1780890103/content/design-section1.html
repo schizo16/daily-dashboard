@@ -1,0 +1,50 @@
+<div class="section">
+  <h2>📐 Design — Phần 1: Tech Stack & Architecture</h2>
+  <p class="subtitle">Apple Vibrancy + shadcn/ui + Framer Motion</p>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">🥞 Stack</h3>
+  <table style="width:100%;font-size:0.85rem;border-collapse:collapse">
+    <tr><td style="padding:6px 0;color:var(--muted)">Build</td><td style="padding:6px 0"><strong>Vite</strong></td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">UI Framework</td><td style="padding:6px 0"><strong>React 18</strong></td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">Styling</td><td style="padding:6px 0"><strong>Tailwind CSS v4</strong></td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">Components</td><td style="padding:6px 0"><strong>shadcn/ui</strong> (button, card, sidebar, tabs, dialog, input...)</td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">Animation</td><td style="padding:6px 0"><strong>Framer Motion</strong> (spring, stagger, layout animation, 3D transforms)</td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">Router</td><td style="padding:6px 0"><strong>React Router v7</strong></td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">State</td><td style="padding:6px 0"><strong>Zustand</strong> (nhẹ, đơn giản, không boilerplate)</td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">Deploy</td><td style="padding:6px 0">Cloudflare Pages / Vercel (giữ nguyên)</td></tr>
+    <tr><td style="padding:6px 0;color:var(--muted)">Font</td><td style="padding:6px 0"><strong>Inter</strong> (gần nhất với SF Pro)</td></tr>
+  </table>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">🏗️ Architecture</h3>
+  <pre style="font-family:monospace;font-size:0.7rem;line-height:1.5;background:rgba(0,0,0,0.2);padding:16px;border-radius:8px;overflow-x:auto">
+src/
+├── App.tsx                   # Router + Layout
+├── main.tsx                  # Entry point
+├── components/
+│   ├── ui/                   # shadcn/ui components
+│   ├── layout/               # Sidebar, TopBar, Shell
+│   └── shared/               # Reusable blocks (Entry, MovieCard, etc.)
+├── pages/
+│   ├── Home.tsx
+│   ├── Radar.tsx
+│   ├── Movies.tsx
+│   ├── Games.tsx
+│   ├── Watchlist.tsx
+│   ├── Media.tsx             # Music + Radio tabs
+│   ├── Tools.tsx
+│   └── Settings.tsx          # ✨ MỚI
+├── hooks/                    # useWeather, useGitHub, useTMDB...
+├── stores/                   # Zustand stores (theme, locale, watchlist)
+├── lib/                      # API clients, utils
+├── i18n/                     # vi, en dictionaries
+└── types/                    # TypeScript types
+  </pre>
+</div>
+
+<div class="section">
+  <p class="subtitle">Phần 1 này OK không? Reply để tôi sang Phần 2 (Design Tokens + Theme) 👇</p>
+</div>

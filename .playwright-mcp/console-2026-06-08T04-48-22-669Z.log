@@ -1,0 +1,93 @@
+[     810ms] [WARNING] Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key. @ https://21st.dev/_next/static/chunks/75597-9ea992daddc04aa8.js:5
+[    1233ms] [LOG] [Featurebase SDK] Initializing SDK! @ https://do.featurebase.app/js/sdk.js:268
+[    1381ms] [WARNING] [PostHog.js] You have already initialized PostHog! Re-initializing is a no-op @ https://21st.dev/_next/static/chunks/2d2d3c67-534fff7c09ab1dc6.js:0
+[    1394ms] [ERROR] %c << query #2 %cusers.isCurrentUserAdmin%c %O 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+   
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: bold; 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: normal; {input: undefined, result: TRPCClientError: User must be authenticated
+    at a.from (https://21st.dev/_next/static/chunks/240…, elapsedMs: 265, context: Object} @ https://21st.dev/_next/static/chunks/24037-09d5fba18cfdd89a.js:7
+[    1519ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/1120.html?theme=light:1236
+[    1519ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/1120.html?theme=light:1236
+[    1604ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    1604ms] [LOG] [Featurebase SDK] Data changed, canceling previous request @ https://do.featurebase.app/js/sdk.js:268
+[    1604ms] [LOG] [Featurebase SDK] Previous request canceled due to new request @ https://do.featurebase.app/js/sdk.js:268
+[    1647ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    1647ms] [LOG] [Featurebase SDK] Same data as previous request, waiting for completion @ https://do.featurebase.app/js/sdk.js:268
+[    1677ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    1677ms] [LOG] [Featurebase SDK] Same data as previous request, waiting for completion @ https://do.featurebase.app/js/sdk.js:268
+[    2299ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://do.featurebase.app/js/sdk.js:262
+[    2633ms] [ERROR] %c << query #4 %cusers.isCurrentUserAdmin%c %O 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+   
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: bold; 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: normal; {input: undefined, result: TRPCClientError: User must be authenticated
+    at a.from (https://21st.dev/_next/static/chunks/240…, elapsedMs: 237, context: Object} @ https://21st.dev/_next/static/chunks/24037-09d5fba18cfdd89a.js:7
+[    4858ms] [ERROR] %c << query #5 %cusers.isCurrentUserAdmin%c %O 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+   
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: bold; 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: normal; {input: undefined, result: TRPCClientError: User must be authenticated
+    at a.from (https://21st.dev/_next/static/chunks/240…, elapsedMs: 224, context: Object} @ https://21st.dev/_next/static/chunks/24037-09d5fba18cfdd89a.js:7
+[    7218ms] TypeError: t.closest is not a function
+    at onMouseLeave (https://21st.dev/_next/static/chunks/85975-2915057ad1bc3bae.js:1:139889)
+    at s0 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:151990)
+    at https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:157878
+    at nU (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:20181)
+    at s5 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:153223)
+    at fL (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189200)
+    at f_ (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189115)
+[    9090ms] [ERROR] %c << query #6 %cusers.isCurrentUserAdmin%c %O 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+   
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: bold; 
+    background-color: #3fb0d8;
+    color: white;
+    padding: 2px;
+  ; font-weight: normal; {input: undefined, result: TRPCClientError: User must be authenticated
+    at a.from (https://21st.dev/_next/static/chunks/240…, elapsedMs: 231, context: Object} @ https://21st.dev/_next/static/chunks/24037-09d5fba18cfdd89a.js:7
+[   10496ms] TypeError: t.closest is not a function
+    at onMouseLeave (https://21st.dev/_next/static/chunks/85975-2915057ad1bc3bae.js:1:139889)
+    at s0 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:151990)
+    at https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:157878
+    at nU (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:20181)
+    at s5 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:153223)
+    at fL (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189200)
+    at f_ (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189115)
+[   30620ms] TypeError: t.closest is not a function
+    at onMouseLeave (https://21st.dev/_next/static/chunks/85975-2915057ad1bc3bae.js:1:139889)
+    at s0 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:151990)
+    at https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:157878
+    at nU (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:20181)
+    at s5 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:153223)
+    at fL (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189200)
+    at f_ (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189115)

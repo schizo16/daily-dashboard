@@ -1,0 +1,42 @@
+[     527ms] [WARNING] Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key. @ https://21st.dev/_next/static/chunks/75597-9ea992daddc04aa8.js:5
+[    1243ms] [WARNING] [PostHog.js] You have already initialized PostHog! Re-initializing is a no-op @ https://21st.dev/_next/static/chunks/2d2d3c67-534fff7c09ab1dc6.js:0
+[    1634ms] [LOG] [Featurebase SDK] Initializing SDK! @ https://do.featurebase.app/js/sdk.js:268
+[    1971ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    1971ms] [LOG] [Featurebase SDK] Data changed, canceling previous request @ https://do.featurebase.app/js/sdk.js:268
+[    1972ms] [LOG] [Featurebase SDK] Previous request canceled due to new request @ https://do.featurebase.app/js/sdk.js:268
+[    2019ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    2019ms] [LOG] [Featurebase SDK] Same data as previous request, waiting for completion @ https://do.featurebase.app/js/sdk.js:268
+[    2067ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    2067ms] [LOG] [Featurebase SDK] Same data as previous request, waiting for completion @ https://do.featurebase.app/js/sdk.js:268
+[    2658ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://do.featurebase.app/js/sdk.js:262
+[    2762ms] TypeError: t.closest is not a function
+    at onMouseLeave (https://21st.dev/_next/static/chunks/85975-2915057ad1bc3bae.js:1:139889)
+    at s0 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:151990)
+    at https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:157878
+    at nU (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:20181)
+    at s5 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:153223)
+    at fL (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189200)
+    at f_ (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189115)
+[  136174ms] [LOG] [Community Search] card click: {id: 8275, name: default.tsx, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/dhileepkumargm/digital-loom-background/default/bundle.1759057292897.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  136365ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  136796ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0
+[  139612ms] [LOG] [Community Search] card click: {id: 1894, name: Demo Home Page, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/bundled/1894.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  139788ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  140248ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140248ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140253ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140253ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140279ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0
+[  143098ms] [LOG] [Community Search] card click: {id: 2751, name: Default, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/uniquesonu/animated-hero-section/default/bundle.1749717188126.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  143278ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  143682ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0
+[  147817ms] [LOG] [Community Search] card click: {id: 1825, name: Default, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/bundled/1825.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  147969ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  148388ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/1825.html?theme=light:970
+[  148388ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/1825.html?theme=light:970
+[  148437ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0
+[  400732ms] [LOG] [Community Search] card click: {id: 19, name: Default, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/bundled/19.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  400920ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  401327ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/19.html?theme=light:960
+[  401327ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/19.html?theme=light:960
+[  401380ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0

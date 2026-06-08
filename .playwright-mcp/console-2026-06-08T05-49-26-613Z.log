@@ -1,0 +1,16 @@
+[     271ms] [WARNING] Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key. @ https://21st.dev/_next/static/chunks/75597-9ea992daddc04aa8.js:5
+[     806ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://pbs.twimg.com/profile_images/1946774162124554241/hB_Gz7Wc_400x400.jpg:0
+[    1202ms] [WARNING] [PostHog.js] You have already initialized PostHog! Re-initializing is a no-op @ https://21st.dev/_next/static/chunks/2d2d3c67-534fff7c09ab1dc6.js:0
+[    1498ms] [LOG] [Featurebase SDK] Initializing SDK! @ https://do.featurebase.app/js/sdk.js:268
+[    1834ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    1834ms] [LOG] [Featurebase SDK] Data changed, canceling previous request @ https://do.featurebase.app/js/sdk.js:268
+[    1835ms] [LOG] [Featurebase SDK] Previous request canceled due to new request @ https://do.featurebase.app/js/sdk.js:268
+[    1898ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    1898ms] [LOG] [Featurebase SDK] Same data as previous request, waiting for completion @ https://do.featurebase.app/js/sdk.js:268
+[    1957ms] [LOG] [Featurebase SDK] Messenger initialization already in progress, checking if data changed @ https://do.featurebase.app/js/sdk.js:268
+[    1957ms] [LOG] [Featurebase SDK] Same data as previous request, waiting for completion @ https://do.featurebase.app/js/sdk.js:268
+[    2618ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://do.featurebase.app/js/sdk.js:262
+[    3885ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://pbs.twimg.com/profile_images/1970810743554531328/1HICDFv1_400x400.png:0
+[    3890ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://pbs.twimg.com/profile_images/1450374530250141699/Zk8gYb86_400x400.jpg:0
+[    3890ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://pbs.twimg.com/profile_images/1920825720927858688/mpQYMiEc_400x400.jpg:0
+[    4077ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://pbs.twimg.com/profile_images/1907363002065600512/KX5RAIGk_400x400.jpg:0

@@ -1,0 +1,91 @@
+<div class="section">
+  <h2>✨ Design — Phần 4: Animation & 3D Strategy</h2>
+  <p class="subtitle">Framer Motion + CSS + 3D transforms — đẹp, mượt, Apple-like</p>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">🎬 Page & Route Transitions</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:8px">
+      <code style="font-size:0.7rem">AnimatePresence → page enter: </code>
+      <div style="margin-top:6px;height:4px;background:linear-gradient(90deg,#0071e3,#0071e3 70%,transparent);border-radius:2px;animation:shimmer 1s infinite"></div>
+      <p style="font-size:0.75rem;margin-top:6px;color:var(--muted)">opacity 0→1, y: 8→0, spring stiffness 200, damping 24</p>
+    </div>
+    <div style="padding:12px;background:rgba(0,0,0,0.2);border-radius:8px">
+      <code style="font-size:0.7rem">Page exit: </code>
+      <div style="margin-top:6px;height:4px;background:linear-gradient(90deg,transparent,#86868b);border-radius:2px"></div>
+      <p style="font-size:0.75rem;margin-top:6px;color:var(--muted)">opacity 1→0, scale 1→0.98, duration 150ms</p>
+    </div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+  <div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px">
+    <h3 style="margin-bottom:12px">🔄 3D Interactive Effects</h3>
+    <ul style="font-size:0.82rem;list-style:none;padding:0">
+      <li style="padding:3px 0">✦ <strong>Card tilt</strong> — mouse parallax: perspective + rotateX/Y + translateZ</li>
+      <li style="padding:3px 0">✦ <strong>Sidebar hover</strong> — subtle translateZ(2px) on items</li>
+      <li style="padding:3px 0">✦ <strong>Hero 3D depth</strong> — clock floating, greeting layer separation</li>
+      <li style="padding:3px 0">✦ <strong>Stagger cards</strong> — each card enters with delay * index</li>
+      <li style="padding:3px 0">✦ <strong>Spring buttons</strong> — scale 1→0.97 on press</li>
+      <li style="padding:3px 0">✦ <strong>Glass shimmer</strong> — subtle gradient shift on glass cards</li>
+    </ul>
+  </div>
+  <div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px">
+    <h3 style="margin-bottom:12px">🌊 Micro-interactions</h3>
+    <ul style="font-size:0.82rem;list-style:none;padding:0">
+      <li style="padding:3px 0">✦ Search bar expand on focus (Apple Spotlight style)</li>
+      <li style="padding:3px 0">✦ Movie card hover lift + shadow depth</li>
+      <li style="padding:3px 0">✦ Sidebar collapse spring animation</li>
+      <li style="padding:3px 0">✦ Theme toggle rotation animation</li>
+      <li style="padding:3px 0">✦ Loading skeletons with shimmer</li>
+      <li style="padding:3px 0">✦ Toast notifications slide-down</li>
+      <li style="padding:3px 0">✦ Tool page transitions (forward/back)</li>
+    </ul>
+  </div>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">⚙️ Motion Config (Framer Motion)</h3>
+  <pre style="font-family:monospace;font-size:0.7rem;line-height:1.5;background:rgba(0,0,0,0.2);padding:12px;border-radius:8px">
+// Apple spring - mượt, tự nhiên
+const appleSpring = { type: "spring", stiffness: 200, damping: 24 }
+
+// Page transition
+const pageVariants = {
+  enter: { opacity: 1, y: 0, transition: appleSpring },
+  exit:  { opacity: 0, y: -8, transition: { duration: 0.15 } }
+}
+
+// 3D card tilt
+const tiltStyle = (x, y) => ({
+  transform: `perspective(600px)
+    rotateX(${y * -3}deg)
+    rotateY(${x * 3}deg)
+    translateZ(8px)`
+})
+
+// Stagger children
+const stagger = { animate: { transition: { staggerChildren: 0.05 } } }
+  </pre>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">🌙 Background Effects (CSS-driven)</h3>
+  <p style="font-size:0.82rem">Giữ ý tưởng cũ nhưng làm đẹp hơn:</p>
+  <ul style="font-size:0.82rem;list-style:none;padding:0">
+    <li style="padding:3px 0">✦ <strong>Dark mode</strong> — subtle noise texture + radial gradient glow</li>
+    <li style="padding:3px 0">✦ <strong>Light mode</strong> — clean white/gray gradient</li>
+    <li style="padding:3px 0">✦ <strong>Evening/Night</strong> — animated stars (CSS-only, như cũ)</li>
+    <li style="padding:3px 0">✦ <strong>Weather effects</strong> — rain, wind, clouds with CSS keyframes</li>
+    <li style="padding:3px 0">✦ Tất cả qua <code>data-</code> attributes trên &lt;html&gt;</li>
+  </ul>
+</div>
+
+<div style="background:rgba(10,132,255,0.08);border-radius:12px;padding:16px;border:0.5px solid rgba(10,132,255,0.2)">
+  <p style="font-size:0.85rem;font-weight:500">🎯 Tóm tắt: Thiết kế mới sẽ là Apple Vibrancy premium — glass cards, sidebar macOS-style, 3D tilt trên cards, spring animations, page transitions mượt, micro-interactions tinh tế. <strong>Không giữ gì từ code cũ.</strong></p>
+</div>
+
+<div class="section" style="margin-top:20px">
+  <p class="subtitle">Phần 4 OK không? Nếu ổn, tôi sẽ viết design doc và chuyển sang implementation plan 👇</p>
+</div>

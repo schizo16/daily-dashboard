@@ -1,0 +1,88 @@
+<div class="section">
+  <h2>🔄 Bước 1: Chọn nền tảng xây dựng</h2>
+  <p class="subtitle">21st.dev components được xây bằng React + Tailwind. Bạn muốn đi đường nào?</p>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="vanilla" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Vanilla JS (giữ nguyên)</h3>
+      <p><strong>Giữ nguyên</strong> kiến trúc hiện tại (không framework, không build step)</p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Không cần rewrite toàn bộ</li>
+            <li>Không học framework mới</li>
+            <li>Nhẹ, không dependency</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Không dùng được component 21st.dev trực tiếp</li>
+            <li>Phải tự code animation/3D</li>
+            <li>Tốn công hơn cho hiệu ứng</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="react" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>React + Tailwind</h3>
+      <p><strong>Chuyển sang</strong> React, dùng component 21st.dev trực tiếp</p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Kho component 21st.dev khủng (hero, card, nav, button...)</li>
+            <li>Animation/3D có sẵn</li>
+            <li>Dễ bảo trì, component hóa</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Phải rewrite toàn bộ</li>
+            <li>Phải học React (nếu chưa biết)</li>
+            <li>Cần build step, phức tạp hơn</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hybrid: Vanilla + Design System</h3>
+      <p><strong>Giữ vanilla JS</strong> nhưng xây CSS design system mới theo phong cách 21st.dev</p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Giữ code cũ, chỉ nâng cấp UI</li>
+            <li>Tự do custom 100%</li>
+            <li>Không dependency mới</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Tự code animation/3D từ đầu</li>
+            <li>Không có component sẵn</li>
+            <li>Tốn thời gian hơn</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <p class="subtitle">Click vào option bạn chọn, rồi reply trong terminal 👇</p>
+</div>

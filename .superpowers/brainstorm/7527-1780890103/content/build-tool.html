@@ -1,0 +1,60 @@
+<div class="section">
+  <h2>⚡ Bước 4: Build tool</h2>
+  <p class="subtitle">React SPA — chọn stack build</p>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="vite" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Vite (Recommended)</h3>
+      <p>Nhanh, đơn giản, đúng cho SPA — không cần SSR. <strong>Vite + React + Tailwind v4</strong></p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Dev server siêu nhanh</li>
+            <li>Cấu hình tối thiểu</li>
+            <li>Deploy tĩnh được</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Không SEO (không cần cho dashboard)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="nextjs" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Next.js</h3>
+      <p>Full framework — App Router, SSR, API routes. Hơi overkill cho dashboard cá nhân</p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>SEO tốt</li>
+            <li>API routes tích hợp</li>
+            <li>Hệ sinh thái lớn</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Nặng hơn cần thiết</li>
+            <li>Cấu hình phức tạp</li>
+            <li>Build lâu hơn</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <p class="subtitle">Chọn build tool bạn muốn 👇</p>
+</div>
