@@ -1,7 +1,7 @@
 import { useThemeStore } from '@/stores/theme'
 
 export function TopBar() {
-  const { theme, toggleTheme, locale, setLocale } = useThemeStore()
+  const { locale, setLocale } = useThemeStore()
 
   return (
     <header className="fixed left-60 right-0 top-0 z-20 flex h-12 items-center justify-between border-b border-[var(--border)] bg-[var(--bg)]/60 backdrop-blur-2xl px-6">
@@ -14,12 +14,6 @@ export function TopBar() {
         </div>
       </div>
       <div className="flex items-center gap-3">
-        <button
-          onClick={toggleTheme}
-          className="rounded-full p-2 text-[var(--text-2)] transition-all duration-200 hover:bg-[var(--surface-2)]/80 hover:rotate-12"
-        >
-          {theme === 'dark' ? '☀️' : '🌙'}
-        </button>
         <button
           onClick={() => setLocale(locale === 'vi' ? 'en' : 'vi')}
           className="rounded-full px-3 py-1 text-xs font-mono text-[var(--text-2)] transition-all duration-200 hover:bg-[var(--surface-2)]/80"

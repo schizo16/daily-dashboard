@@ -17,3 +17,21 @@
     at s5 (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:153223)
     at fL (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189200)
     at f_ (https://21st.dev/_next/static/chunks/478f1f74-998c95e64b731fed.js:1:189115)
+[  136174ms] [LOG] [Community Search] card click: {id: 8275, name: default.tsx, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/dhileepkumargm/digital-loom-background/default/bundle.1759057292897.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  136365ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  136796ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0
+[  139612ms] [LOG] [Community Search] card click: {id: 1894, name: Demo Home Page, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/bundled/1894.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  139788ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  140248ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140248ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140253ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140253ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/1894.html?theme=light:1212
+[  140279ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0
+[  143098ms] [LOG] [Community Search] card click: {id: 2751, name: Default, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/uniquesonu/animated-hero-section/default/bundle.1749717188126.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  143278ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  143682ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0
+[  147817ms] [LOG] [Community Search] card click: {id: 1825, name: Default, hasBundleUrl: true, bundleUrlHtml: https://cdn.21st.dev/bundled/1825.html, bundleHtmlUrl: undefined} @ https://21st.dev/_next/static/chunks/84228-dbb9bc1961ad1aeb.js:0
+[  147969ms] [WARNING] Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}. @ https://21st.dev/_next/static/chunks/10176-440a61b00f6ae5e9.js:4
+[  148388ms] [LOG] isDarkMode false @ https://cdn.21st.dev/bundled/1825.html?theme=light:970
+[  148388ms] [LOG] window.location.search ?theme=light @ https://cdn.21st.dev/bundled/1825.html?theme=light:970
+[  148437ms] [WARNING] Tooltip is changing from controlled to uncontrolled. Components should not switch from controlled to uncontrolled (or vice versa). Decide between using a controlled or uncontrolled value for the lifetime of the component. @ https://21st.dev/_next/static/chunks/79718-de80bf93786839ea.js:0

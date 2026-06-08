@@ -1,26 +1,26 @@
+import { useEffect, useState } from "react"
+import { MeshGradient } from "@paper-design/shaders-react"
+
 export function Background() {
+  const [mounted, setMounted] = useState(false)
+  const [dims, setDims] = useState({ width: 1920, height: 1080 })
+
+  useEffect(() => {
+    setMounted(true)
+    const update = () => setDims({ width: window.innerWidth, height: window.innerHeight })
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          className={`
-            [--white-gradient:repeating-linear-gradient(100deg,var(--white)_0%,var(--white)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--white)_16%)]
-            [--dark-gradient:repeating-linear-gradient(100deg,var(--black)_0%,var(--black)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--black)_16%)]
-            [--aurora:repeating-linear-gradient(100deg,var(--blue-500)_10%,var(--indigo-300)_15%,var(--blue-300)_20%,var(--violet-200)_25%,var(--blue-400)_30%)]
-            [background-image:var(--white-gradient),var(--aurora)]
-            dark:[background-image:var(--dark-gradient),var(--aurora)]
-            [background-size:300%,_200%]
-            [background-position:50%_50%,50%_50%]
-            filter blur-[10px] invert dark:invert-0
-            after:content-[""] after:absolute after:inset-0 after:[background-image:var(--white-gradient),var(--aurora)]
-            after:dark:[background-image:var(--dark-gradient),var(--aurora)]
-            after:[background-size:200%,_100%]
-            after:animate-aurora after:[background-attachment:fixed] after:mix-blend-difference
-            absolute -inset-[10px] opacity-30 will-change-transform
-            [mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,var(--transparent)_70%)]
-          `}
-        />
-      </div>
+      {mounted && (
+        <>
+          <MeshGradient width={dims.width} height={dims.height} colors={['#000000', '#1c1c1e', '#2c2c2e', '#0a84ff', '#1c1c1e']} distortion={0.5} swirl={0.3} speed={0.25} offsetX={0.05} />
+          <div className="absolute inset-0 pointer-events-none bg-black/50" />
+        </>
+      )}
     </div>
   )
 }
