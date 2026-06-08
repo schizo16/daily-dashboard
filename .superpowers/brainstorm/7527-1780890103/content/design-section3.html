@@ -1,0 +1,70 @@
+<div class="section">
+  <h2>🧩 Design — Phần 3: Layout & Components</h2>
+  <p class="subtitle">Sidebar + Glass Content — cấu trúc từng trang</p>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">📐 Layout Shell</h3>
+  <pre style="font-family:monospace;font-size:0.65rem;line-height:1.6;background:rgba(0,0,0,0.2);padding:16px;border-radius:8px;overflow-x:auto">
+┌─────────────────────────────────────────────────┐
+│  ┌────────────┐  ┌──────────────────────────┐  │
+│  │  ◆ Atlas   │  │  Search...          🌙🔤 │  │
+│  │            │  ├──────────────────────────┤  │
+│  │  📡 Radar  │  │                          │  │
+│  │  🎬 Movies │  │    Page Content           │  │
+│  │  🎮 Games  │  │    (Glass cards)          │  │
+│  │  🔖 Saved  │  │                          │  │
+│  │  🎵 Media  │  │                          │  │
+│  │  🧰 Tools  │  │                          │  │
+│  │  ⚙️ Settings│  │                          │  │
+│  │            │  │                          │  │
+│  │  ────────  │  │                          │  │
+│  │  ☀️ 25°C   │  │                          │  │
+│  └────────────┘  └──────────────────────────┘  │
+└─────────────────────────────────────────────────┘
+  </pre>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+  <div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px">
+    <h3 style="margin-bottom:12px">📂 Sidebar</h3>
+    <ul style="font-size:0.82rem;list-style:none;padding:0">
+      <li style="padding:4px 0">✦ Logo + tên app trên cùng</li>
+      <li style="padding:4px 0">Mỗi item: icon + label</li>
+      <li style="padding:4px 0">Active: background tint xanh</li>
+      <li style="padding:4px 0">Hover: glass highlight</li>
+      <li style="padding:4px 0">Weather widget ở bottom</li>
+      <li style="padding:4px 0">Dễ dàng collapse thành icon</li>
+      <li style="padding:4px 0">Border phải mảnh (0.5px)</li>
+    </ul>
+  </div>
+  <div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px">
+    <h3 style="margin-bottom:12px">🪟 Top Bar</h3>
+    <ul style="font-size:0.82rem;list-style:none;padding:0">
+      <li style="padding:4px 0">Search bar (kiểu Spotlight)</li>
+      <li style="padding:4px 0">Theme toggle (🌙→☀️)</li>
+      <li style="padding:4px 0">Locale toggle (VI/EN)</li>
+      <li style="padding:4px 0">AI Hub button</li>
+      <li style="padding:4px 0">Glass effect nền</li>
+      <li style="padding:4px 0">Sticky trên cùng</li>
+    </ul>
+  </div>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">📄 Pages Content Pattern</h3>
+  <table style="width:100%;font-size:0.82rem;border-collapse:collapse">
+    <tr style="border-bottom:0.5px solid rgba(120,120,128,0.12)"><td style="padding:8px 0"><strong>Home</strong></td><td style="padding:8px 0">Hero section (clock, greeting, weather) + search + notes grid + explore tiles</td></tr>
+    <tr style="border-bottom:0.5px solid rgba(120,120,128,0.12)"><td style="padding:8px 0"><strong>Radar</strong></td><td style="padding:8px 0">Tabs: GitHub / AI Models / HN / Tech News — mỗi tab là glass card với entries</td></tr>
+    <tr style="border-bottom:0.5px solid rgba(120,120,128,0.12)"><td style="padding:8px 0"><strong>Movies</strong></td><td style="padding:8px 0">Period picker pills + grid movie cards + modal detail</td></tr>
+    <tr style="border-bottom:0.5px solid rgba(120,120,128,0.12)"><td style="padding:8px 0"><strong>Games</strong></td><td style="padding:8px 0">Tabs: Steam Deals / eSports / Gaming News + Wordle + Quiz cards</td></tr>
+    <tr style="border-bottom:0.5px solid rgba(120,120,128,0.12)"><td style="padding:8px 0"><strong>Watchlist</strong></td><td style="padding:8px 0">List saved movies, swipe/xóa</td></tr>
+    <tr style="border-bottom:0.5px solid rgba(120,120,128,0.12)"><td style="padding:8px 0"><strong>Media</strong></td><td style="padding:8px 0">Tabs: Music / Radio — player bottom bar persistent</td></tr>
+    <tr style="border-bottom:0.5px solid rgba(120,120,128,0.12)"><td style="padding:8px 0"><strong>Tools</strong></td><td style="padding:8px 0">Grid tool tiles → detail view per tool, back button</td></tr>
+    <tr><td style="padding:8px 0"><strong>Settings</strong></td><td style="padding:8px 0">Theme, locale, API keys, about ✨ mới</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <p class="subtitle">Phần 3 OK không? Sang Phần 4 cuối (Animation + 3D strategy) 👇</p>
+</div>

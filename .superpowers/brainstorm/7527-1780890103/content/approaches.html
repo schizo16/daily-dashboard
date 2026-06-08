@@ -1,0 +1,89 @@
+<div class="section">
+  <h2>🏗️ Propose Approaches</h2>
+  <p class="subtitle">3 cách tiếp cận để rebuild Atlas với React + Tailwind + Apple Vibrancy</p>
+</div>
+
+<div class="options">
+  <div class="option" data-choice="a-recommended" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>🌟 shadcn/ui + Custom Apple Theme (Recommended)</h3>
+      <p><strong>Dùng shadcn/ui</strong> làm base — components sẵn (button, card, dialog, sidebar, tabs, input...), sau đó custom theme theo Apple Vibrancy</p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Component sẵn, không tự code từ đầu</li>
+            <li>shadcn/ui cho code bạn copy vào project (không phải dependency)</li>
+            <li>Theme dễ custom qua CSS variables</li>
+            <li>Có sẵn Sidebar component từ shadcn</li>
+            <li>Cộng đồng lớn, battle-tested</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Phải custom khá nhiều để đạt Apple Vibrancy</li>
+            <li>Cần tune glass effects thủ công</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>🎨 Fully Custom Apple Design System</h3>
+      <p>Tự code 100% components từ scratch theo Apple HIG — kiểm soát hoàn toàn mọi pixel</p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Giống Apple nhất</li>
+            <li>Không bị ràng buộc bởi library</li>
+            <li>Code sạch, tối giản</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Tốn thời gian gấp 3-4 lần</li>
+            <li>Dễ sai spacing/accessibility</li>
+            <li>Phải tự xử lý mọi edge case</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>🔧 Radix UI + Tailwind + 21st.dev Inspiration</h3>
+      <p>Dùng Radix UI primitives (không style) + Tailwind xây từng component, lấy cảm hứng từ 21st.dev</p>
+      <div class="pros-cons" style="margin-top:8px">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Accessibility tốt nhất (Radix)</li>
+            <li>CSS hoàn toàn tự do</li>
+            <li>Không bị vendor lock</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Mất công nhất</li>
+            <li>Radix + custom styling phức tạp</li>
+            <li>Giữa đường giữa hai approach A và B</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <p class="subtitle">Tôi recommend <strong>A - shadcn/ui + Custom Apple Theme</strong>. Nhanh nhất, đẹp nhất, ít tốn công nhất. Click chọn rồi reply 👇</p>
+</div>

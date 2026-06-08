@@ -1,0 +1,60 @@
+<div class="section">
+  <h2>🎨 Design — Phần 2: Design Tokens & Apple Vibrancy Theme</h2>
+  <p class="subtitle">Hệ thống màu sắc, glass effects, shadows theo phong cách Apple</p>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+  <div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px">
+    <h3 style="margin-bottom:12px">🌑 Dark Mode</h3>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#000;border:1px solid #333;flex-shrink:0"></span> <code style="font-size:0.7rem">--bg: #000</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#1c1c1e;border:1px solid #333;flex-shrink:0"></span> <code style="font-size:0.7rem">--surface: #1c1c1e</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#2c2c2e;border:1px solid #444;flex-shrink:0"></span> <code style="font-size:0.7rem">--surface-2: #2c2c2e</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#f5f5f7;flex-shrink:0"></span> <code style="font-size:0.7rem">--text: #f5f5f7</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#86868b;flex-shrink:0"></span> <code style="font-size:0.7rem">--text-2: #86868b</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#0071e3;flex-shrink:0"></span> <code style="font-size:0.7rem">--accent: #0071e3</code></div>
+    </div>
+  </div>
+  <div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px">
+    <h3 style="margin-bottom:12px">☀️ Light Mode</h3>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#f5f5f7;border:1px solid #e5e5ea;flex-shrink:0"></span> <code style="font-size:0.7rem">--bg: #f5f5f7</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid #e5e5ea;flex-shrink:0"></span> <code style="font-size:0.7rem">--surface: #fff</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#f2f2f7;border:1px solid #e5e5ea;flex-shrink:0"></span> <code style="font-size:0.7rem">--surface-2: #f2f2f7</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#1d1d1f;flex-shrink:0"></span> <code style="font-size:0.7rem">--text: #1d1d1f</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#86868b;flex-shrink:0"></span> <code style="font-size:0.7rem">--text-2: #86868b</code></div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:24px;height:24px;border-radius:6px;background:#0071e3;flex-shrink:0"></span> <code style="font-size:0.7rem">--accent: #0071e3</code></div>
+    </div>
+  </div>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">🪟 Glass Effects</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="padding:12px 20px;border-radius:12px;background:rgba(255,255,255,0.08);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:0.5px solid rgba(255,255,255,0.12)">
+      Card Glass Dark
+    </div>
+    <div style="padding:12px 20px;border-radius:12px;background:rgba(255,255,255,0.5);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:0.5px solid rgba(255,255,255,0.8)">
+      Card Glass Light
+    </div>
+    <div style="padding:12px 20px;border-radius:20px;background:rgba(120,120,128,0.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:0.5px solid rgba(120,120,128,0.12)">
+      Pill/Button Glass
+    </div>
+  </div>
+</div>
+
+<div style="background:rgba(120,120,128,0.06);border-radius:12px;padding:20px;margin-bottom:20px">
+  <h3 style="margin-bottom:12px">🎬 Typography + Animation Tokens</h3>
+  <table style="width:100%;font-size:0.85rem;border-collapse:collapse">
+    <tr><td style="padding:4px 0;color:var(--muted)">Font</td><td style="padding:4px 0"><strong>Inter</strong> + JetBrains Mono (code)</td></tr>
+    <tr><td style="padding:4px 0;color:var(--muted)">Base radius</td><td style="padding:4px 0"><code>8px</code> (card), <code>12px</code> (sidebar), <code>20px</code> (pill buttons)</td></tr>
+    <tr><td style="padding:4px 0;color:var(--muted)">Easing</td><td style="padding:4px 0"><code>cubic-bezier(0.16, 1, 0.3, 1)</code> (Apple spring-like)</td></tr>
+    <tr><td style="padding:4px 0;color:var(--muted)">Page transition</td><td style="padding:4px 0">Framer Motion <code>AnimatePresence</code> fade + slideY 8px</td></tr>
+    <tr><td style="padding:4px 0;color:var(--muted)">Hover 3D</td><td style="padding:4px 0">Tilt: perspective(600px) rotateX/Y, translateZ(6-12px)</td></tr>
+    <tr><td style="padding:4px 0;color:var(--muted)">Glass card</td><td style="padding:4px 0"><code>bg-white/5 backdrop-blur-2xl border border-white/10</code></td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <p class="subtitle">Phần 2 OK không? Sang Phần 3 (Component tree + từng page) 👇</p>
+</div>
