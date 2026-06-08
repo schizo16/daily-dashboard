@@ -113,9 +113,32 @@ function ErrorState({ retry }: { retry: () => void }) {
   )
 }
 
+const GITHUB_PERIODS = [
+  { id: 'daily', label: 'Hôm nay', days: 1 },
+  { id: 'weekly', label: 'Tuần', days: 7 },
+  { id: 'monthly', label: 'Tháng', days: 30 },
+  { id: 'yearly', label: 'Năm', days: 365 },
+]
+
+const GITHUB_TOPICS = [
+  { id: '', label: 'Tất cả' },
+  { id: 'ai', label: 'AI' },
+  { id: 'game', label: 'Game' },
+  { id: 'software', label: 'Phần mềm' },
+  { id: 'hack', label: 'Hack' },
+  { id: 'web', label: 'Web' },
+  { id: 'data', label: 'Data' },
+  { id: 'devops', label: 'DevOps' },
+]
+
 function GithubTab() {
+  const [period, setPeriod] = useState('weekly')
+  const [topic, setTopic] = useState('')
+  const p = GITHUB_PERIODS.find(x => x.id === period) || GITHUB_PERIODS[1]
+  const since = new Date(Date.now() - p.days * 86400000).toISOString().slice(0, 10)
+  const q = `created:>${since}${topic ? ` topic:${topic}` : ''}`
   const { data, loading, error, retry } = useFetch<any>(
-    'https://api.github.com/search/repositories?q=created:>2024-01-01&sort=stars&order=desc&per_page=10'
+    `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=10`
   )
 
   if (loading) return <LoadingItems />
@@ -130,7 +153,39 @@ function GithubTab() {
 
   return (
     <GlassCard>
-      <h2 className="text-lg font-bold mb-2">{_('trending')}</h2>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-lg font-bold">{_('trending')}</h2>
+        <div className="flex gap-1">
+          {GITHUB_PERIODS.map(x => (
+            <button
+              key={x.id}
+              onClick={() => setPeriod(x.id)}
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                period === x.id
+                  ? 'bg-[var(--accent)] text-white'
+                  : 'border border-[var(--border)] text-[var(--text-2)] hover:border-[var(--text-2)]'
+              }`}
+            >
+              {x.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="flex gap-1 mb-3 flex-wrap">
+        {GITHUB_TOPICS.map(x => (
+          <button
+            key={x.id}
+            onClick={() => setTopic(x.id)}
+            className={`px-2 py-0.5 rounded text-[10px] font-mono transition-all ${
+              topic === x.id
+                ? 'bg-[var(--accent)]/20 text-[var(--accent)]'
+                : 'text-[var(--text-3)] hover:text-[var(--text-2)]'
+            }`}
+          >
+            {x.label}
+          </button>
+        ))}
+      </div>
       {items.map((item: any) => (
         <Entry
           key={item.name}
