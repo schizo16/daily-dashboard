@@ -3,8 +3,9 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
+const base = process.env.BASE_URL || '/daily-dashboard/'
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? '/daily-dashboard/' : '/',
+  base,
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
