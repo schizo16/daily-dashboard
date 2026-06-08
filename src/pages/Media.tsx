@@ -39,7 +39,7 @@ function extractPlaylistId(url: string): string | null {
 }
 
 export default function Media() {
-  const { videoId, title, setTrack, clear } = usePlayerStore()
+  const { videoId, title, setTrack, addToQueue, clear } = usePlayerStore()
   const [playlistId, setPlaylistId] = useState('')
   const [inputUrl, setInputUrl] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
@@ -65,6 +65,7 @@ export default function Media() {
       setSearchQuery(match.t)
       setPlaylistId('')
       setTrack(match.vid, match.t)
+      addToQueue({ id: match.vid, title: match.t })
       setSearching(false)
       return
     }
@@ -76,7 +77,7 @@ export default function Media() {
         if (res.ok) {
           const d = await res.json()
           const foundVid = d?.items?.[0]?.id?.videoId
-          if (foundVid) { setPlaylistId(''); setTrack(foundVid, query); setSearching(false); return }
+          if (foundVid) { setPlaylistId(''); setTrack(foundVid, query); addToQueue({ id: foundVid, title: query }); setSearching(false); return }
         }
       } catch {}
     }

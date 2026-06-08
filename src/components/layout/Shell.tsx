@@ -11,7 +11,7 @@ export function Shell() {
       <Sidebar />
       <div className="ml-60 flex flex-1 flex-col relative z-10">
         <TopBar />
-        <main className="mt-12 flex-1 p-6 pb-16">
+        <main className="mt-12 flex-1 p-6 pb-20">
           <Outlet />
         </main>
         <PlayerBar />
