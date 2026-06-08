@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-
 import { GlassCard } from '@/components/shared/GlassCard'
 import { useThemeStore } from '@/stores/theme'
 import { formatDate, formatTime } from '@/lib/utils'
@@ -30,12 +29,34 @@ function useWeather() {
   return data
 }
 
+const TYPING_TEXTS = [
+  'AI xu hướng, phim hay, và game mỗi ngày.',
+  'Trending repos, top movies, daily games.',
+  'GitHub, TMDB, Steam — một dashboard.',
+]
+
+function Typewriter({ texts }: { texts: string[] }) {
+  const [display, setDisplay] = useState('')
+  const [idx, setIdx] = useState(0)
+  const [i, setI] = useState(0)
+
+  useEffect(() => {
+    if (i < texts[idx].length) {
+      const t = setTimeout(() => { setDisplay(texts[idx].slice(0, i + 1)); setI(i + 1) }, 40)
+      return () => clearTimeout(t)
+    }
+    const t = setTimeout(() => { setIdx((idx + 1) % texts.length); setI(0); setDisplay('') }, 2500)
+    return () => clearTimeout(t)
+  }, [i, idx, texts])
+
+  return <span>{display}<span className="animate-pulse">|</span></span>
+}
+
 export default function Home() {
   const weather = useWeather()
   const { locale } = useThemeStore()
   const [time, setTime] = useState(new Date())
   const [notes, setNotes] = useState(storage.get('notes', ''))
-
 
   useEffect(() => {
     const id = setInterval(() => setTime(new Date()), 10000)
@@ -46,28 +67,71 @@ export default function Home() {
 
   const hour = time.getHours()
   const greeting = locale === 'vi'
-    ? hour < 12 ? 'Chào buổi sáng. ☀️' : hour < 18 ? 'Chào buổi chiều. 🌤' : 'Chào buổi tối. 🌙'
-    : hour < 12 ? 'Good morning. ☀️' : hour < 18 ? 'Good afternoon. 🌤' : 'Good evening. 🌙'
-
-  const colors = ['#1c1c1e', '#2c2c2e', '#3a3a3c', '#0a84ff', '#636366']
+    ? hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
+    : hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   return (
     <div className="space-y-5">
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ type: 'spring', stiffness: 200, damping: 24 }}>
-        <div className="text-center py-12">
-          <div className="font-mono text-xs text-[var(--text-3)] tracking-[0.4em] mb-4">✦</div>
-          <div className="font-mono text-5xl font-medium text-[var(--text)] tracking-wide mb-1">{formatTime(time)}</div>
-          <div className="text-sm text-[var(--text-2)] mb-1">{formatDate(time, locale)}</div>
-          {weather && <div className="text-sm text-[var(--text-2)] flex items-center justify-center gap-1.5">{weather.icon} <span className="font-medium text-[var(--text)]">{weather.temp}°C</span></div>}
-          <p className="text-base text-[var(--text-2)] mt-4">{greeting}</p>
-          <p className="text-sm text-[var(--text-2)] max-w-md mx-auto mt-2">{_('heroDesc')}</p>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+        <div className="text-center pt-16 pb-8 relative">
+          <div className="absolute top-8 left-1/2 -translate-x-1/2 w-40 h-40 bg-[var(--accent)]/5 rounded-full blur-3xl" />
+
+          <motion.p
+            className="text-sm font-medium mb-6"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <span className="bg-[var(--surface)] border border-[var(--border)] px-4 py-1.5 rounded-full text-[var(--text-2)]">
+              {greeting}
+              {weather && <> · {weather.icon} {weather.temp}°C</>}
+            </span>
+          </motion.p>
+
+          <motion.div
+            className="relative inline-block"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 150, damping: 20 }}
+          >
+            <div className="glass rounded-2xl px-8 py-4 mb-4 inline-block">
+              <div className="font-mono text-6xl sm:text-7xl font-light tracking-[0.06em] text-[var(--text)]">
+                {formatTime(time)}
+              </div>
+            </div>
+            <div className="absolute -top-2 -right-2 w-4 h-4 bg-[var(--accent)] rounded-full opacity-60 animate-pulse" />
+          </motion.div>
+
+          <motion.p
+            className="text-base text-[var(--text-2)] mb-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            {formatDate(time, locale)}
+          </motion.p>
+
+          <motion.div
+            className="text-sm text-[var(--text-3)] h-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Typewriter texts={TYPING_TEXTS} />
+          </motion.div>
         </div>
       </motion.div>
 
       <GlassCard className="text-center">
-        <input placeholder={locale === 'vi' ? 'Tìm kiếm Google...' : 'Search Google...'}
+        <input
+          placeholder={locale === 'vi' ? 'Tìm kiếm Google...' : 'Search Google...'}
           className="w-full max-w-sm rounded-full border border-[var(--border)] bg-[var(--surface)]/50 px-5 py-2.5 text-sm outline-none transition-all duration-200 placeholder:text-[var(--text-3)] focus:border-[var(--accent)] focus:w-80 text-center"
-          onKeyDown={(e) => { if (e.key === 'Enter') { const val = (e.target as HTMLInputElement).value.trim(); if (val) window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank') } }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              const val = (e.target as HTMLInputElement).value.trim()
+              if (val) window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank')
+            }
+          }}
         />
       </GlassCard>
 
@@ -76,8 +140,11 @@ export default function Home() {
           <span className="font-mono text-xs text-[var(--text-3)]">{_('quickNotes')}</span>
           <button onClick={() => { setNotes(''); storage.remove('notes') }} className="font-mono text-xs text-[var(--text-3)] bg-none border-none cursor-pointer hover:text-[var(--text-2)]">{_('clear')}</button>
         </div>
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value)}
-          className="w-full resize-y rounded border border-[var(--border)] bg-[var(--surface)] p-2.5 text-sm text-[var(--text-2)] outline-none transition-colors focus:border-[var(--accent)] focus:text-[var(--text)] font-mono" rows={4}
+        <textarea
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          className="w-full resize-y rounded border border-[var(--border)] bg-[var(--surface)] p-2.5 text-sm text-[var(--text-2)] outline-none transition-colors focus:border-[var(--accent)] focus:text-[var(--text)] font-mono"
+          rows={4}
           placeholder={locale === 'vi' ? 'Ghi chú nhanh...' : 'Quick notes...'}
         />
       </GlassCard>
@@ -89,9 +156,16 @@ export default function Home() {
           { to: '/games', icon: '🎮', title: _('tileGamesTitle'), desc: _('tileGamesDesc') },
           { to: '/watchlist', icon: '🔖', title: _('tileWatchlistTitle'), desc: _('tileWatchlistDesc') },
         ].map((tile, i) => (
-          <motion.div key={tile.to} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05, type: 'spring', stiffness: 200, damping: 24 }}>
-            <Link to={tile.to}
-              className="block glass rounded-[var(--radius)] p-5 no-underline transition-all duration-300 hover:bg-[var(--surface-2)]/80 hover:-translate-y-0.5 hover:shadow-lg group">
+          <motion.div
+            key={tile.to}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + i * 0.05, type: 'spring', stiffness: 200, damping: 24 }}
+          >
+            <Link
+              to={tile.to}
+              className="block glass rounded-[var(--radius)] p-5 no-underline transition-all duration-300 hover:bg-[var(--surface-2)]/80 hover:-translate-y-0.5 hover:shadow-lg group"
+            >
               <div className="text-lg mb-2.5">{tile.icon}</div>
               <div className="text-sm font-semibold text-[var(--text)] mb-1.5">{tile.title}</div>
               <div className="font-mono text-xs text-[var(--text-2)] leading-relaxed">{tile.desc}</div>

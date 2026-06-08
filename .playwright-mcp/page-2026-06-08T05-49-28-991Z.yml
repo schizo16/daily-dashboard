@@ -1,0 +1,2695 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - main [ref=e4]:
+      - main [ref=e5]:
+        - generic [ref=e8]:
+          - generic [ref=e13]:
+            - generic [ref=e14]:
+              - generic [ref=e15]:
+                - generic [ref=e18]:
+                  - button "21st logo 21st" [ref=e20] [cursor=pointer]:
+                    - generic [ref=e21]:
+                      - generic [ref=e23]:
+                        - img "21st logo"
+                      - generic [ref=e25]: 21st
+                      - img
+                  - button "Close sidebar" [ref=e27] [cursor=pointer]:
+                    - img
+                - generic [ref=e30]:
+                  - img
+                  - textbox "Search" [ref=e31] [cursor=pointer]
+                  - generic:
+                    - img
+                    - generic: K
+              - generic [ref=e32]:
+                - generic [ref=e35]:
+                  - link "Home" [ref=e37] [cursor=pointer]:
+                    - /url: /home
+                    - img [ref=e38]
+                    - generic [ref=e41]: Home
+                  - generic [ref=e42]:
+                    - heading "Explore" [level=3] [ref=e44]
+                    - generic [ref=e45]:
+                      - button "Components" [ref=e46] [cursor=pointer]:
+                        - img [ref=e47]
+                        - generic [ref=e49]: Components
+                        - img [ref=e51]
+                      - button "Agent Templates" [ref=e53] [cursor=pointer]:
+                        - img [ref=e54]
+                        - generic [ref=e56]: Agent Templates
+                        - img [ref=e58]
+                      - link "MCP" [ref=e60] [cursor=pointer]:
+                        - /url: /mcp
+                        - img [ref=e61]
+                        - generic [ref=e67]: MCP
+                  - generic [ref=e68]:
+                    - heading "Build" [level=3] [ref=e70]
+                    - link "Magic Chat" [ref=e72] [cursor=pointer]:
+                      - /url: /magic
+                      - img [ref=e73]
+                      - generic [ref=e77]: Magic Chat
+                      - img [ref=e78]
+                - generic [ref=e87]:
+                  - generic [ref=e88]:
+                    - generic [ref=e89]: Component Libraries
+                    - paragraph [ref=e90]: Your components, used by your agent. Not invented.
+                  - link [ref=e91] [cursor=pointer]:
+                    - /url: /community/blog/component-libraries
+                    - img [ref=e94]
+                  - generic [ref=e104]:
+                    - link "Read more" [ref=e105] [cursor=pointer]:
+                      - /url: /community/blog/component-libraries
+                    - button "Dismiss" [ref=e106] [cursor=pointer]
+              - generic [ref=e108]:
+                - generic [ref=e109]:
+                  - button "Toggle theme" [ref=e110] [cursor=pointer]:
+                    - img
+                  - button "Settings" [ref=e111] [cursor=pointer]:
+                    - img
+                - button "Log in" [ref=e112] [cursor=pointer]:
+                  - generic [ref=e113]: Log in
+            - button "Toggle Sidebar" [ref=e114] [cursor=pointer]
+          - generic [ref=e115]:
+            - heading "Card Components for React & Next.js" [level=1] [ref=e116]
+            - paragraph [ref=e117]: Find 422 versatile React card components built with Tailwind CSS, perfect for showcasing content elegantly in any Next.js application.
+            - generic [ref=e119]:
+              - generic [ref=e121]:
+                - generic [ref=e123]:
+                  - button "Components" [ref=e124] [cursor=pointer]
+                  - generic [ref=e125]: /
+                  - generic [ref=e126]: card
+                - generic [ref=e127]:
+                  - generic:
+                    - button "Search":
+                      - img
+                      - generic: Search
+                      - generic:
+                        - img
+                        - generic: K
+                  - combobox [ref=e128] [cursor=pointer]:
+                    - generic: Recommended
+                    - img [ref=e129]
+              - generic [ref=e133]:
+                - listitem [ref=e135]:
+                  - generic [ref=e136]:
+                    - link "Interactive Checkout" [ref=e137] [cursor=pointer]:
+                      - /url: /community/components/kokonutd/interactive-checkout/default
+                      - img "Interactive Checkout" [ref=e138]
+                    - generic [ref=e139]:
+                      - link "Kokonut UI" [ref=e140] [cursor=pointer]:
+                        - /url: /community/kokonutd
+                        - img "Kokonut UI" [ref=e142]
+                      - paragraph [ref=e143]: Interactive Checkout
+                      - button "87" [ref=e144] [cursor=pointer]:
+                        - img [ref=e145]
+                        - generic [ref=e148]: "87"
+                - listitem [ref=e150]:
+                  - generic [ref=e151]:
+                    - link "Pricing 2" [ref=e152] [cursor=pointer]:
+                      - /url: /community/components/shadcnblockscom/pricing2/default
+                      - img "Pricing 2" [ref=e153]
+                    - generic [ref=e154]:
+                      - link "Shadcnblocks.com" [ref=e155] [cursor=pointer]:
+                        - /url: /community/shadcnblockscom
+                        - img "Shadcnblocks.com" [ref=e157]
+                      - paragraph [ref=e158]: Pricing 2
+                      - button "19" [ref=e159] [cursor=pointer]:
+                        - img [ref=e160]
+                        - generic [ref=e163]: "19"
+                - listitem [ref=e165]:
+                  - generic [ref=e166]:
+                    - link "Card" [ref=e167] [cursor=pointer]:
+                      - /url: /community/components/Ali-Hussein-dev/card/default
+                      - img "Card" [ref=e168]
+                    - generic [ref=e169]:
+                      - link "Indie UI" [ref=e170] [cursor=pointer]:
+                        - /url: /community/Ali-Hussein-dev
+                        - img "Indie UI" [ref=e172]
+                      - paragraph [ref=e173]: Card
+                      - button "77" [ref=e174] [cursor=pointer]:
+                        - img [ref=e175]
+                        - generic [ref=e178]: "77"
+                - listitem [ref=e180]:
+                  - generic [ref=e181]:
+                    - link "RuixenMonoChat" [ref=e182] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/ruixen-mono-chat/default
+                      - img "RuixenMonoChat" [ref=e183]
+                    - generic [ref=e184]:
+                      - link "Ruixen UI" [ref=e185] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e187]
+                      - paragraph [ref=e188]: RuixenMonoChat
+                      - button "37" [ref=e189] [cursor=pointer]:
+                        - img [ref=e190]
+                        - generic [ref=e193]: "37"
+                - listitem [ref=e195]:
+                  - generic [ref=e196]:
+                    - link "Shine Border" [ref=e197] [cursor=pointer]:
+                      - /url: /community/components/magicui/shine-border/default
+                      - img "Shine Border" [ref=e198]
+                    - generic [ref=e199]:
+                      - link "Magic UI" [ref=e200] [cursor=pointer]:
+                        - /url: /community/magicui
+                        - img "Magic UI" [ref=e202]
+                      - paragraph [ref=e203]: Shine Border
+                      - button "73" [ref=e204] [cursor=pointer]:
+                        - img [ref=e205]
+                        - generic [ref=e208]: "73"
+                - listitem [ref=e210]:
+                  - generic [ref=e211]:
+                    - link "Event Card" [ref=e212] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/event-card/default
+                      - img "Event Card" [ref=e213]
+                    - generic [ref=e214]:
+                      - link "Ravi Katiyar" [ref=e215] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e217]
+                      - paragraph [ref=e218]: Event Card
+                      - button "36" [ref=e219] [cursor=pointer]:
+                        - img [ref=e220]
+                        - generic [ref=e223]: "36"
+                - listitem [ref=e225]:
+                  - generic [ref=e226]:
+                    - link "Showcase Card" [ref=e227] [cursor=pointer]:
+                      - /url: /community/components/jatin-yadav05/showcase-card-1/default
+                      - img "Showcase Card" [ref=e228]
+                    - generic [ref=e229]:
+                      - link "Jatin Yadav" [ref=e230] [cursor=pointer]:
+                        - /url: /community/jatin-yadav05
+                        - img "Jatin Yadav" [ref=e232]
+                      - paragraph [ref=e233]: Showcase Card
+                      - button "34" [ref=e234] [cursor=pointer]:
+                        - img [ref=e235]
+                        - generic [ref=e238]: "34"
+                - listitem [ref=e240]:
+                  - generic [ref=e241]:
+                    - link "Activity Card" [ref=e242] [cursor=pointer]:
+                      - /url: /community/components/kokonutd/activity-card/default
+                      - img "Activity Card" [ref=e243]
+                    - generic [ref=e244]:
+                      - link "Kokonut UI" [ref=e245] [cursor=pointer]:
+                        - /url: /community/kokonutd
+                        - img "Kokonut UI" [ref=e247]
+                      - paragraph [ref=e248]: Activity Card
+                      - button "146" [ref=e249] [cursor=pointer]:
+                        - img [ref=e250]
+                        - generic [ref=e253]: "146"
+                - listitem [ref=e255]:
+                  - generic [ref=e256]:
+                    - link "Glass Account Settings Card" [ref=e257] [cursor=pointer]:
+                      - /url: /community/components/moumensoliman/glass-account-settings-card-shadcnui/default
+                      - img "Glass Account Settings Card" [ref=e258]
+                    - generic [ref=e259]:
+                      - link "Moumen Soliman" [ref=e260] [cursor=pointer]:
+                        - /url: /community/moumensoliman
+                        - img "Moumen Soliman" [ref=e262]
+                      - paragraph [ref=e263]: Glass Account Settings Card
+                      - button "219" [ref=e264] [cursor=pointer]:
+                        - img [ref=e265]
+                        - generic [ref=e268]: "219"
+                - listitem [ref=e270]:
+                  - generic [ref=e271]:
+                    - link "Hover Detail Card" [ref=e272] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/hover-detail-card/default
+                      - img "Hover Detail Card" [ref=e273]
+                    - generic [ref=e274]:
+                      - link "Isaiah" [ref=e275] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e277]
+                      - paragraph [ref=e278]: Hover Detail Card
+                      - button "69" [ref=e279] [cursor=pointer]:
+                        - img [ref=e280]
+                        - generic [ref=e283]: "69"
+                - listitem [ref=e285]:
+                  - generic [ref=e286]:
+                    - link "Bento Grid" [ref=e287] [cursor=pointer]:
+                      - /url: /community/components/kokonutd/bento-grid/default
+                      - img "Bento Grid" [ref=e288]
+                    - generic [ref=e289]:
+                      - link "Kokonut UI" [ref=e290] [cursor=pointer]:
+                        - /url: /community/kokonutd
+                        - img "Kokonut UI" [ref=e292]
+                      - paragraph [ref=e293]: Bento Grid
+                      - button "338" [ref=e294] [cursor=pointer]:
+                        - img [ref=e295]
+                        - generic [ref=e298]: "338"
+                - listitem [ref=e300]:
+                  - generic [ref=e301]:
+                    - link "Stock Card" [ref=e302] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/stock-card/default
+                      - img "Stock Card" [ref=e303]
+                    - generic [ref=e304]:
+                      - link "Ravi Katiyar" [ref=e305] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e307]
+                      - paragraph [ref=e308]: Stock Card
+                      - button "82" [ref=e309] [cursor=pointer]:
+                        - img [ref=e310]
+                        - generic [ref=e313]: "82"
+                - listitem [ref=e315]:
+                  - generic [ref=e316]:
+                    - link "Commits Grid" [ref=e317] [cursor=pointer]:
+                      - /url: /community/components/gonzalochale/commits-grid/default
+                      - img "Commits Grid" [ref=e318]
+                    - generic [ref=e319]:
+                      - link "gonzalo chalé" [ref=e320] [cursor=pointer]:
+                        - /url: /community/gonzalochale
+                        - img "gonzalo chalé" [ref=e322]
+                      - paragraph [ref=e323]: Commits Grid
+                      - button "131" [ref=e324] [cursor=pointer]:
+                        - img [ref=e325]
+                        - generic [ref=e328]: "131"
+                - listitem [ref=e330]:
+                  - generic [ref=e331]:
+                    - link "Expanding Cards" [ref=e332] [cursor=pointer]:
+                      - /url: /community/components/vaib215/expanding-cards/default
+                      - img "Expanding Cards" [ref=e333]
+                    - generic [ref=e334]:
+                      - link "Vaibhav Kumar Singh" [ref=e335] [cursor=pointer]:
+                        - /url: /community/vaib215
+                        - img "Vaibhav Kumar Singh" [ref=e337]
+                      - paragraph [ref=e338]: Expanding Cards
+                      - button "15" [ref=e339] [cursor=pointer]:
+                        - img [ref=e340]
+                        - generic [ref=e343]: "15"
+                - listitem [ref=e345]:
+                  - generic [ref=e346]:
+                    - link "Gradient Card Showcase" [ref=e347] [cursor=pointer]:
+                      - /url: /community/components/thanh/gradient-card-showcase/default
+                      - img "Gradient Card Showcase" [ref=e348]
+                    - generic [ref=e349]:
+                      - link "Le Thanh" [ref=e350] [cursor=pointer]:
+                        - /url: /community/thanh
+                        - img "Le Thanh" [ref=e352]
+                      - paragraph [ref=e353]: Gradient Card Showcase
+                      - button "35" [ref=e354] [cursor=pointer]:
+                        - img [ref=e355]
+                        - generic [ref=e358]: "35"
+                - listitem [ref=e360]:
+                  - generic [ref=e361]:
+                    - link "Team Showcase" [ref=e362] [cursor=pointer]:
+                      - /url: /community/components/makviesainte/team-showcase/default
+                      - img "Team Showcase" [ref=e363]
+                    - generic [ref=e364]:
+                      - link "Mak VieSAinte" [ref=e365] [cursor=pointer]:
+                        - /url: /community/makviesainte
+                        - img "Mak VieSAinte" [ref=e367]
+                      - paragraph [ref=e368]: Team Showcase
+                      - button "1.1k" [ref=e369] [cursor=pointer]:
+                        - img [ref=e370]
+                        - generic [ref=e373]: 1.1k
+                - listitem [ref=e375]:
+                  - generic [ref=e376]:
+                    - link "Schema Card with Animated Wave Visualizer" [ref=e377] [cursor=pointer]:
+                      - /url: /community/components/thanh/schema-card-with-animated-wave-visualizer/default
+                      - img "Schema Card with Animated Wave Visualizer" [ref=e378]
+                    - generic [ref=e379]:
+                      - link "Le Thanh" [ref=e380] [cursor=pointer]:
+                        - /url: /community/thanh
+                        - img "Le Thanh" [ref=e382]
+                      - paragraph [ref=e383]: Schema Card with Animated Wave Visualizer
+                      - button "63" [ref=e384] [cursor=pointer]:
+                        - img [ref=e385]
+                        - generic [ref=e388]: "63"
+                - listitem [ref=e390]:
+                  - generic [ref=e391]:
+                    - link "Background Boxes" [ref=e392] [cursor=pointer]:
+                      - /url: /community/components/aceternity/background-boxes/default
+                      - img "Background Boxes" [ref=e393]
+                    - generic [ref=e394]:
+                      - link "Aceternity UI" [ref=e395] [cursor=pointer]:
+                        - /url: /community/aceternity
+                        - img "Aceternity UI" [ref=e397]
+                      - paragraph [ref=e398]: Background Boxes
+                      - button "179" [ref=e399] [cursor=pointer]:
+                        - img [ref=e400]
+                        - generic [ref=e403]: "179"
+                - listitem [ref=e405]:
+                  - generic [ref=e406]:
+                    - link "Expandable Card" [ref=e407] [cursor=pointer]:
+                      - /url: /community/components/erikx/expandable-card/default
+                      - img "Expandable Card" [ref=e408]
+                    - generic [ref=e409]:
+                      - link "Erik X" [ref=e410] [cursor=pointer]:
+                        - /url: /community/erikx
+                        - img "Erik X" [ref=e412]
+                      - paragraph [ref=e413]: Expandable Card
+                      - button "45" [ref=e414] [cursor=pointer]:
+                        - img [ref=e415]
+                        - generic [ref=e418]: "45"
+                - listitem [ref=e420]:
+                  - generic [ref=e421]:
+                    - link "Stack Card" [ref=e422] [cursor=pointer]:
+                      - /url: /community/components/itsankitverma/stack-card/default
+                      - img "Stack Card" [ref=e423]
+                    - generic [ref=e424]:
+                      - link "Ankit Verma" [ref=e425] [cursor=pointer]:
+                        - /url: /community/itsankitverma
+                        - img "Ankit Verma" [ref=e427]
+                      - paragraph [ref=e428]: Stack Card
+                      - button "162" [ref=e429] [cursor=pointer]:
+                        - img [ref=e430]
+                        - generic [ref=e433]: "162"
+                - listitem [ref=e435]:
+                  - generic [ref=e436]:
+                    - link "Animated Status Badge" [ref=e437] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/animated-status-badge/default
+                      - img "Animated Status Badge" [ref=e438]
+                    - generic [ref=e439]:
+                      - link "Isaiah" [ref=e440] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e442]
+                      - paragraph [ref=e443]: Animated Status Badge
+                      - button "12" [ref=e444] [cursor=pointer]:
+                        - img [ref=e445]
+                        - generic [ref=e448]: "12"
+                - listitem [ref=e450]:
+                  - generic [ref=e451]:
+                    - link "Cinematic landing Hero" [ref=e452] [cursor=pointer]:
+                      - /url: /community/components/easemize/cinematic-landing-hero/default
+                      - img "Cinematic landing Hero" [ref=e453]
+                    - generic [ref=e454]:
+                      - link "Hossain Jahed" [ref=e455] [cursor=pointer]:
+                        - /url: /community/easemize
+                        - img "Hossain Jahed" [ref=e457]
+                      - paragraph [ref=e458]: Cinematic landing Hero
+                      - button "2.6k" [ref=e459] [cursor=pointer]:
+                        - img [ref=e460]
+                        - generic [ref=e463]: 2.6k
+                - listitem [ref=e465]:
+                  - generic [ref=e466]:
+                    - link "Profile Card Testimonial Carousel" [ref=e467] [cursor=pointer]:
+                      - /url: /community/components/arunachalam0606/profile-card-testimonial-carousel/default
+                      - img "Profile Card Testimonial Carousel" [ref=e468]
+                    - generic [ref=e469]:
+                      - link "Arunachalam" [ref=e470] [cursor=pointer]:
+                        - /url: /community/arunachalam0606
+                        - img "Arunachalam" [ref=e472]
+                      - paragraph [ref=e473]: Profile Card Testimonial Carousel
+                      - button "7" [ref=e474] [cursor=pointer]:
+                        - img [ref=e475]
+                        - generic [ref=e478]: "7"
+                - listitem [ref=e480]:
+                  - generic [ref=e481]:
+                    - link "Gradient Selector Card" [ref=e482] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/gradient-selector-card/default
+                      - img "Gradient Selector Card" [ref=e483]
+                    - generic [ref=e484]:
+                      - link "Isaiah" [ref=e485] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e487]
+                      - paragraph [ref=e488]: Gradient Selector Card
+                      - button "42" [ref=e489] [cursor=pointer]:
+                        - img [ref=e490]
+                        - generic [ref=e493]: "42"
+                - listitem [ref=e495]:
+                  - generic [ref=e496]:
+                    - link "Product Card" [ref=e497] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/product-card-1/default
+                      - img "Product Card" [ref=e498]
+                    - generic [ref=e499]:
+                      - link "beratberkay" [ref=e500] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e502]
+                      - paragraph [ref=e503]: Product Card
+                      - button "11" [ref=e504] [cursor=pointer]:
+                        - img [ref=e505]
+                        - generic [ref=e508]: "11"
+                - listitem [ref=e510]:
+                  - generic [ref=e511]:
+                    - link "HolographicCard" [ref=e512] [cursor=pointer]:
+                      - /url: /community/components/dhiluxui/holographic-card/default
+                      - img "HolographicCard" [ref=e513]
+                    - generic [ref=e514]:
+                      - link "Dhileep Kumar GM" [ref=e515] [cursor=pointer]:
+                        - /url: /community/dhiluxui
+                        - img "Dhileep Kumar GM" [ref=e517]
+                      - paragraph [ref=e518]: HolographicCard
+                      - button "481" [ref=e519] [cursor=pointer]:
+                        - img [ref=e520]
+                        - generic [ref=e523]: "481"
+                - listitem [ref=e525]:
+                  - generic [ref=e526]:
+                    - link "Card With Lines Patter" [ref=e527] [cursor=pointer]:
+                      - /url: /community/components/Ali-Hussein-dev/card-with-lines-patter/default
+                      - img "Card With Lines Patter" [ref=e528]
+                    - generic [ref=e529]:
+                      - link "Indie UI" [ref=e530] [cursor=pointer]:
+                        - /url: /community/Ali-Hussein-dev
+                        - img "Indie UI" [ref=e532]
+                      - paragraph [ref=e533]: Card With Lines Patter
+                      - button "23" [ref=e534] [cursor=pointer]:
+                        - img [ref=e535]
+                        - generic [ref=e538]: "23"
+                - listitem [ref=e540]:
+                  - generic [ref=e541]:
+                    - link "Spotlight Card" [ref=e542] [cursor=pointer]:
+                      - /url: /community/components/easemize/spotlight-card/default
+                      - img "Spotlight Card" [ref=e543]
+                    - generic [ref=e544]:
+                      - link "Hossain Jahed" [ref=e545] [cursor=pointer]:
+                        - /url: /community/easemize
+                        - img "Hossain Jahed" [ref=e547]
+                      - paragraph [ref=e548]: Spotlight Card
+                      - button "372" [ref=e549] [cursor=pointer]:
+                        - img [ref=e550]
+                        - generic [ref=e553]: "372"
+                - listitem [ref=e555]:
+                  - generic [ref=e556]:
+                    - link "Cards Stack" [ref=e557] [cursor=pointer]:
+                      - /url: /community/components/YoucefBnm/cards-stack/default
+                      - img "Cards Stack" [ref=e558]
+                    - generic [ref=e559]:
+                      - link "Systaliko UI" [ref=e560] [cursor=pointer]:
+                        - /url: /community/YoucefBnm
+                        - img "Systaliko UI" [ref=e562]
+                      - paragraph [ref=e563]: Cards Stack
+                      - button "127" [ref=e564] [cursor=pointer]:
+                        - img [ref=e565]
+                        - generic [ref=e568]: "127"
+                - listitem [ref=e570]:
+                  - generic [ref=e571]:
+                    - link "Digital Serenity Animated Landing Page" [ref=e572] [cursor=pointer]:
+                      - /url: /community/components/thanh/digital-serenity-animated-landing-page/default
+                      - img "Digital Serenity Animated Landing Page" [ref=e573]
+                    - generic [ref=e574]:
+                      - link "Le Thanh" [ref=e575] [cursor=pointer]:
+                        - /url: /community/thanh
+                        - img "Le Thanh" [ref=e577]
+                      - paragraph [ref=e578]: Digital Serenity Animated Landing Page
+                      - button "113" [ref=e579] [cursor=pointer]:
+                        - img [ref=e580]
+                        - generic [ref=e583]: "113"
+                - listitem [ref=e585]:
+                  - generic [ref=e586]:
+                    - link "Performance Benchmark Card" [ref=e587] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/performance-benchmark-card/default
+                      - img "Performance Benchmark Card" [ref=e588]
+                    - generic [ref=e589]:
+                      - link "Kavi Katiyar" [ref=e590] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e592]
+                      - paragraph [ref=e593]: Performance Benchmark Card
+                      - button "187" [ref=e594] [cursor=pointer]:
+                        - img [ref=e595]
+                        - generic [ref=e598]: "187"
+                - listitem [ref=e600]:
+                  - generic [ref=e601]:
+                    - link "Feature Section with Grid" [ref=e602] [cursor=pointer]:
+                      - /url: /community/components/tommyjepsen/feature-section-with-grid/default
+                      - img "Feature Section with Grid" [ref=e603]
+                    - generic [ref=e604]:
+                      - link "Tommy Jepsen" [ref=e605] [cursor=pointer]:
+                        - /url: /community/tommyjepsen
+                        - img "Tommy Jepsen" [ref=e607]
+                      - paragraph [ref=e608]: Feature Section with Grid
+                      - button "66" [ref=e609] [cursor=pointer]:
+                        - img [ref=e610]
+                        - generic [ref=e613]: "66"
+                - listitem [ref=e615]:
+                  - generic [ref=e616]:
+                    - link "Card" [ref=e617] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/card-15/default
+                      - img "Card" [ref=e618]
+                    - generic [ref=e619]:
+                      - link "Ravi Katiyar" [ref=e620] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e622]
+                      - paragraph [ref=e623]: Card
+                      - button "60" [ref=e624] [cursor=pointer]:
+                        - img [ref=e625]
+                        - generic [ref=e628]: "60"
+                - listitem [ref=e630]:
+                  - generic [ref=e631]:
+                    - link "Portfolio Gallery" [ref=e632] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/portfolio-gallery/default
+                      - img "Portfolio Gallery" [ref=e633]
+                    - generic [ref=e634]:
+                      - link "Isaiah" [ref=e635] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e637]
+                      - paragraph [ref=e638]: Portfolio Gallery
+                      - button "440" [ref=e639] [cursor=pointer]:
+                        - img [ref=e640]
+                        - generic [ref=e643]: "440"
+                - listitem [ref=e645]:
+                  - generic [ref=e646]:
+                    - link "Order Tracking Parallax Card" [ref=e647] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/order-tracking-parallax-card/default
+                      - img "Order Tracking Parallax Card" [ref=e648]
+                    - generic [ref=e649]:
+                      - link "Ruixen UI" [ref=e650] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e652]
+                      - paragraph [ref=e653]: Order Tracking Parallax Card
+                      - button "86" [ref=e654] [cursor=pointer]:
+                        - img [ref=e655]
+                        - generic [ref=e658]: "86"
+                - listitem [ref=e660]:
+                  - generic [ref=e661]:
+                    - link "Agent Plan" [ref=e662] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/agent-plan/default
+                      - img "Agent Plan" [ref=e663]
+                    - generic [ref=e664]:
+                      - link "Isaiah" [ref=e665] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e667]
+                      - paragraph [ref=e668]: Agent Plan
+                      - button "215" [ref=e669] [cursor=pointer]:
+                        - img [ref=e670]
+                        - generic [ref=e673]: "215"
+                - listitem [ref=e675]:
+                  - generic [ref=e676]:
+                    - link "Stacked Article Cards" [ref=e677] [cursor=pointer]:
+                      - /url: /community/components/Mazyar kawa/stacked-article-cards/default
+                      - img "Stacked Article Cards" [ref=e678]
+                    - generic [ref=e679]:
+                      - link "Mazyar kawa" [ref=e680] [cursor=pointer]:
+                        - /url: /community/Mazyar kawa
+                        - img "Mazyar kawa" [ref=e682]
+                      - paragraph [ref=e683]: Stacked Article Cards
+                      - button "280" [ref=e684] [cursor=pointer]:
+                        - img [ref=e685]
+                        - generic [ref=e688]: "280"
+                - listitem [ref=e690]:
+                  - generic [ref=e691]:
+                    - link "View Magnifier" [ref=e692] [cursor=pointer]:
+                      - /url: /community/components/bucharitesh/view-magnifier/default
+                      - img "View Magnifier" [ref=e693]
+                    - generic [ref=e694]:
+                      - link "Ritesh Bucha" [ref=e695] [cursor=pointer]:
+                        - /url: /community/bucharitesh
+                        - img "Ritesh Bucha" [ref=e697]
+                      - paragraph [ref=e698]: View Magnifier
+                      - button "2" [ref=e699] [cursor=pointer]:
+                        - img [ref=e700]
+                        - generic [ref=e703]: "2"
+                - listitem [ref=e705]:
+                  - generic [ref=e706]:
+                    - link "Meeting Scheduler" [ref=e707] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/meeting-scheduler/default
+                      - img "Meeting Scheduler" [ref=e708]
+                    - generic [ref=e709]:
+                      - link "Kavi Katiyar" [ref=e710] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e712]
+                      - paragraph [ref=e713]: Meeting Scheduler
+                      - button "123" [ref=e714] [cursor=pointer]:
+                        - img [ref=e715]
+                        - generic [ref=e718]: "123"
+                - listitem [ref=e720]:
+                  - generic [ref=e721]:
+                    - link "Avatar Picker" [ref=e722] [cursor=pointer]:
+                      - /url: /community/components/kokonutd/avatar-picker/default
+                      - img "Avatar Picker" [ref=e723]
+                    - generic [ref=e724]:
+                      - link "Kokonut UI" [ref=e725] [cursor=pointer]:
+                        - /url: /community/kokonutd
+                        - img "Kokonut UI" [ref=e727]
+                      - paragraph [ref=e728]: Avatar Picker
+                      - button "55" [ref=e729] [cursor=pointer]:
+                        - img [ref=e730]
+                        - generic [ref=e733]: "55"
+                - listitem [ref=e735]:
+                  - generic [ref=e736]:
+                    - link "Ai Assistant" [ref=e737] [cursor=pointer]:
+                      - /url: /community/components/coderislive07/ai-assistat/default
+                      - img "Ai Assistant" [ref=e738]
+                    - generic [ref=e739]:
+                      - link "Mridul Dhamija" [ref=e740] [cursor=pointer]:
+                        - /url: /community/coderislive07
+                        - img "Mridul Dhamija" [ref=e742]
+                      - paragraph [ref=e743]: Ai Assistant
+                      - button "36" [ref=e744] [cursor=pointer]:
+                        - img [ref=e745]
+                        - generic [ref=e748]: "36"
+                - listitem [ref=e750]:
+                  - generic [ref=e751]:
+                    - link "3D Card" [ref=e752] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/3d-card/default
+                      - img "3D Card" [ref=e753]
+                    - generic [ref=e754]:
+                      - link "Kavi Katiyar" [ref=e755] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e757]
+                      - paragraph [ref=e758]: 3D Card
+                      - button "343" [ref=e759] [cursor=pointer]:
+                        - img [ref=e760]
+                        - generic [ref=e763]: "343"
+                - listitem [ref=e765]:
+                  - generic [ref=e766]:
+                    - link "Glass Blog Card" [ref=e767] [cursor=pointer]:
+                      - /url: /community/components/moumensoliman/glass-blog-card-shadcnui/default
+                      - img "Glass Blog Card" [ref=e768]
+                    - generic [ref=e769]:
+                      - link "Moumen Soliman" [ref=e770] [cursor=pointer]:
+                        - /url: /community/moumensoliman
+                        - img "Moumen Soliman" [ref=e772]
+                      - paragraph [ref=e773]: Glass Blog Card
+                      - button "643" [ref=e774] [cursor=pointer]:
+                        - img [ref=e775]
+                        - generic [ref=e778]: "643"
+                - listitem [ref=e780]:
+                  - generic [ref=e781]:
+                    - link "Wallet Card" [ref=e782] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/wallet-card/default
+                      - img "Wallet Card" [ref=e783]
+                    - generic [ref=e784]:
+                      - link "beratberkay" [ref=e785] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e787]
+                      - paragraph [ref=e788]: Wallet Card
+                      - button "2" [ref=e789] [cursor=pointer]:
+                        - img [ref=e790]
+                        - generic [ref=e793]: "2"
+                - listitem [ref=e795]:
+                  - generic [ref=e796]:
+                    - link "Card" [ref=e797] [cursor=pointer]:
+                      - /url: /community/components/shadcn/card/default
+                      - img "Card" [ref=e798]
+                    - generic [ref=e799]:
+                      - link "shadcn" [ref=e800] [cursor=pointer]:
+                        - /url: /community/shadcn
+                        - img "shadcn" [ref=e802]
+                      - paragraph [ref=e803]: Card
+                      - button "7" [ref=e804] [cursor=pointer]:
+                        - img [ref=e805]
+                        - generic [ref=e808]: "7"
+                - listitem [ref=e810]:
+                  - generic [ref=e811]:
+                    - link "Social Card" [ref=e812] [cursor=pointer]:
+                      - /url: /community/components/kokonutd/social-card/default
+                      - img "Social Card" [ref=e813]
+                    - generic [ref=e814]:
+                      - link "Kokonut UI" [ref=e815] [cursor=pointer]:
+                        - /url: /community/kokonutd
+                        - img "Kokonut UI" [ref=e817]
+                      - paragraph [ref=e818]: Social Card
+                      - button "81" [ref=e819] [cursor=pointer]:
+                        - img [ref=e820]
+                        - generic [ref=e823]: "81"
+                - listitem [ref=e825]:
+                  - generic [ref=e826]:
+                    - link "Highlight Card" [ref=e827] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/highlight-card/default
+                      - img "Highlight Card" [ref=e828]
+                    - generic [ref=e829]:
+                      - link "beratberkay" [ref=e830] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e832]
+                      - paragraph [ref=e833]: Highlight Card
+                      - button "4" [ref=e834] [cursor=pointer]:
+                        - img [ref=e835]
+                        - generic [ref=e838]: "4"
+                - listitem [ref=e840]:
+                  - generic [ref=e841]:
+                    - link "ReleaseTimeLine" [ref=e842] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/release-time-line/default
+                      - img "ReleaseTimeLine" [ref=e843]
+                    - generic [ref=e844]:
+                      - link "Ruixen UI" [ref=e845] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e847]
+                      - paragraph [ref=e848]: ReleaseTimeLine
+                      - button "14" [ref=e849] [cursor=pointer]:
+                        - img [ref=e850]
+                        - generic [ref=e853]: "14"
+                - listitem [ref=e855]:
+                  - generic [ref=e856]:
+                    - link "Single Pricing Card" [ref=e857] [cursor=pointer]:
+                      - /url: /community/components/efferd/single-pricing-card-1/default
+                      - img "Single Pricing Card" [ref=e858]
+                    - generic [ref=e859]:
+                      - link "Efferd" [ref=e860] [cursor=pointer]:
+                        - /url: /community/efferd
+                        - img "Efferd" [ref=e862]
+                      - paragraph [ref=e863]: Single Pricing Card
+                      - button "80" [ref=e864] [cursor=pointer]:
+                        - img [ref=e865]
+                        - generic [ref=e868]: "80"
+                - listitem [ref=e870]:
+                  - generic [ref=e871]:
+                    - link "Author Form Card" [ref=e872] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/author-form-card/default
+                      - img "Author Form Card" [ref=e873]
+                    - generic [ref=e874]:
+                      - link "Ravi Katiyar" [ref=e875] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e877]
+                      - paragraph [ref=e878]: Author Form Card
+                      - button "105" [ref=e879] [cursor=pointer]:
+                        - img [ref=e880]
+                        - generic [ref=e883]: "105"
+                - listitem [ref=e885]:
+                  - generic [ref=e886]:
+                    - link "Animated Card" [ref=e887] [cursor=pointer]:
+                      - /url: /community/components/badtzx0/animated-card/default
+                      - img "Animated Card" [ref=e888]
+                    - generic [ref=e889]:
+                      - link "badtz" [ref=e890] [cursor=pointer]:
+                        - /url: /community/badtzx0
+                        - img "badtz" [ref=e892]
+                      - paragraph [ref=e893]: Animated Card
+                      - button "27" [ref=e894] [cursor=pointer]:
+                        - img [ref=e895]
+                        - generic [ref=e898]: "27"
+                - listitem [ref=e900]:
+                  - generic [ref=e901]:
+                    - link "Gradient Card" [ref=e902] [cursor=pointer]:
+                      - /url: /community/components/jatin-yadav05/gradient-card/default
+                      - img "Gradient Card" [ref=e903]
+                    - generic [ref=e904]:
+                      - link "Jatin Yadav" [ref=e905] [cursor=pointer]:
+                        - /url: /community/jatin-yadav05
+                        - img "Jatin Yadav" [ref=e907]
+                      - paragraph [ref=e908]: Gradient Card
+                      - button "111" [ref=e909] [cursor=pointer]:
+                        - img [ref=e910]
+                        - generic [ref=e913]: "111"
+                - listitem [ref=e915]:
+                  - generic [ref=e916]:
+                    - link "Flexnative Tabs" [ref=e917] [cursor=pointer]:
+                      - /url: /community/components/felipemenezes098/flexnative-tabs-more/default
+                      - img "Flexnative Tabs" [ref=e918]
+                    - generic [ref=e919]:
+                      - link "User avatar" [ref=e920] [cursor=pointer]:
+                        - /url: /community/felipemenezes098
+                        - img "User avatar" [ref=e922]
+                      - paragraph [ref=e923]: Flexnative Tabs
+                      - button "6" [ref=e924] [cursor=pointer]:
+                        - img [ref=e925]
+                        - generic [ref=e928]: "6"
+                - listitem [ref=e930]:
+                  - generic [ref=e931]:
+                    - link "Progressive blur" [ref=e932] [cursor=pointer]:
+                      - /url: /community/components/motion-primitives/progressive-blur/with-hover
+                      - img "Progressive blur" [ref=e933]
+                    - generic [ref=e934]:
+                      - link "Motion Primitives" [ref=e935] [cursor=pointer]:
+                        - /url: /community/motion-primitives
+                        - img "Motion Primitives" [ref=e937]
+                      - paragraph [ref=e938]: Progressive blur
+                      - button "45" [ref=e939] [cursor=pointer]:
+                        - img [ref=e940]
+                        - generic [ref=e943]: "45"
+                - listitem [ref=e945]:
+                  - generic [ref=e946]:
+                    - link "Bounce card features" [ref=e947] [cursor=pointer]:
+                      - /url: /community/components/uniquesonu/bounce-card-features/default
+                      - img "Bounce card features" [ref=e948]
+                    - generic [ref=e949]:
+                      - link "Sonu" [ref=e950] [cursor=pointer]:
+                        - /url: /community/uniquesonu
+                        - img "Sonu" [ref=e952]
+                      - paragraph [ref=e953]: Bounce card features
+                      - button "44" [ref=e954] [cursor=pointer]:
+                        - img [ref=e955]
+                        - generic [ref=e958]: "44"
+                - listitem [ref=e960]:
+                  - generic [ref=e961]:
+                    - link "Order Confirmation Card" [ref=e962] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/order-confirmation-card/default
+                      - img "Order Confirmation Card" [ref=e963]
+                    - generic [ref=e964]:
+                      - link "Kavi Katiyar" [ref=e965] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e967]
+                      - paragraph [ref=e968]: Order Confirmation Card
+                      - button "283" [ref=e969] [cursor=pointer]:
+                        - img [ref=e970]
+                        - generic [ref=e973]: "283"
+                - listitem [ref=e975]:
+                  - generic [ref=e976]:
+                    - link "Flipping Card" [ref=e977] [cursor=pointer]:
+                      - /url: /community/components/erikx/flipping-card/default
+                      - img "Flipping Card" [ref=e978]
+                    - generic [ref=e979]:
+                      - link "Erik X" [ref=e980] [cursor=pointer]:
+                        - /url: /community/erikx
+                        - img "Erik X" [ref=e982]
+                      - paragraph [ref=e983]: Flipping Card
+                      - button "26" [ref=e984] [cursor=pointer]:
+                        - img [ref=e985]
+                        - generic [ref=e988]: "26"
+                - listitem [ref=e990]:
+                  - generic [ref=e991]:
+                    - link "Animated Profile Card" [ref=e992] [cursor=pointer]:
+                      - /url: /community/components/erikx/animated-profile-card/default
+                      - img "Animated Profile Card" [ref=e993]
+                    - generic [ref=e994]:
+                      - link "Erik X" [ref=e995] [cursor=pointer]:
+                        - /url: /community/erikx
+                        - img "Erik X" [ref=e997]
+                      - paragraph [ref=e998]: Animated Profile Card
+                      - button "257" [ref=e999] [cursor=pointer]:
+                        - img [ref=e1000]
+                        - generic [ref=e1003]: "257"
+                - listitem [ref=e1005]:
+                  - generic [ref=e1006]:
+                    - link "Scroll Card" [ref=e1007] [cursor=pointer]:
+                      - /url: /community/components/ui-layouts/scroll-card/default
+                      - img "Scroll Card" [ref=e1008]
+                    - generic [ref=e1009]:
+                      - link "UI Layouts" [ref=e1010] [cursor=pointer]:
+                        - /url: /community/ui-layouts
+                        - img "UI Layouts" [ref=e1012]
+                      - paragraph [ref=e1013]: Scroll Card
+                      - button "23" [ref=e1014] [cursor=pointer]:
+                        - img [ref=e1015]
+                        - generic [ref=e1018]: "23"
+                - listitem [ref=e1020]:
+                  - generic [ref=e1021]:
+                    - link "Profile Card" [ref=e1022] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/profile-card/default
+                      - img "Profile Card" [ref=e1023]
+                    - generic [ref=e1024]:
+                      - link "Isaiah" [ref=e1025] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e1027]
+                      - paragraph [ref=e1028]: Profile Card
+                      - button "28" [ref=e1029] [cursor=pointer]:
+                        - img [ref=e1030]
+                        - generic [ref=e1033]: "28"
+                - listitem [ref=e1035]:
+                  - generic [ref=e1036]:
+                    - link "Animated Gradient Border" [ref=e1037] [cursor=pointer]:
+                      - /url: /community/components/easemize/animated-gradient-border/default
+                      - img "Animated Gradient Border" [ref=e1038]
+                    - generic [ref=e1039]:
+                      - link "Hossain Jahed" [ref=e1040] [cursor=pointer]:
+                        - /url: /community/easemize
+                        - img "Hossain Jahed" [ref=e1042]
+                      - paragraph [ref=e1043]: Animated Gradient Border
+                      - button "26" [ref=e1044] [cursor=pointer]:
+                        - img [ref=e1045]
+                        - generic [ref=e1048]: "26"
+                - listitem [ref=e1050]:
+                  - generic [ref=e1051]:
+                    - link "System Monitor" [ref=e1052] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/system-monitor/default
+                      - img "System Monitor" [ref=e1053]
+                    - generic [ref=e1054]:
+                      - link "Isaiah" [ref=e1055] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e1057]
+                      - paragraph [ref=e1058]: System Monitor
+                      - button "89" [ref=e1059] [cursor=pointer]:
+                        - img [ref=e1060]
+                        - generic [ref=e1063]: "89"
+                - listitem [ref=e1065]:
+                  - generic [ref=e1066]:
+                    - link "Flip Card" [ref=e1067] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/flip-card/default
+                      - img "Flip Card" [ref=e1068]
+                    - generic [ref=e1069]:
+                      - link "Ruixen UI" [ref=e1070] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1072]
+                      - paragraph [ref=e1073]: Flip Card
+                      - button "27" [ref=e1074] [cursor=pointer]:
+                        - img [ref=e1075]
+                        - generic [ref=e1078]: "27"
+                - listitem [ref=e1080]:
+                  - generic [ref=e1081]:
+                    - link "Sign In Card" [ref=e1082] [cursor=pointer]:
+                      - /url: /community/components/jatin-yadav05/sign-in-card-2/default
+                      - img "Sign In Card" [ref=e1083]
+                    - generic [ref=e1084]:
+                      - link "Jatin Yadav" [ref=e1085] [cursor=pointer]:
+                        - /url: /community/jatin-yadav05
+                        - img "Jatin Yadav" [ref=e1087]
+                      - paragraph [ref=e1088]: Sign In Card
+                      - button "206" [ref=e1089] [cursor=pointer]:
+                        - img [ref=e1090]
+                        - generic [ref=e1093]: "206"
+                - listitem [ref=e1095]:
+                  - generic [ref=e1096]:
+                    - link "Glassmorphism Profile Card" [ref=e1097] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/glassmorphism-profile-card/default
+                      - img "Glassmorphism Profile Card" [ref=e1098]
+                    - generic [ref=e1099]:
+                      - link "beratberkay" [ref=e1100] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e1102]
+                      - paragraph [ref=e1103]: Glassmorphism Profile Card
+                      - button "15" [ref=e1104] [cursor=pointer]:
+                        - img [ref=e1105]
+                        - generic [ref=e1108]: "15"
+                - listitem [ref=e1110]:
+                  - generic [ref=e1111]:
+                    - link "Post Card" [ref=e1112] [cursor=pointer]:
+                      - /url: /community/components/hextaui/post-card/default
+                      - img "Post Card" [ref=e1113]
+                    - generic [ref=e1114]:
+                      - link "HextaUI" [ref=e1115] [cursor=pointer]:
+                        - /url: /community/hextaui
+                        - img "HextaUI" [ref=e1117]
+                      - paragraph [ref=e1118]: Post Card
+                      - button "29" [ref=e1119] [cursor=pointer]:
+                        - img [ref=e1120]
+                        - generic [ref=e1123]: "29"
+                - listitem [ref=e1125]:
+                  - generic [ref=e1126]:
+                    - link "Info Card" [ref=e1127] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/info-card/default
+                      - img "Info Card" [ref=e1128]
+                    - generic [ref=e1129]:
+                      - link "Ravi Katiyar" [ref=e1130] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1132]
+                      - paragraph [ref=e1133]: Info Card
+                      - button "14" [ref=e1134] [cursor=pointer]:
+                        - img [ref=e1135]
+                        - generic [ref=e1138]: "14"
+                - listitem [ref=e1140]:
+                  - generic [ref=e1141]:
+                    - link "Card" [ref=e1142] [cursor=pointer]:
+                      - /url: /community/components/lavikatiyar/card-7/default
+                      - img "Card" [ref=e1143]
+                    - generic [ref=e1144]:
+                      - link "Lavi Katiyar" [ref=e1145] [cursor=pointer]:
+                        - /url: /community/lavikatiyar
+                        - img "Lavi Katiyar" [ref=e1147]
+                      - paragraph [ref=e1148]: Card
+                      - button "193" [ref=e1149] [cursor=pointer]:
+                        - img [ref=e1150]
+                        - generic [ref=e1153]: "193"
+                - listitem [ref=e1155]:
+                  - generic [ref=e1156]:
+                    - link "Testimonial Card" [ref=e1157] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/testimonial-card-1/default
+                      - img "Testimonial Card" [ref=e1158]
+                    - generic [ref=e1159]:
+                      - link "Ravi Katiyar" [ref=e1160] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1162]
+                      - paragraph [ref=e1163]: Testimonial Card
+                      - button "55" [ref=e1164] [cursor=pointer]:
+                        - img [ref=e1165]
+                        - generic [ref=e1168]: "55"
+                - listitem [ref=e1170]:
+                  - generic [ref=e1171]:
+                    - link "Team Member Card" [ref=e1172] [cursor=pointer]:
+                      - /url: /community/components/Shatlyk1011/team-member-card/default
+                      - img "Team Member Card" [ref=e1173]
+                    - generic [ref=e1174]:
+                      - link "Shatlyk1011" [ref=e1175] [cursor=pointer]:
+                        - /url: /community/Shatlyk1011
+                        - img "Shatlyk1011" [ref=e1177]
+                      - paragraph [ref=e1178]: Team Member Card
+                      - button "288" [ref=e1179] [cursor=pointer]:
+                        - img [ref=e1180]
+                        - generic [ref=e1183]: "288"
+                - listitem [ref=e1185]:
+                  - generic [ref=e1186]:
+                    - link "Blog 7" [ref=e1187] [cursor=pointer]:
+                      - /url: /community/components/shadcnblockscom/blog7/default
+                      - img "Blog 7" [ref=e1188]
+                    - generic [ref=e1189]:
+                      - link "Shadcnblocks.com" [ref=e1190] [cursor=pointer]:
+                        - /url: /community/shadcnblockscom
+                        - img "Shadcnblocks.com" [ref=e1192]
+                      - paragraph [ref=e1193]: Blog 7
+                      - button "34" [ref=e1194] [cursor=pointer]:
+                        - img [ref=e1195]
+                        - generic [ref=e1198]: "34"
+                - listitem [ref=e1200]:
+                  - generic [ref=e1201]:
+                    - link "Gallery Hover Carousel" [ref=e1202] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/gallery-hover-carousel/default
+                      - img "Gallery Hover Carousel" [ref=e1203]
+                    - generic [ref=e1204]:
+                      - link "Ruixen UI" [ref=e1205] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1207]
+                      - paragraph [ref=e1208]: Gallery Hover Carousel
+                      - button "22" [ref=e1209] [cursor=pointer]:
+                        - img [ref=e1210]
+                        - generic [ref=e1213]: "22"
+                - listitem [ref=e1215]:
+                  - generic [ref=e1216]:
+                    - link "Cards" [ref=e1217] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/cards-1/default
+                      - img "Cards" [ref=e1218]
+                    - generic [ref=e1219]:
+                      - link "Ravi Katiyar" [ref=e1220] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1222]
+                      - paragraph [ref=e1223]: Cards
+                      - button "78" [ref=e1224] [cursor=pointer]:
+                        - img [ref=e1225]
+                        - generic [ref=e1228]: "78"
+                - listitem [ref=e1230]:
+                  - generic [ref=e1231]:
+                    - link "CardStack" [ref=e1232] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/card-stack/default
+                      - img "CardStack" [ref=e1233]
+                    - generic [ref=e1234]:
+                      - link "Ruixen UI" [ref=e1235] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1237]
+                      - paragraph [ref=e1238]: CardStack
+                      - button "1.6k" [ref=e1239] [cursor=pointer]:
+                        - img [ref=e1240]
+                        - generic [ref=e1243]: 1.6k
+                - listitem [ref=e1245]:
+                  - generic [ref=e1246]:
+                    - link "Background Gradient Animation" [ref=e1247] [cursor=pointer]:
+                      - /url: /community/components/aceternity/background-gradient-animation/default
+                      - img "Background Gradient Animation" [ref=e1248]
+                    - generic [ref=e1249]:
+                      - link "Aceternity UI" [ref=e1250] [cursor=pointer]:
+                        - /url: /community/aceternity
+                        - img "Aceternity UI" [ref=e1252]
+                      - paragraph [ref=e1253]: Background Gradient Animation
+                      - button "317" [ref=e1254] [cursor=pointer]:
+                        - img [ref=e1255]
+                        - generic [ref=e1258]: "317"
+                - listitem [ref=e1260]:
+                  - generic [ref=e1261]:
+                    - link "Stacked Activity Cards" [ref=e1262] [cursor=pointer]:
+                      - /url: /community/components/spydiecy/stacked-activity-cards/default
+                      - img "Stacked Activity Cards" [ref=e1263]
+                    - generic [ref=e1264]:
+                      - link "Tanishq" [ref=e1265] [cursor=pointer]:
+                        - /url: /community/spydiecy
+                        - img "Tanishq" [ref=e1267]
+                      - paragraph [ref=e1268]: Stacked Activity Cards
+                      - button "44" [ref=e1269] [cursor=pointer]:
+                        - img [ref=e1270]
+                        - generic [ref=e1273]: "44"
+                - listitem [ref=e1275]:
+                  - generic [ref=e1276]:
+                    - link "Login / Signup" [ref=e1277] [cursor=pointer]:
+                      - /url: /community/components/uimix/login-signup/forgot-password
+                      - img "Login / Signup" [ref=e1278]
+                    - generic [ref=e1279]:
+                      - link "uimix" [ref=e1280] [cursor=pointer]:
+                        - /url: /community/uimix
+                        - img "uimix" [ref=e1282]
+                      - paragraph [ref=e1283]: Login / Signup
+                      - button "13" [ref=e1284] [cursor=pointer]:
+                        - img [ref=e1285]
+                        - generic [ref=e1288]: "13"
+                - listitem [ref=e1290]:
+                  - generic [ref=e1291]:
+                    - link "Animated Project Cards" [ref=e1292] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/animated-project-cards/default
+                      - img "Animated Project Cards" [ref=e1293]
+                    - generic [ref=e1294]:
+                      - link "Isaiah" [ref=e1295] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e1297]
+                      - paragraph [ref=e1298]: Animated Project Cards
+                      - button "38" [ref=e1299] [cursor=pointer]:
+                        - img [ref=e1300]
+                        - generic [ref=e1303]: "38"
+                - listitem [ref=e1305]:
+                  - generic [ref=e1306]:
+                    - link "Expand Cards" [ref=e1307] [cursor=pointer]:
+                      - /url: /community/components/misbahansar/expand-cards/default
+                      - img "Expand Cards" [ref=e1308]
+                    - generic [ref=e1309]:
+                      - link "Misbah Ansari" [ref=e1310] [cursor=pointer]:
+                        - /url: /community/misbahansar
+                        - img "Misbah Ansari" [ref=e1312]
+                      - paragraph [ref=e1313]: Expand Cards
+                      - button "1.0k" [ref=e1314] [cursor=pointer]:
+                        - img [ref=e1315]
+                        - generic [ref=e1318]: 1.0k
+                - listitem [ref=e1320]:
+                  - generic [ref=e1321]:
+                    - link "Cursor Wander Card" [ref=e1322] [cursor=pointer]:
+                      - /url: /community/components/coderislive07/cursor-wander-card/default
+                      - img "Cursor Wander Card" [ref=e1323]
+                    - generic [ref=e1324]:
+                      - link "Mridul Dhamija" [ref=e1325] [cursor=pointer]:
+                        - /url: /community/coderislive07
+                        - img "Mridul Dhamija" [ref=e1327]
+                      - paragraph [ref=e1328]: Cursor Wander Card
+                      - button "71" [ref=e1329] [cursor=pointer]:
+                        - img [ref=e1330]
+                        - generic [ref=e1333]: "71"
+                - listitem [ref=e1335]:
+                  - generic [ref=e1336]:
+                    - link "Activity Chart Card" [ref=e1337] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/activity-chart-card/default
+                      - img "Activity Chart Card" [ref=e1338]
+                    - generic [ref=e1339]:
+                      - link "Ravi Katiyar" [ref=e1340] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1342]
+                      - paragraph [ref=e1343]: Activity Chart Card
+                      - button "371" [ref=e1344] [cursor=pointer]:
+                        - img [ref=e1345]
+                        - generic [ref=e1348]: "371"
+                - listitem [ref=e1350]:
+                  - generic [ref=e1351]:
+                    - link "Onboarding" [ref=e1352] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/onboarding/default
+                      - img "Onboarding" [ref=e1353]
+                    - generic [ref=e1354]:
+                      - link "Ravi Katiyar" [ref=e1355] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1357]
+                      - paragraph [ref=e1358]: Onboarding
+                      - button "42" [ref=e1359] [cursor=pointer]:
+                        - img [ref=e1360]
+                        - generic [ref=e1363]: "42"
+                - listitem [ref=e1365]:
+                  - generic [ref=e1366]:
+                    - link "X Gradient Card" [ref=e1367] [cursor=pointer]:
+                      - /url: /community/components/kokonutd/x-gradient-card/default
+                      - img "X Gradient Card" [ref=e1368]
+                    - generic [ref=e1369]:
+                      - link "Kokonut UI" [ref=e1370] [cursor=pointer]:
+                        - /url: /community/kokonutd
+                        - img "Kokonut UI" [ref=e1372]
+                      - paragraph [ref=e1373]: X Gradient Card
+                      - button "63" [ref=e1374] [cursor=pointer]:
+                        - img [ref=e1375]
+                        - generic [ref=e1378]: "63"
+                - listitem [ref=e1380]:
+                  - generic [ref=e1381]:
+                    - link "Animated Dashboard Card" [ref=e1382] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/animated-dashboard-card/default
+                      - img "Animated Dashboard Card" [ref=e1383]
+                    - generic [ref=e1384]:
+                      - link "Isaiah" [ref=e1385] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e1387]
+                      - paragraph [ref=e1388]: Animated Dashboard Card
+                      - button "231" [ref=e1389] [cursor=pointer]:
+                        - img [ref=e1390]
+                        - generic [ref=e1393]: "231"
+                - listitem [ref=e1395]:
+                  - generic [ref=e1396]:
+                    - link "Profile Card" [ref=e1397] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/profile-card-1/default
+                      - img "Profile Card" [ref=e1398]
+                    - generic [ref=e1399]:
+                      - link "Ravi Katiyar" [ref=e1400] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1402]
+                      - paragraph [ref=e1403]: Profile Card
+                      - button "17" [ref=e1404] [cursor=pointer]:
+                        - img [ref=e1405]
+                        - generic [ref=e1408]: "17"
+                - listitem [ref=e1410]:
+                  - generic [ref=e1411]:
+                    - link "Reveal on hover" [ref=e1412] [cursor=pointer]:
+                      - /url: /community/components/YoucefBnm/reveal-on-hover/default
+                      - img "Reveal on hover" [ref=e1413]
+                    - generic [ref=e1414]:
+                      - link "Systaliko UI" [ref=e1415] [cursor=pointer]:
+                        - /url: /community/YoucefBnm
+                        - img "Systaliko UI" [ref=e1417]
+                      - paragraph [ref=e1418]: Reveal on hover
+                      - button "52" [ref=e1419] [cursor=pointer]:
+                        - img [ref=e1420]
+                        - generic [ref=e1423]: "52"
+                - listitem [ref=e1425]:
+                  - generic [ref=e1426]:
+                    - link "Financial Score Cards" [ref=e1427] [cursor=pointer]:
+                      - /url: /community/components/aliimam/financial-score-cards/default
+                      - img "Financial Score Cards" [ref=e1428]
+                    - generic [ref=e1429]:
+                      - link "Ali Imam" [ref=e1430] [cursor=pointer]:
+                        - /url: /community/aliimam
+                        - img "Ali Imam" [ref=e1432]
+                      - paragraph [ref=e1433]: Financial Score Cards
+                      - button "8" [ref=e1434] [cursor=pointer]:
+                        - img [ref=e1435]
+                        - generic [ref=e1438]: "8"
+                - listitem [ref=e1440]:
+                  - generic [ref=e1441]:
+                    - link "Scroll Cards" [ref=e1442] [cursor=pointer]:
+                      - /url: /community/components/ishamsu/scroll-cards/default
+                      - img "Scroll Cards" [ref=e1443]
+                    - generic [ref=e1444]:
+                      - link "Shamsu Musthafa" [ref=e1445] [cursor=pointer]:
+                        - /url: /community/ishamsu
+                        - img "Shamsu Musthafa" [ref=e1447]
+                      - paragraph [ref=e1448]: Scroll Cards
+                      - button "49" [ref=e1449] [cursor=pointer]:
+                        - img [ref=e1450]
+                        - generic [ref=e1453]: "49"
+                - listitem [ref=e1455]:
+                  - generic [ref=e1456]:
+                    - link "Feature Highlight Card" [ref=e1457] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/feature-highlight-card/default
+                      - img "Feature Highlight Card" [ref=e1458]
+                    - generic [ref=e1459]:
+                      - link "Ravi Katiyar" [ref=e1460] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1462]
+                      - paragraph [ref=e1463]: Feature Highlight Card
+                      - button "194" [ref=e1464] [cursor=pointer]:
+                        - img [ref=e1465]
+                        - generic [ref=e1468]: "194"
+                - listitem [ref=e1470]:
+                  - generic [ref=e1471]:
+                    - link "SocialPostCard" [ref=e1472] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/social-post-card/default
+                      - img "SocialPostCard" [ref=e1473]
+                    - generic [ref=e1474]:
+                      - link "Ruixen UI" [ref=e1475] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1477]
+                      - paragraph [ref=e1478]: SocialPostCard
+                      - button "11" [ref=e1479] [cursor=pointer]:
+                        - img [ref=e1480]
+                        - generic [ref=e1483]: "11"
+                - listitem [ref=e1485]:
+                  - generic [ref=e1486]:
+                    - link "AI Chat" [ref=e1487] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/ai-chat/default
+                      - img "AI Chat" [ref=e1488]
+                    - generic [ref=e1489]:
+                      - link "beratberkay" [ref=e1490] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e1492]
+                      - paragraph [ref=e1493]: AI Chat
+                      - button "144" [ref=e1494] [cursor=pointer]:
+                        - img [ref=e1495]
+                        - generic [ref=e1498]: "144"
+                - listitem [ref=e1500]:
+                  - generic [ref=e1501]:
+                    - link "Aniamted Pricing Cards" [ref=e1502] [cursor=pointer]:
+                      - /url: /community/components/erikx/aniamted-pricing-cards/cros
+                      - img "Aniamted Pricing Cards" [ref=e1503]
+                    - generic [ref=e1504]:
+                      - link "Erik X" [ref=e1505] [cursor=pointer]:
+                        - /url: /community/erikx
+                        - img "Erik X" [ref=e1507]
+                      - paragraph [ref=e1508]: Aniamted Pricing Cards
+                      - button "124" [ref=e1509] [cursor=pointer]:
+                        - img [ref=e1510]
+                        - generic [ref=e1513]: "124"
+                - listitem [ref=e1515]:
+                  - generic [ref=e1516]:
+                    - link "Display Cards" [ref=e1517] [cursor=pointer]:
+                      - /url: /community/components/Codehagen/display-cards/default
+                      - img "Display Cards" [ref=e1518]
+                    - generic [ref=e1519]:
+                      - link "Prism UI" [ref=e1520] [cursor=pointer]:
+                        - /url: /community/Codehagen
+                        - img "Prism UI" [ref=e1522]
+                      - paragraph [ref=e1523]: Display Cards
+                      - button "872" [ref=e1524] [cursor=pointer]:
+                        - img [ref=e1525]
+                        - generic [ref=e1528]: "872"
+                - listitem [ref=e1530]:
+                  - generic [ref=e1531]:
+                    - link "Creative Card" [ref=e1532] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/creative-card/default
+                      - img "Creative Card" [ref=e1533]
+                    - generic [ref=e1534]:
+                      - link "Ruixen UI" [ref=e1535] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1537]
+                      - paragraph [ref=e1538]: Creative Card
+                      - button "1" [ref=e1539] [cursor=pointer]:
+                        - img [ref=e1540]
+                        - generic [ref=e1543]: "1"
+                - listitem [ref=e1545]:
+                  - generic [ref=e1546]:
+                    - link "Pricing Card" [ref=e1547] [cursor=pointer]:
+                      - /url: /community/components/0xUrvish/pricing-card/default
+                      - img "Pricing Card" [ref=e1548]
+                    - generic [ref=e1549]:
+                      - link "0xUrvish" [ref=e1550] [cursor=pointer]:
+                        - /url: /community/0xUrvish
+                        - img "0xUrvish" [ref=e1552]
+                      - paragraph [ref=e1553]: Pricing Card
+                      - button "374" [ref=e1554] [cursor=pointer]:
+                        - img [ref=e1555]
+                        - generic [ref=e1558]: "374"
+                - listitem [ref=e1560]:
+                  - generic [ref=e1561]:
+                    - link "Animated Feature Card" [ref=e1562] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/animated-feature-card/default
+                      - img "Animated Feature Card" [ref=e1563]
+                    - generic [ref=e1564]:
+                      - link "Ravi Katiyar" [ref=e1565] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1567]
+                      - paragraph [ref=e1568]: Animated Feature Card
+                      - button "71" [ref=e1569] [cursor=pointer]:
+                        - img [ref=e1570]
+                        - generic [ref=e1573]: "71"
+                - listitem [ref=e1575]:
+                  - generic [ref=e1576]:
+                    - link "Testimonials 1" [ref=e1577] [cursor=pointer]:
+                      - /url: /community/components/axorax/testimonials-1/default
+                      - img "Testimonials 1" [ref=e1578]
+                    - generic [ref=e1579]:
+                      - link "Axorax" [ref=e1580] [cursor=pointer]:
+                        - /url: /community/axorax
+                        - img "Axorax" [ref=e1582]
+                      - paragraph [ref=e1583]: Testimonials 1
+                      - button "12" [ref=e1584] [cursor=pointer]:
+                        - img [ref=e1585]
+                        - generic [ref=e1588]: "12"
+                - listitem [ref=e1590]:
+                  - generic [ref=e1591]:
+                    - link "Bento Card" [ref=e1592] [cursor=pointer]:
+                      - /url: /community/components/0xUrvish/bento-card/default
+                      - img "Bento Card" [ref=e1593]
+                    - generic [ref=e1594]:
+                      - link "0xUrvish" [ref=e1595] [cursor=pointer]:
+                        - /url: /community/0xUrvish
+                        - img "0xUrvish" [ref=e1597]
+                      - paragraph [ref=e1598]: Bento Card
+                      - button "555" [ref=e1599] [cursor=pointer]:
+                        - img [ref=e1600]
+                        - generic [ref=e1603]: "555"
+                - listitem [ref=e1605]:
+                  - generic [ref=e1606]:
+                    - link "Workout Card" [ref=e1607] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/workout-card/default
+                      - img "Workout Card" [ref=e1608]
+                    - generic [ref=e1609]:
+                      - link "Ravi Katiyar" [ref=e1610] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1612]
+                      - paragraph [ref=e1613]: Workout Card
+                      - button "112" [ref=e1614] [cursor=pointer]:
+                        - img [ref=e1615]
+                        - generic [ref=e1618]: "112"
+                - listitem [ref=e1620]:
+                  - generic [ref=e1621]:
+                    - link "Block Game" [ref=e1622] [cursor=pointer]:
+                      - /url: /community/components/aliimam/block-game/default
+                      - img "Block Game" [ref=e1623]
+                    - generic [ref=e1624]:
+                      - link "Ali Imam" [ref=e1625] [cursor=pointer]:
+                        - /url: /community/aliimam
+                        - img "Ali Imam" [ref=e1627]
+                      - paragraph [ref=e1628]: Block Game
+                      - button "16" [ref=e1629] [cursor=pointer]:
+                        - img [ref=e1630]
+                        - generic [ref=e1633]: "16"
+                - listitem [ref=e1635]:
+                  - generic [ref=e1636]:
+                    - link "AI Gen" [ref=e1637] [cursor=pointer]:
+                      - /url: /community/components/aliimam/ai-gen/default
+                      - img "AI Gen" [ref=e1638]
+                    - generic [ref=e1639]:
+                      - link "Ali Imam" [ref=e1640] [cursor=pointer]:
+                        - /url: /community/aliimam
+                        - img "Ali Imam" [ref=e1642]
+                      - paragraph [ref=e1643]: AI Gen
+                      - button "101" [ref=e1644] [cursor=pointer]:
+                        - img [ref=e1645]
+                        - generic [ref=e1648]: "101"
+                - listitem [ref=e1650]:
+                  - generic [ref=e1651]:
+                    - link "Flip Card" [ref=e1652] [cursor=pointer]:
+                      - /url: /community/components/UmairXD/flip-card/default
+                      - img "Flip Card" [ref=e1653]
+                    - generic [ref=e1654]:
+                      - link "Umair Waheed" [ref=e1655] [cursor=pointer]:
+                        - /url: /community/UmairXD
+                        - img "Umair Waheed" [ref=e1657]
+                      - paragraph [ref=e1658]: Flip Card
+                      - button "27" [ref=e1659] [cursor=pointer]:
+                        - img [ref=e1660]
+                        - generic [ref=e1663]: "27"
+                - listitem [ref=e1665]:
+                  - generic [ref=e1666]:
+                    - link "Cta Card" [ref=e1667] [cursor=pointer]:
+                      - /url: /community/components/lavikatiyar/cta-card/default
+                      - img "Cta Card" [ref=e1668]
+                    - generic [ref=e1669]:
+                      - link "Lavi Katiyar" [ref=e1670] [cursor=pointer]:
+                        - /url: /community/lavikatiyar
+                        - img "Lavi Katiyar" [ref=e1672]
+                      - paragraph [ref=e1673]: Cta Card
+                      - button "50" [ref=e1674] [cursor=pointer]:
+                        - img [ref=e1675]
+                        - generic [ref=e1678]: "50"
+                - listitem [ref=e1680]:
+                  - generic [ref=e1681]:
+                    - link "Card" [ref=e1682] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/card-26/default
+                      - img "Card" [ref=e1683]
+                    - generic [ref=e1684]:
+                      - link "Ravi Katiyar" [ref=e1685] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1687]
+                      - paragraph [ref=e1688]: Card
+                      - button "221" [ref=e1689] [cursor=pointer]:
+                        - img [ref=e1690]
+                        - generic [ref=e1693]: "221"
+                - listitem [ref=e1695]:
+                  - generic [ref=e1696]:
+                    - link "Card Stack" [ref=e1697] [cursor=pointer]:
+                      - /url: /community/components/itsankitverma/card-stack/default
+                      - img "Card Stack" [ref=e1698]
+                    - generic [ref=e1699]:
+                      - link "Ankit Verma" [ref=e1700] [cursor=pointer]:
+                        - /url: /community/itsankitverma
+                        - img "Ankit Verma" [ref=e1702]
+                      - paragraph [ref=e1703]: Card Stack
+                      - button "475" [ref=e1704] [cursor=pointer]:
+                        - img [ref=e1705]
+                        - generic [ref=e1708]: "475"
+                - listitem [ref=e1710]:
+                  - generic [ref=e1711]:
+                    - link "Profile Card" [ref=e1712] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/profile-card/default
+                      - img "Profile Card" [ref=e1713]
+                    - generic [ref=e1714]:
+                      - link "beratberkay" [ref=e1715] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e1717]
+                      - paragraph [ref=e1718]: Profile Card
+                      - button "17" [ref=e1719] [cursor=pointer]:
+                        - img [ref=e1720]
+                        - generic [ref=e1723]: "17"
+                - listitem [ref=e1725]:
+                  - generic [ref=e1726]:
+                    - link "Product Card" [ref=e1727] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/product-card/default
+                      - img "Product Card" [ref=e1728]
+                    - generic [ref=e1729]:
+                      - link "Ravi Katiyar" [ref=e1730] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1732]
+                      - paragraph [ref=e1733]: Product Card
+                      - button "238" [ref=e1734] [cursor=pointer]:
+                        - img [ref=e1735]
+                        - generic [ref=e1738]: "238"
+                - listitem [ref=e1740]:
+                  - generic [ref=e1741]:
+                    - link "Privacy Policy Modal" [ref=e1742] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/privacy-policy-modal/default
+                      - img "Privacy Policy Modal" [ref=e1743]
+                    - generic [ref=e1744]:
+                      - link "Ruixen UI" [ref=e1745] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1747]
+                      - paragraph [ref=e1748]: Privacy Policy Modal
+                      - button "4" [ref=e1749] [cursor=pointer]:
+                        - img [ref=e1750]
+                        - generic [ref=e1753]: "4"
+                - listitem [ref=e1755]:
+                  - generic [ref=e1756]:
+                    - link "Aniamted Pricing Cards" [ref=e1757] [cursor=pointer]:
+                      - /url: /community/components/erikx/aniamted-pricing-cards/default
+                      - img "Aniamted Pricing Cards" [ref=e1758]
+                    - generic [ref=e1759]:
+                      - link "Erik X" [ref=e1760] [cursor=pointer]:
+                        - /url: /community/erikx
+                        - img "Erik X" [ref=e1762]
+                      - paragraph [ref=e1763]: Aniamted Pricing Cards
+                      - button "90" [ref=e1764] [cursor=pointer]:
+                        - img [ref=e1765]
+                        - generic [ref=e1768]: "90"
+                - listitem [ref=e1770]:
+                  - generic [ref=e1771]:
+                    - link "CaseStudies" [ref=e1772] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/case-studies/default
+                      - img "CaseStudies" [ref=e1773]
+                    - generic [ref=e1774]:
+                      - link "Ruixen UI" [ref=e1775] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1777]
+                      - paragraph [ref=e1778]: CaseStudies
+                      - button "11" [ref=e1779] [cursor=pointer]:
+                        - img [ref=e1780]
+                        - generic [ref=e1783]: "11"
+                - listitem [ref=e1785]:
+                  - generic [ref=e1786]:
+                    - link "Roadmap Card" [ref=e1787] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/roadmap-card/default
+                      - img "Roadmap Card" [ref=e1788]
+                    - generic [ref=e1789]:
+                      - link "beratberkay" [ref=e1790] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e1792]
+                      - paragraph [ref=e1793]: Roadmap Card
+                      - button "14" [ref=e1794] [cursor=pointer]:
+                        - img [ref=e1795]
+                        - generic [ref=e1798]: "14"
+                - listitem [ref=e1800]:
+                  - generic [ref=e1801]:
+                    - link "Ruixen Feature Section" [ref=e1802] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/ruixen-feature-section/default
+                      - img "Ruixen Feature Section" [ref=e1803]
+                    - generic [ref=e1804]:
+                      - link "Ruixen UI" [ref=e1805] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1807]
+                      - paragraph [ref=e1808]: Ruixen Feature Section
+                      - button "15" [ref=e1809] [cursor=pointer]:
+                        - img [ref=e1810]
+                        - generic [ref=e1813]: "15"
+                - listitem [ref=e1815]:
+                  - generic [ref=e1816]:
+                    - link "Gamified Login Card" [ref=e1817] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/gamified-login-card/default
+                      - img "Gamified Login Card" [ref=e1818]
+                    - generic [ref=e1819]:
+                      - link "Ruixen UI" [ref=e1820] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e1822]
+                      - paragraph [ref=e1823]: Gamified Login Card
+                      - button "31" [ref=e1824] [cursor=pointer]:
+                        - img [ref=e1825]
+                        - generic [ref=e1828]: "31"
+                - listitem [ref=e1830]:
+                  - generic [ref=e1831]:
+                    - link "Travel Connect Signin" [ref=e1832] [cursor=pointer]:
+                      - /url: /community/components/coderislive07/travel-connect-signin-1/default
+                      - img "Travel Connect Signin" [ref=e1833]
+                    - generic [ref=e1834]:
+                      - link "Mridul Dhamija" [ref=e1835] [cursor=pointer]:
+                        - /url: /community/coderislive07
+                        - img "Mridul Dhamija" [ref=e1837]
+                      - paragraph [ref=e1838]: Travel Connect Signin
+                      - button "60" [ref=e1839] [cursor=pointer]:
+                        - img [ref=e1840]
+                        - generic [ref=e1843]: "60"
+                - listitem [ref=e1845]:
+                  - generic [ref=e1846]:
+                    - link "Animated sign in" [ref=e1847] [cursor=pointer]:
+                      - /url: /community/components/manikandanbalakrishnan3/animated-sign-in/default
+                      - img "Animated sign in" [ref=e1848]
+                    - generic [ref=e1849]:
+                      - link "Manikandan Balakrishnan" [ref=e1850] [cursor=pointer]:
+                        - /url: /community/manikandanbalakrishnan3
+                        - img "Manikandan Balakrishnan" [ref=e1852]
+                      - paragraph [ref=e1853]: Animated sign in
+                      - button "75" [ref=e1854] [cursor=pointer]:
+                        - img [ref=e1855]
+                        - generic [ref=e1858]: "75"
+                - listitem [ref=e1860]:
+                  - generic [ref=e1861]:
+                    - link "Card" [ref=e1862] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/card-8/default
+                      - img "Card" [ref=e1863]
+                    - generic [ref=e1864]:
+                      - link "Kavi Katiyar" [ref=e1865] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e1867]
+                      - paragraph [ref=e1868]: Card
+                      - button "96" [ref=e1869] [cursor=pointer]:
+                        - img [ref=e1870]
+                        - generic [ref=e1873]: "96"
+                - listitem [ref=e1875]:
+                  - generic [ref=e1876]:
+                    - link "Color Change Card" [ref=e1877] [cursor=pointer]:
+                      - /url: /community/components/vaib215/color-change-card/default
+                      - img "Color Change Card" [ref=e1878]
+                    - generic [ref=e1879]:
+                      - link "Vaibhav Kumar Singh" [ref=e1880] [cursor=pointer]:
+                        - /url: /community/vaib215
+                        - img "Vaibhav Kumar Singh" [ref=e1882]
+                      - paragraph [ref=e1883]: Color Change Card
+                      - button "18" [ref=e1884] [cursor=pointer]:
+                        - img [ref=e1885]
+                        - generic [ref=e1888]: "18"
+                - listitem [ref=e1890]:
+                  - generic [ref=e1891]:
+                    - link "Card" [ref=e1892] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/card-7/default
+                      - img "Card" [ref=e1893]
+                    - generic [ref=e1894]:
+                      - link "Ravi Katiyar" [ref=e1895] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1897]
+                      - paragraph [ref=e1898]: Card
+                      - button "403" [ref=e1899] [cursor=pointer]:
+                        - img [ref=e1900]
+                        - generic [ref=e1903]: "403"
+                - listitem [ref=e1905]:
+                  - generic [ref=e1906]:
+                    - link "Community Hub Card" [ref=e1907] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/community-hub-card/default
+                      - img "Community Hub Card" [ref=e1908]
+                    - generic [ref=e1909]:
+                      - link "Ravi Katiyar" [ref=e1910] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1912]
+                      - paragraph [ref=e1913]: Community Hub Card
+                      - button "34" [ref=e1914] [cursor=pointer]:
+                        - img [ref=e1915]
+                        - generic [ref=e1918]: "34"
+                - listitem [ref=e1920]:
+                  - generic [ref=e1921]:
+                    - link "Image auto slider" [ref=e1922] [cursor=pointer]:
+                      - /url: /community/components/wisedev/image-auto-slider/default
+                      - img "Image auto slider" [ref=e1923]
+                    - generic [ref=e1924]:
+                      - link "wisedev" [ref=e1925] [cursor=pointer]:
+                        - /url: /community/wisedev
+                        - img "wisedev" [ref=e1927]
+                      - paragraph [ref=e1928]: Image auto slider
+                      - button "69" [ref=e1929] [cursor=pointer]:
+                        - img [ref=e1930]
+                        - generic [ref=e1933]: "69"
+                - listitem [ref=e1935]:
+                  - generic [ref=e1936]:
+                    - link "News Cards" [ref=e1937] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/news-cards/default
+                      - img "News Cards" [ref=e1938]
+                    - generic [ref=e1939]:
+                      - link "Isaiah" [ref=e1940] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e1942]
+                      - paragraph [ref=e1943]: News Cards
+                      - button "14" [ref=e1944] [cursor=pointer]:
+                        - img [ref=e1945]
+                        - generic [ref=e1948]: "14"
+                - listitem [ref=e1950]:
+                  - generic [ref=e1951]:
+                    - link "Trail Card" [ref=e1952] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/trail-card/default
+                      - img "Trail Card" [ref=e1953]
+                    - generic [ref=e1954]:
+                      - link "Ravi Katiyar" [ref=e1955] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1957]
+                      - paragraph [ref=e1958]: Trail Card
+                      - button "229" [ref=e1959] [cursor=pointer]:
+                        - img [ref=e1960]
+                        - generic [ref=e1963]: "229"
+                - listitem [ref=e1965]:
+                  - generic [ref=e1966]:
+                    - link "Information Card" [ref=e1967] [cursor=pointer]:
+                      - /url: /community/components/KL-ui/info-card/with-images
+                      - img "Information Card" [ref=e1968]
+                    - generic [ref=e1969]:
+                      - link "KL UI" [ref=e1970] [cursor=pointer]:
+                        - /url: /community/KL-ui
+                        - img "KL UI" [ref=e1972]
+                      - paragraph [ref=e1973]: Information Card
+                      - button "64" [ref=e1974] [cursor=pointer]:
+                        - img [ref=e1975]
+                        - generic [ref=e1978]: "64"
+                - listitem [ref=e1980]:
+                  - generic [ref=e1981]:
+                    - link "Delivery Scheduler" [ref=e1982] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/delivery-scheduler/default
+                      - img "Delivery Scheduler" [ref=e1983]
+                    - generic [ref=e1984]:
+                      - link "Ravi Katiyar" [ref=e1985] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e1987]
+                      - paragraph [ref=e1988]: Delivery Scheduler
+                      - button "160" [ref=e1989] [cursor=pointer]:
+                        - img [ref=e1990]
+                        - generic [ref=e1993]: "160"
+                - listitem [ref=e1995]:
+                  - generic [ref=e1996]:
+                    - link "Card" [ref=e1997] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/card-18/default
+                      - img "Card" [ref=e1998]
+                    - generic [ref=e1999]:
+                      - link "Ravi Katiyar" [ref=e2000] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2002]
+                      - paragraph [ref=e2003]: Card
+                      - button "153" [ref=e2004] [cursor=pointer]:
+                        - img [ref=e2005]
+                        - generic [ref=e2008]: "153"
+                - listitem [ref=e2010]:
+                  - generic [ref=e2011]:
+                    - link "Spotify Card" [ref=e2012] [cursor=pointer]:
+                      - /url: /community/components/jatin-yadav05/spotify-card/spotify-card
+                      - img "Spotify Card" [ref=e2013]
+                    - generic [ref=e2014]:
+                      - link "Jatin Yadav" [ref=e2015] [cursor=pointer]:
+                        - /url: /community/jatin-yadav05
+                        - img "Jatin Yadav" [ref=e2017]
+                      - paragraph [ref=e2018]: Spotify Card
+                      - button "65" [ref=e2019] [cursor=pointer]:
+                        - img [ref=e2020]
+                        - generic [ref=e2023]: "65"
+                - listitem [ref=e2025]:
+                  - generic [ref=e2026]:
+                    - link "Ruixen Bento Cards" [ref=e2027] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/ruixen-bento-cards/default
+                      - img "Ruixen Bento Cards" [ref=e2028]
+                    - generic [ref=e2029]:
+                      - link "Ruixen UI" [ref=e2030] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e2032]
+                      - paragraph [ref=e2033]: Ruixen Bento Cards
+                      - button "13" [ref=e2034] [cursor=pointer]:
+                        - img [ref=e2035]
+                        - generic [ref=e2038]: "13"
+                - listitem [ref=e2040]:
+                  - generic [ref=e2041]:
+                    - link "Blog Posts" [ref=e2042] [cursor=pointer]:
+                      - /url: /community/components/aymanch-03/blog-posts/default
+                      - img "Blog Posts" [ref=e2043]
+                    - generic [ref=e2044]:
+                      - link "Ayman Echakar" [ref=e2045] [cursor=pointer]:
+                        - /url: /community/aymanch-03
+                        - img "Ayman Echakar" [ref=e2047]
+                      - paragraph [ref=e2048]: Blog Posts
+                      - button "5" [ref=e2049] [cursor=pointer]:
+                        - img [ref=e2050]
+                        - generic [ref=e2053]: "5"
+                - listitem [ref=e2055]:
+                  - generic [ref=e2056]:
+                    - link "Card" [ref=e2057] [cursor=pointer]:
+                      - /url: /community/components/jshguo/interfaces-card/default
+                      - img "Card" [ref=e2058]
+                    - generic [ref=e2059]:
+                      - link "J" [ref=e2060] [cursor=pointer]:
+                        - /url: /community/jshguo
+                        - generic [ref=e2062]: J
+                      - paragraph [ref=e2063]: Card
+                      - button "55" [ref=e2064] [cursor=pointer]:
+                        - img [ref=e2065]
+                        - generic [ref=e2068]: "55"
+                - listitem [ref=e2070]:
+                  - generic [ref=e2071]:
+                    - link "Pixel Canvas" [ref=e2072] [cursor=pointer]:
+                      - /url: /community/components/serafim/pixel-canvas/default
+                      - img "Pixel Canvas" [ref=e2073]
+                    - generic [ref=e2074]:
+                      - link "Serafim" [ref=e2075] [cursor=pointer]:
+                        - /url: /community/serafim
+                        - img "Serafim" [ref=e2077]
+                      - paragraph [ref=e2078]: Pixel Canvas
+                      - button "166" [ref=e2079] [cursor=pointer]:
+                        - img [ref=e2080]
+                        - generic [ref=e2083]: "166"
+                - listitem [ref=e2085]:
+                  - generic [ref=e2086]:
+                    - link "Coach Scheduling Card" [ref=e2087] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/coach-scheduling-card/default
+                      - img "Coach Scheduling Card" [ref=e2088]
+                    - generic [ref=e2089]:
+                      - link "Isaiah" [ref=e2090] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e2092]
+                      - paragraph [ref=e2093]: Coach Scheduling Card
+                      - button "64" [ref=e2094] [cursor=pointer]:
+                        - img [ref=e2095]
+                        - generic [ref=e2098]: "64"
+                - listitem [ref=e2100]:
+                  - generic [ref=e2101]:
+                    - link "Card Status List" [ref=e2102] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/card-status-list/default
+                      - img "Card Status List" [ref=e2103]
+                    - generic [ref=e2104]:
+                      - link "Isaiah" [ref=e2105] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e2107]
+                      - paragraph [ref=e2108]: Card Status List
+                      - button "40" [ref=e2109] [cursor=pointer]:
+                        - img [ref=e2110]
+                        - generic [ref=e2113]: "40"
+                - listitem [ref=e2115]:
+                  - generic [ref=e2116]:
+                    - link "Dashboard" [ref=e2117] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/dashboard/default
+                      - img "Dashboard" [ref=e2118]
+                    - generic [ref=e2119]:
+                      - link "Ravi Katiyar" [ref=e2120] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2122]
+                      - paragraph [ref=e2123]: Dashboard
+                      - button "79" [ref=e2124] [cursor=pointer]:
+                        - img [ref=e2125]
+                        - generic [ref=e2128]: "79"
+                - listitem [ref=e2130]:
+                  - generic [ref=e2131]:
+                    - link "3D Card Effect" [ref=e2132] [cursor=pointer]:
+                      - /url: /community/components/aceternity/3d-card-effect/default
+                      - img "3D Card Effect" [ref=e2133]
+                    - generic [ref=e2134]:
+                      - link "Aceternity UI" [ref=e2135] [cursor=pointer]:
+                        - /url: /community/aceternity
+                        - img "Aceternity UI" [ref=e2137]
+                      - paragraph [ref=e2138]: 3D Card Effect
+                      - button "27" [ref=e2139] [cursor=pointer]:
+                        - img [ref=e2140]
+                        - generic [ref=e2143]: "27"
+                - listitem [ref=e2145]:
+                  - generic [ref=e2146]:
+                    - link "Music Player Card" [ref=e2147] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/music-player-card/default
+                      - img "Music Player Card" [ref=e2148]
+                    - generic [ref=e2149]:
+                      - link "Ravi Katiyar" [ref=e2150] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2152]
+                      - paragraph [ref=e2153]: Music Player Card
+                      - button "46" [ref=e2154] [cursor=pointer]:
+                        - img [ref=e2155]
+                        - generic [ref=e2158]: "46"
+                - listitem [ref=e2160]:
+                  - generic [ref=e2161]:
+                    - link "Stacked Cards Interaction" [ref=e2162] [cursor=pointer]:
+                      - /url: /community/components/chetanverma16/stacked-cards-interaction/default
+                      - img "Stacked Cards Interaction" [ref=e2163]
+                    - generic [ref=e2164]:
+                      - link "Chetan Verma" [ref=e2165] [cursor=pointer]:
+                        - /url: /community/chetanverma16
+                        - img "Chetan Verma" [ref=e2167]
+                      - paragraph [ref=e2168]: Stacked Cards Interaction
+                      - button "60" [ref=e2169] [cursor=pointer]:
+                        - img [ref=e2170]
+                        - generic [ref=e2173]: "60"
+                - listitem [ref=e2175]:
+                  - generic [ref=e2176]:
+                    - link "Battery Card" [ref=e2177] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/battery-card/default
+                      - img "Battery Card" [ref=e2178]
+                    - generic [ref=e2179]:
+                      - link "Ravi Katiyar" [ref=e2180] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2182]
+                      - paragraph [ref=e2183]: Battery Card
+                      - button "44" [ref=e2184] [cursor=pointer]:
+                        - img [ref=e2185]
+                        - generic [ref=e2188]: "44"
+                - listitem [ref=e2190]:
+                  - generic [ref=e2191]:
+                    - link "Floating Card" [ref=e2192] [cursor=pointer]:
+                      - /url: /community/components/avanishverma4/floating-card/default
+                      - img "Floating Card" [ref=e2193]
+                    - generic [ref=e2194]:
+                      - link "Awanish Verma" [ref=e2195] [cursor=pointer]:
+                        - /url: /community/avanishverma4
+                        - img "Awanish Verma" [ref=e2197]
+                      - paragraph [ref=e2198]: Floating Card
+                      - button "68" [ref=e2199] [cursor=pointer]:
+                        - img [ref=e2200]
+                        - generic [ref=e2203]: "68"
+                - listitem [ref=e2205]:
+                  - generic [ref=e2206]:
+                    - link "Product Reveal Card" [ref=e2207] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/product-reveal-card/default
+                      - img "Product Reveal Card" [ref=e2208]
+                    - generic [ref=e2209]:
+                      - link "Isaiah" [ref=e2210] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e2212]
+                      - paragraph [ref=e2213]: Product Reveal Card
+                      - button "27" [ref=e2214] [cursor=pointer]:
+                        - img [ref=e2215]
+                        - generic [ref=e2218]: "27"
+                - listitem [ref=e2220]:
+                  - generic [ref=e2221]:
+                    - link "Card Curtain Reveal" [ref=e2222] [cursor=pointer]:
+                      - /url: /community/components/YoucefBnm/card-curtain-reveal/default
+                      - img "Card Curtain Reveal" [ref=e2223]
+                    - generic [ref=e2224]:
+                      - link "Systaliko UI" [ref=e2225] [cursor=pointer]:
+                        - /url: /community/YoucefBnm
+                        - img "Systaliko UI" [ref=e2227]
+                      - paragraph [ref=e2228]: Card Curtain Reveal
+                      - button "38" [ref=e2229] [cursor=pointer]:
+                        - img [ref=e2230]
+                        - generic [ref=e2233]: "38"
+                - listitem [ref=e2235]:
+                  - generic [ref=e2236]:
+                    - link "Interactive Frosted Glass Card" [ref=e2237] [cursor=pointer]:
+                      - /url: /community/components/dhiluxui/interactive-frosted-glass-card/default
+                      - img "Interactive Frosted Glass Card" [ref=e2238]
+                    - generic [ref=e2239]:
+                      - link "Dhileep Kumar GM" [ref=e2240] [cursor=pointer]:
+                        - /url: /community/dhiluxui
+                        - img "Dhileep Kumar GM" [ref=e2242]
+                      - paragraph [ref=e2243]: Interactive Frosted Glass Card
+                      - button "103" [ref=e2244] [cursor=pointer]:
+                        - img [ref=e2245]
+                        - generic [ref=e2248]: "103"
+                - listitem [ref=e2250]:
+                  - generic [ref=e2251]:
+                    - link "Pricing Card" [ref=e2252] [cursor=pointer]:
+                      - /url: /community/components/efferd/pricing-card/default
+                      - img "Pricing Card" [ref=e2253]
+                    - generic [ref=e2254]:
+                      - link "Efferd" [ref=e2255] [cursor=pointer]:
+                        - /url: /community/efferd
+                        - img "Efferd" [ref=e2257]
+                      - paragraph [ref=e2258]: Pricing Card
+                      - button "19" [ref=e2259] [cursor=pointer]:
+                        - img [ref=e2260]
+                        - generic [ref=e2263]: "19"
+                - listitem [ref=e2265]:
+                  - generic [ref=e2266]:
+                    - link "Browser" [ref=e2267] [cursor=pointer]:
+                      - /url: /community/components/aliimam/browser/default
+                      - img "Browser" [ref=e2268]
+                    - generic [ref=e2269]:
+                      - link "Ali Imam" [ref=e2270] [cursor=pointer]:
+                        - /url: /community/aliimam
+                        - img "Ali Imam" [ref=e2272]
+                      - paragraph [ref=e2273]: Browser
+                      - button "2" [ref=e2274] [cursor=pointer]:
+                        - img [ref=e2275]
+                        - generic [ref=e2278]: "2"
+                - listitem [ref=e2280]:
+                  - generic [ref=e2281]:
+                    - link "Card" [ref=e2282] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/card-21/default
+                      - img "Card" [ref=e2283]
+                    - generic [ref=e2284]:
+                      - link "Ravi Katiyar" [ref=e2285] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2287]
+                      - paragraph [ref=e2288]: Card
+                      - button "443" [ref=e2289] [cursor=pointer]:
+                        - img [ref=e2290]
+                        - generic [ref=e2293]: "443"
+                - listitem [ref=e2295]:
+                  - generic [ref=e2296]:
+                    - link "Download Card" [ref=e2297] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/download-card/default
+                      - img "Download Card" [ref=e2298]
+                    - generic [ref=e2299]:
+                      - link "Ravi Katiyar" [ref=e2300] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2302]
+                      - paragraph [ref=e2303]: Download Card
+                      - button "36" [ref=e2304] [cursor=pointer]:
+                        - img [ref=e2305]
+                        - generic [ref=e2308]: "36"
+                - listitem [ref=e2310]:
+                  - generic [ref=e2311]:
+                    - link "Glowing Card" [ref=e2312] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/glowing-card/default
+                      - img "Glowing Card" [ref=e2313]
+                    - generic [ref=e2314]:
+                      - link "Ravi Katiyar" [ref=e2315] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2317]
+                      - paragraph [ref=e2318]: Glowing Card
+                      - button "6" [ref=e2319] [cursor=pointer]:
+                        - img [ref=e2320]
+                        - generic [ref=e2323]: "6"
+                - listitem [ref=e2325]:
+                  - generic [ref=e2326]:
+                    - link "Profile Card" [ref=e2327] [cursor=pointer]:
+                      - /url: /community/components/bhomikproductivitylab/profile-card/default
+                      - img "Profile Card" [ref=e2328]
+                    - generic [ref=e2329]:
+                      - link "Bhomik" [ref=e2330] [cursor=pointer]:
+                        - /url: /community/bhomikproductivitylab
+                        - img "Bhomik" [ref=e2332]
+                      - paragraph [ref=e2333]: Profile Card
+                      - button "177" [ref=e2334] [cursor=pointer]:
+                        - img [ref=e2335]
+                        - generic [ref=e2338]: "177"
+                - listitem [ref=e2340]:
+                  - generic [ref=e2341]:
+                    - link "Moving Dot Card" [ref=e2342] [cursor=pointer]:
+                      - /url: /community/components/thanh/moving-dot-card/default
+                      - img "Moving Dot Card" [ref=e2343]
+                    - generic [ref=e2344]:
+                      - link "Le Thanh" [ref=e2345] [cursor=pointer]:
+                        - /url: /community/thanh
+                        - img "Le Thanh" [ref=e2347]
+                      - paragraph [ref=e2348]: Moving Dot Card
+                      - button "51" [ref=e2349] [cursor=pointer]:
+                        - img [ref=e2350]
+                        - generic [ref=e2353]: "51"
+                - listitem [ref=e2355]:
+                  - generic [ref=e2356]:
+                    - link "Gradient Card" [ref=e2357] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/gradient-card/default
+                      - img "Gradient Card" [ref=e2358]
+                    - generic [ref=e2359]:
+                      - link "Ravi Katiyar" [ref=e2360] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2362]
+                      - paragraph [ref=e2363]: Gradient Card
+                      - button "317" [ref=e2364] [cursor=pointer]:
+                        - img [ref=e2365]
+                        - generic [ref=e2368]: "317"
+                - listitem [ref=e2370]:
+                  - generic [ref=e2371]:
+                    - link "Footer" [ref=e2372] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/footer/default
+                      - img "Footer" [ref=e2373]
+                    - generic [ref=e2374]:
+                      - link "Ruixen UI" [ref=e2375] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e2377]
+                      - paragraph [ref=e2378]: Footer
+                      - button "2" [ref=e2379] [cursor=pointer]:
+                        - img [ref=e2380]
+                        - generic [ref=e2383]: "2"
+                - listitem [ref=e2385]:
+                  - generic [ref=e2386]:
+                    - link "Spotlight Card" [ref=e2387] [cursor=pointer]:
+                      - /url: /community/components/hextaui/spotlight-card/default
+                      - img "Spotlight Card" [ref=e2388]
+                    - generic [ref=e2389]:
+                      - link "HextaUI" [ref=e2390] [cursor=pointer]:
+                        - /url: /community/hextaui
+                        - img "HextaUI" [ref=e2392]
+                      - paragraph [ref=e2393]: Spotlight Card
+                      - button "35" [ref=e2394] [cursor=pointer]:
+                        - img [ref=e2395]
+                        - generic [ref=e2398]: "35"
+                - listitem [ref=e2400]:
+                  - generic [ref=e2401]:
+                    - link "Manage Access Component" [ref=e2402] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/manage-access-component/default
+                      - img "Manage Access Component" [ref=e2403]
+                    - generic [ref=e2404]:
+                      - link "Ravi Katiyar" [ref=e2405] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2407]
+                      - paragraph [ref=e2408]: Manage Access Component
+                      - button "78" [ref=e2409] [cursor=pointer]:
+                        - img [ref=e2410]
+                        - generic [ref=e2413]: "78"
+                - listitem [ref=e2415]:
+                  - generic [ref=e2416]:
+                    - link "Stacking card" [ref=e2417] [cursor=pointer]:
+                      - /url: /community/components/ui-layouts/stacking-card/default
+                      - img "Stacking card" [ref=e2418]
+                    - generic [ref=e2419]:
+                      - link "UI Layouts" [ref=e2420] [cursor=pointer]:
+                        - /url: /community/ui-layouts
+                        - img "UI Layouts" [ref=e2422]
+                      - paragraph [ref=e2423]: Stacking card
+                      - button "40" [ref=e2424] [cursor=pointer]:
+                        - img [ref=e2425]
+                        - generic [ref=e2428]: "40"
+                - listitem [ref=e2430]:
+                  - generic [ref=e2431]:
+                    - link "Elite Plan Card" [ref=e2432] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/elite-plan-card/default
+                      - img "Elite Plan Card" [ref=e2433]
+                    - generic [ref=e2434]:
+                      - link "Ruixen UI" [ref=e2435] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e2437]
+                      - paragraph [ref=e2438]: Elite Plan Card
+                      - button "139" [ref=e2439] [cursor=pointer]:
+                        - img [ref=e2440]
+                        - generic [ref=e2443]: "139"
+                - listitem [ref=e2445]:
+                  - generic [ref=e2446]:
+                    - link "Pricing Cards" [ref=e2447] [cursor=pointer]:
+                      - /url: /community/components/uimix/pricing-cards/default
+                      - img "Pricing Cards" [ref=e2448]
+                    - generic [ref=e2449]:
+                      - link "uimix" [ref=e2450] [cursor=pointer]:
+                        - /url: /community/uimix
+                        - img "uimix" [ref=e2452]
+                      - paragraph [ref=e2453]: Pricing Cards
+                      - button "65" [ref=e2454] [cursor=pointer]:
+                        - img [ref=e2455]
+                        - generic [ref=e2458]: "65"
+                - listitem [ref=e2460]:
+                  - generic [ref=e2461]:
+                    - link "Newsletter Card" [ref=e2462] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/newsletter-card/default
+                      - img "Newsletter Card" [ref=e2463]
+                    - generic [ref=e2464]:
+                      - link "Kavi Katiyar" [ref=e2465] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e2467]
+                      - paragraph [ref=e2468]: Newsletter Card
+                      - button "6" [ref=e2469] [cursor=pointer]:
+                        - img [ref=e2470]
+                        - generic [ref=e2473]: "6"
+                - listitem [ref=e2475]:
+                  - generic [ref=e2476]:
+                    - link "Animated Glow Card" [ref=e2477] [cursor=pointer]:
+                      - /url: /community/components/easemize/animated-glow-card/default
+                      - img "Animated Glow Card" [ref=e2478]
+                    - generic [ref=e2479]:
+                      - link "Hossain Jahed" [ref=e2480] [cursor=pointer]:
+                        - /url: /community/easemize
+                        - img "Hossain Jahed" [ref=e2482]
+                      - paragraph [ref=e2483]: Animated Glow Card
+                      - button "45" [ref=e2484] [cursor=pointer]:
+                        - img [ref=e2485]
+                        - generic [ref=e2488]: "45"
+                - listitem [ref=e2490]:
+                  - generic [ref=e2491]:
+                    - link "Card with Cross Patter" [ref=e2492] [cursor=pointer]:
+                      - /url: /community/components/Ali-Hussein-dev/card-with-cross-patter/default
+                      - img "Card with Cross Patter" [ref=e2493]
+                    - generic [ref=e2494]:
+                      - link "Indie UI" [ref=e2495] [cursor=pointer]:
+                        - /url: /community/Ali-Hussein-dev
+                        - img "Indie UI" [ref=e2497]
+                      - paragraph [ref=e2498]: Card with Cross Patter
+                      - button "9" [ref=e2499] [cursor=pointer]:
+                        - img [ref=e2500]
+                        - generic [ref=e2503]: "9"
+                - listitem [ref=e2505]:
+                  - generic [ref=e2506]:
+                    - link "Animated Tabs" [ref=e2507] [cursor=pointer]:
+                      - /url: /community/components/chetanverma16/animated-tabs/default
+                      - img "Animated Tabs" [ref=e2508]
+                    - generic [ref=e2509]:
+                      - link "Chetan Verma" [ref=e2510] [cursor=pointer]:
+                        - /url: /community/chetanverma16
+                        - img "Chetan Verma" [ref=e2512]
+                      - paragraph [ref=e2513]: Animated Tabs
+                      - button "103" [ref=e2514] [cursor=pointer]:
+                        - img [ref=e2515]
+                        - generic [ref=e2518]: "103"
+                - listitem [ref=e2520]:
+                  - generic [ref=e2521]:
+                    - link "Insurance Card" [ref=e2522] [cursor=pointer]:
+                      - /url: /community/components/lavikatiyar/insurance-card/default
+                      - img "Insurance Card" [ref=e2523]
+                    - generic [ref=e2524]:
+                      - link "Lavi Katiyar" [ref=e2525] [cursor=pointer]:
+                        - /url: /community/lavikatiyar
+                        - img "Lavi Katiyar" [ref=e2527]
+                      - paragraph [ref=e2528]: Insurance Card
+                      - button "127" [ref=e2529] [cursor=pointer]:
+                        - img [ref=e2530]
+                        - generic [ref=e2533]: "127"
+                - listitem [ref=e2535]:
+                  - generic [ref=e2536]:
+                    - link "Music Artwork" [ref=e2537] [cursor=pointer]:
+                      - /url: /community/components/diriktv/music-artwork/default
+                      - img "Music Artwork" [ref=e2538]
+                    - generic [ref=e2539]:
+                      - link "Derek" [ref=e2540] [cursor=pointer]:
+                        - /url: /community/diriktv
+                        - img "Derek" [ref=e2542]
+                      - paragraph [ref=e2543]: Music Artwork
+                      - button "104" [ref=e2544] [cursor=pointer]:
+                        - img [ref=e2545]
+                        - generic [ref=e2548]: "104"
+                - listitem [ref=e2550]:
+                  - generic [ref=e2551]:
+                    - link "Onboarding Card" [ref=e2552] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/onboarding-card/default
+                      - img "Onboarding Card" [ref=e2553]
+                    - generic [ref=e2554]:
+                      - link "Ravi Katiyar" [ref=e2555] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2557]
+                      - paragraph [ref=e2558]: Onboarding Card
+                      - button "20" [ref=e2559] [cursor=pointer]:
+                        - img [ref=e2560]
+                        - generic [ref=e2563]: "20"
+                - listitem [ref=e2565]:
+                  - generic [ref=e2566]:
+                    - link "Freelancer Profile Card" [ref=e2567] [cursor=pointer]:
+                      - /url: /community/components/lavikatiyar/freelancer-profile-card/default
+                      - img "Freelancer Profile Card" [ref=e2568]
+                    - generic [ref=e2569]:
+                      - link "Lavi Katiyar" [ref=e2570] [cursor=pointer]:
+                        - /url: /community/lavikatiyar
+                        - img "Lavi Katiyar" [ref=e2572]
+                      - paragraph [ref=e2573]: Freelancer Profile Card
+                      - button "214" [ref=e2574] [cursor=pointer]:
+                        - img [ref=e2575]
+                        - generic [ref=e2578]: "214"
+                - listitem [ref=e2580]:
+                  - generic [ref=e2581]:
+                    - link "Event Countdown Card" [ref=e2582] [cursor=pointer]:
+                      - /url: /community/components/isaiahbjork/event-countdown-card/default
+                      - img "Event Countdown Card" [ref=e2583]
+                    - generic [ref=e2584]:
+                      - link "Isaiah" [ref=e2585] [cursor=pointer]:
+                        - /url: /community/isaiahbjork
+                        - img "Isaiah" [ref=e2587]
+                      - paragraph [ref=e2588]: Event Countdown Card
+                      - button "32" [ref=e2589] [cursor=pointer]:
+                        - img [ref=e2590]
+                        - generic [ref=e2593]: "32"
+                - listitem [ref=e2595]:
+                  - generic [ref=e2596]:
+                    - link "Stat Card" [ref=e2597] [cursor=pointer]:
+                      - /url: /community/components/beratberkay/stat-card/default
+                      - img "Stat Card" [ref=e2598]
+                    - generic [ref=e2599]:
+                      - link "beratberkay" [ref=e2600] [cursor=pointer]:
+                        - /url: /community/beratberkay
+                        - img "beratberkay" [ref=e2602]
+                      - paragraph [ref=e2603]: Stat Card
+                      - button "67" [ref=e2604] [cursor=pointer]:
+                        - img [ref=e2605]
+                        - generic [ref=e2608]: "67"
+                - listitem [ref=e2610]:
+                  - generic [ref=e2611]:
+                    - link "Workflow Builder Card" [ref=e2612] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/workflow-builder-card/default
+                      - img "Workflow Builder Card" [ref=e2613]
+                    - generic [ref=e2614]:
+                      - link "Ravi Katiyar" [ref=e2615] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2617]
+                      - paragraph [ref=e2618]: Workflow Builder Card
+                      - button "241" [ref=e2619] [cursor=pointer]:
+                        - img [ref=e2620]
+                        - generic [ref=e2623]: "241"
+                - listitem [ref=e2625]:
+                  - generic [ref=e2626]:
+                    - link "Integrations Section" [ref=e2627] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/integrations-section/default
+                      - img "Integrations Section" [ref=e2628]
+                    - generic [ref=e2629]:
+                      - link "Ruixen UI" [ref=e2630] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e2632]
+                      - paragraph [ref=e2633]: Integrations Section
+                      - button "14" [ref=e2634] [cursor=pointer]:
+                        - img [ref=e2635]
+                        - generic [ref=e2638]: "14"
+                - listitem [ref=e2640]:
+                  - generic [ref=e2641]:
+                    - link "Contact Card" [ref=e2642] [cursor=pointer]:
+                      - /url: /community/components/efferd/contact-card/default
+                      - img "Contact Card" [ref=e2643]
+                    - generic [ref=e2644]:
+                      - link "Efferd" [ref=e2645] [cursor=pointer]:
+                        - /url: /community/efferd
+                        - img "Efferd" [ref=e2647]
+                      - paragraph [ref=e2648]: Contact Card
+                      - button "4" [ref=e2649] [cursor=pointer]:
+                        - img [ref=e2650]
+                        - generic [ref=e2653]: "4"
+                - listitem [ref=e2655]:
+                  - generic [ref=e2656]:
+                    - link "Gallery with image cards" [ref=e2657] [cursor=pointer]:
+                      - /url: /community/components/shadcnblockscom/gallery4/default
+                      - img "Gallery with image cards" [ref=e2658]
+                    - generic [ref=e2659]:
+                      - link "Shadcnblocks.com" [ref=e2660] [cursor=pointer]:
+                        - /url: /community/shadcnblockscom
+                        - img "Shadcnblocks.com" [ref=e2662]
+                      - paragraph [ref=e2663]: Gallery with image cards
+                      - button "291" [ref=e2664] [cursor=pointer]:
+                        - img [ref=e2665]
+                        - generic [ref=e2668]: "291"
+                - listitem [ref=e2670]:
+                  - generic [ref=e2671]:
+                    - link "Carousel card" [ref=e2672] [cursor=pointer]:
+                      - /url: /community/components/abishek1512/carousel-card-1/default
+                      - img "Carousel card" [ref=e2673]
+                    - generic [ref=e2674]:
+                      - link "Abishekaraj Immanuel" [ref=e2675] [cursor=pointer]:
+                        - /url: /community/abishek1512
+                        - img "Abishekaraj Immanuel" [ref=e2677]
+                      - paragraph [ref=e2678]: Carousel card
+                      - button "39" [ref=e2679] [cursor=pointer]:
+                        - img [ref=e2680]
+                        - generic [ref=e2683]: "39"
+                - listitem [ref=e2685]:
+                  - generic [ref=e2686]:
+                    - link "Interactive Broker Card" [ref=e2687] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/interactive-broker-card/default
+                      - img "Interactive Broker Card" [ref=e2688]
+                    - generic [ref=e2689]:
+                      - link "Kavi Katiyar" [ref=e2690] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e2692]
+                      - paragraph [ref=e2693]: Interactive Broker Card
+                      - button "70" [ref=e2694] [cursor=pointer]:
+                        - img [ref=e2695]
+                        - generic [ref=e2698]: "70"
+                - listitem [ref=e2700]:
+                  - generic [ref=e2701]:
+                    - link "Shirt Parallax Card" [ref=e2702] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/shirt-parallax-card/default
+                      - img "Shirt Parallax Card" [ref=e2703]
+                    - generic [ref=e2704]:
+                      - link "Ruixen UI" [ref=e2705] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e2707]
+                      - paragraph [ref=e2708]: Shirt Parallax Card
+                      - button "95" [ref=e2709] [cursor=pointer]:
+                        - img [ref=e2710]
+                        - generic [ref=e2713]: "95"
+                - listitem [ref=e2715]:
+                  - generic [ref=e2716]:
+                    - link "Asset Card" [ref=e2717] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/asset-card/default
+                      - img "Asset Card" [ref=e2718]
+                    - generic [ref=e2719]:
+                      - link "Ravi Katiyar" [ref=e2720] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2722]
+                      - paragraph [ref=e2723]: Asset Card
+                      - button "99" [ref=e2724] [cursor=pointer]:
+                        - img [ref=e2725]
+                        - generic [ref=e2728]: "99"
+                - listitem [ref=e2730]:
+                  - generic [ref=e2731]:
+                    - link "Glowing Effect Card" [ref=e2732] [cursor=pointer]:
+                      - /url: /community/components/aceternity/glowing-effect-card/default
+                      - img "Glowing Effect Card" [ref=e2733]
+                    - generic [ref=e2734]:
+                      - link "Aceternity UI" [ref=e2735] [cursor=pointer]:
+                        - /url: /community/aceternity
+                        - img "Aceternity UI" [ref=e2737]
+                      - paragraph [ref=e2738]: Glowing Effect Card
+                      - button "11" [ref=e2739] [cursor=pointer]:
+                        - img [ref=e2740]
+                        - generic [ref=e2743]: "11"
+                - listitem [ref=e2745]:
+                  - generic [ref=e2746]:
+                    - link "New Hover Card" [ref=e2747] [cursor=pointer]:
+                      - /url: /community/components/edwinvakayil/new-hover-card/default
+                      - img "New Hover Card" [ref=e2748]
+                    - generic [ref=e2749]:
+                      - link "Edwin Vakayil" [ref=e2750] [cursor=pointer]:
+                        - /url: /community/edwinvakayil
+                        - img "Edwin Vakayil" [ref=e2752]
+                      - paragraph [ref=e2753]: New Hover Card
+                      - button "2" [ref=e2754] [cursor=pointer]:
+                        - img [ref=e2755]
+                        - generic [ref=e2758]: "2"
+                - listitem [ref=e2760]:
+                  - generic [ref=e2761]:
+                    - link "Clip Path Links" [ref=e2762] [cursor=pointer]:
+                      - /url: /community/components/TomIsLoading/clip-path-links/default
+                      - img "Clip Path Links" [ref=e2763]
+                    - generic [ref=e2764]:
+                      - link "Hover.Dev" [ref=e2765] [cursor=pointer]:
+                        - /url: /community/TomIsLoading
+                        - img "Hover.Dev" [ref=e2767]
+                      - paragraph [ref=e2768]: Clip Path Links
+                      - button "39" [ref=e2769] [cursor=pointer]:
+                        - img [ref=e2770]
+                        - generic [ref=e2773]: "39"
+                - listitem [ref=e2775]:
+                  - generic [ref=e2776]:
+                    - link "Notifications Toggle" [ref=e2777] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/notifications-toggle/default
+                      - img "Notifications Toggle" [ref=e2778]
+                    - generic [ref=e2779]:
+                      - link "Ruixen UI" [ref=e2780] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e2782]
+                      - paragraph [ref=e2783]: Notifications Toggle
+                      - button "16" [ref=e2784] [cursor=pointer]:
+                        - img [ref=e2785]
+                        - generic [ref=e2788]: "16"
+                - listitem [ref=e2790]:
+                  - generic [ref=e2791]:
+                    - link "Swap Card" [ref=e2792] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/swap-card/default
+                      - img "Swap Card" [ref=e2793]
+                    - generic [ref=e2794]:
+                      - link "Ravi Katiyar" [ref=e2795] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2797]
+                      - paragraph [ref=e2798]: Swap Card
+                      - button "63" [ref=e2799] [cursor=pointer]:
+                        - img [ref=e2800]
+                        - generic [ref=e2803]: "63"
+                - listitem [ref=e2805]:
+                  - generic [ref=e2806]:
+                    - link "Product Card" [ref=e2807] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/product-card-1/default
+                      - img "Product Card" [ref=e2808]
+                    - generic [ref=e2809]:
+                      - link "Ravi Katiyar" [ref=e2810] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2812]
+                      - paragraph [ref=e2813]: Product Card
+                      - button "50" [ref=e2814] [cursor=pointer]:
+                        - img [ref=e2815]
+                        - generic [ref=e2818]: "50"
+                - listitem [ref=e2820]:
+                  - generic [ref=e2821]:
+                    - link "Playing Card" [ref=e2822] [cursor=pointer]:
+                      - /url: /community/components/Northstrix/playing-card/default
+                      - img "Playing Card" [ref=e2823]
+                    - generic [ref=e2824]:
+                      - link "Maxim Bortnikov" [ref=e2825] [cursor=pointer]:
+                        - /url: /community/Northstrix
+                        - img "Maxim Bortnikov" [ref=e2827]
+                      - paragraph [ref=e2828]: Playing Card
+                      - button "27" [ref=e2829] [cursor=pointer]:
+                        - img [ref=e2830]
+                        - generic [ref=e2833]: "27"
+                - listitem [ref=e2835]:
+                  - generic [ref=e2836]:
+                    - link "Card" [ref=e2837] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/card-22/default
+                      - img "Card" [ref=e2838]
+                    - generic [ref=e2839]:
+                      - link "Ravi Katiyar" [ref=e2840] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2842]
+                      - paragraph [ref=e2843]: Card
+                      - button "148" [ref=e2844] [cursor=pointer]:
+                        - img [ref=e2845]
+                        - generic [ref=e2848]: "148"
+                - listitem [ref=e2850]:
+                  - generic [ref=e2851]:
+                    - link "Animated Card Chart" [ref=e2852] [cursor=pointer]:
+                      - /url: /community/components/badtzx0/animated-card-chart/default
+                      - img "Animated Card Chart" [ref=e2853]
+                    - generic [ref=e2854]:
+                      - link "badtz" [ref=e2855] [cursor=pointer]:
+                        - /url: /community/badtzx0
+                        - img "badtz" [ref=e2857]
+                      - paragraph [ref=e2858]: Animated Card Chart
+                      - button "88" [ref=e2859] [cursor=pointer]:
+                        - img [ref=e2860]
+                        - generic [ref=e2863]: "88"
+                - listitem [ref=e2865]:
+                  - generic [ref=e2866]:
+                    - link "Email Client Card" [ref=e2867] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/email-client-card/default
+                      - img "Email Client Card" [ref=e2868]
+                    - generic [ref=e2869]:
+                      - link "Kavi Katiyar" [ref=e2870] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e2872]
+                      - paragraph [ref=e2873]: Email Client Card
+                      - button "94" [ref=e2874] [cursor=pointer]:
+                        - img [ref=e2875]
+                        - generic [ref=e2878]: "94"
+                - listitem [ref=e2880]:
+                  - generic [ref=e2881]:
+                    - link "Retro Testimonial Carousel" [ref=e2882] [cursor=pointer]:
+                      - /url: /community/components/ishamsu/retro-testimonial/default
+                      - img "Retro Testimonial Carousel" [ref=e2883]
+                    - generic [ref=e2884]:
+                      - link "Shamsu Musthafa" [ref=e2885] [cursor=pointer]:
+                        - /url: /community/ishamsu
+                        - img "Shamsu Musthafa" [ref=e2887]
+                      - paragraph [ref=e2888]: Retro Testimonial Carousel
+                      - button "44" [ref=e2889] [cursor=pointer]:
+                        - img [ref=e2890]
+                        - generic [ref=e2893]: "44"
+                - listitem [ref=e2895]:
+                  - generic [ref=e2896]:
+                    - link "Grid Feature Cards" [ref=e2897] [cursor=pointer]:
+                      - /url: /community/components/efferd/grid-feature-cards/default
+                      - img "Grid Feature Cards" [ref=e2898]
+                    - generic [ref=e2899]:
+                      - link "Efferd" [ref=e2900] [cursor=pointer]:
+                        - /url: /community/efferd
+                        - img "Efferd" [ref=e2902]
+                      - paragraph [ref=e2903]: Grid Feature Cards
+                      - button "116" [ref=e2904] [cursor=pointer]:
+                        - img [ref=e2905]
+                        - generic [ref=e2908]: "116"
+                - listitem [ref=e2910]:
+                  - generic [ref=e2911]:
+                    - link "Sleep Tracker Card" [ref=e2912] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/sleep-tracker-card/default
+                      - img "Sleep Tracker Card" [ref=e2913]
+                    - generic [ref=e2914]:
+                      - link "Ravi Katiyar" [ref=e2915] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2917]
+                      - paragraph [ref=e2918]: Sleep Tracker Card
+                      - button "100" [ref=e2919] [cursor=pointer]:
+                        - img [ref=e2920]
+                        - generic [ref=e2923]: "100"
+                - listitem [ref=e2925]:
+                  - generic [ref=e2926]:
+                    - link "Frame" [ref=e2927] [cursor=pointer]:
+                      - /url: /community/components/coss.com/frame/separated-panels
+                      - img "Frame" [ref=e2928]
+                    - generic [ref=e2929]:
+                      - link "coss" [ref=e2930] [cursor=pointer]:
+                        - /url: /community/coss.com
+                        - img "coss" [ref=e2932]
+                      - paragraph [ref=e2933]: Frame
+                      - button "11" [ref=e2934] [cursor=pointer]:
+                        - img [ref=e2935]
+                        - generic [ref=e2938]: "11"
+                - listitem [ref=e2940]:
+                  - generic [ref=e2941]:
+                    - link "Feature Section" [ref=e2942] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/feature-section/default
+                      - img "Feature Section" [ref=e2943]
+                    - generic [ref=e2944]:
+                      - link "Ruixen UI" [ref=e2945] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e2947]
+                      - paragraph [ref=e2948]: Feature Section
+                      - button "9" [ref=e2949] [cursor=pointer]:
+                        - img [ref=e2950]
+                        - generic [ref=e2953]: "9"
+                - listitem [ref=e2955]:
+                  - generic [ref=e2956]:
+                    - link "Feature Spotlight" [ref=e2957] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/feature-spotlight/default
+                      - img "Feature Spotlight" [ref=e2958]
+                    - generic [ref=e2959]:
+                      - link "Ravi Katiyar" [ref=e2960] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2962]
+                      - paragraph [ref=e2963]: Feature Spotlight
+                      - button "203" [ref=e2964] [cursor=pointer]:
+                        - img [ref=e2965]
+                        - generic [ref=e2968]: "203"
+                - listitem [ref=e2970]:
+                  - generic [ref=e2971]:
+                    - link "Frame" [ref=e2972] [cursor=pointer]:
+                      - /url: /community/components/coss.com/frame/default
+                      - img "Frame" [ref=e2973]
+                    - generic [ref=e2974]:
+                      - link "coss" [ref=e2975] [cursor=pointer]:
+                        - /url: /community/coss.com
+                        - img "coss" [ref=e2977]
+                      - paragraph [ref=e2978]: Frame
+                      - button "16" [ref=e2979] [cursor=pointer]:
+                        - img [ref=e2980]
+                        - generic [ref=e2983]: "16"
+                - listitem [ref=e2985]:
+                  - generic [ref=e2986]:
+                    - link "Card" [ref=e2987] [cursor=pointer]:
+                      - /url: /community/components/ravikatiyar/card-23/default
+                      - img "Card" [ref=e2988]
+                    - generic [ref=e2989]:
+                      - link "Ravi Katiyar" [ref=e2990] [cursor=pointer]:
+                        - /url: /community/ravikatiyar
+                        - img "Ravi Katiyar" [ref=e2992]
+                      - paragraph [ref=e2993]: Card
+                      - button "119" [ref=e2994] [cursor=pointer]:
+                        - img [ref=e2995]
+                        - generic [ref=e2998]: "119"
+                - listitem [ref=e3000]:
+                  - generic [ref=e3001]:
+                    - link "Glass Checkout Card" [ref=e3002] [cursor=pointer]:
+                      - /url: /community/components/moumensoliman/glass-checkout-card-shadcnui/default
+                      - img "Glass Checkout Card" [ref=e3003]
+                    - generic [ref=e3004]:
+                      - link "Moumen Soliman" [ref=e3005] [cursor=pointer]:
+                        - /url: /community/moumensoliman
+                        - img "Moumen Soliman" [ref=e3007]
+                      - paragraph [ref=e3008]: Glass Checkout Card
+                      - button "265" [ref=e3009] [cursor=pointer]:
+                        - img [ref=e3010]
+                        - generic [ref=e3013]: "265"
+                - listitem [ref=e3015]:
+                  - generic [ref=e3016]:
+                    - link "Card with Grid Ellipsis Pattern" [ref=e3017] [cursor=pointer]:
+                      - /url: /community/components/Ali-Hussein-dev/card-with-grid-ellipsis-pattern/default
+                      - img "Card with Grid Ellipsis Pattern" [ref=e3018]
+                    - generic [ref=e3019]:
+                      - link "Indie UI" [ref=e3020] [cursor=pointer]:
+                        - /url: /community/Ali-Hussein-dev
+                        - img "Indie UI" [ref=e3022]
+                      - paragraph [ref=e3023]: Card with Grid Ellipsis Pattern
+                      - button "70" [ref=e3024] [cursor=pointer]:
+                        - img [ref=e3025]
+                        - generic [ref=e3028]: "70"
+                - listitem [ref=e3030]:
+                  - generic [ref=e3031]:
+                    - link "Diagram Card" [ref=e3032] [cursor=pointer]:
+                      - /url: /community/components/aceternity/diagram-card/default
+                      - img "Diagram Card" [ref=e3033]
+                    - generic [ref=e3034]:
+                      - link "Aceternity UI" [ref=e3035] [cursor=pointer]:
+                        - /url: /community/aceternity
+                        - img "Aceternity UI" [ref=e3037]
+                      - paragraph [ref=e3038]: Diagram Card
+                      - button "174" [ref=e3039] [cursor=pointer]:
+                        - img [ref=e3040]
+                        - generic [ref=e3043]: "174"
+                - listitem [ref=e3045]:
+                  - generic [ref=e3046]:
+                    - link "ScreenTimeCard" [ref=e3047] [cursor=pointer]:
+                      - /url: /community/components/itsankitverma/screen-time-card/default
+                      - img "ScreenTimeCard" [ref=e3048]
+                    - generic [ref=e3049]:
+                      - link "Ankit Verma" [ref=e3050] [cursor=pointer]:
+                        - /url: /community/itsankitverma
+                        - img "Ankit Verma" [ref=e3052]
+                      - paragraph [ref=e3053]: ScreenTimeCard
+                      - button "259" [ref=e3054] [cursor=pointer]:
+                        - img [ref=e3055]
+                        - generic [ref=e3058]: "259"
+                - listitem [ref=e3060]:
+                  - generic [ref=e3061]:
+                    - link "Glowing AI Chat Assistant" [ref=e3062] [cursor=pointer]:
+                      - /url: /community/components/muhammad-binsalman/glowing-ai-chat-assistant/default
+                      - img "Glowing AI Chat Assistant" [ref=e3063]
+                    - generic [ref=e3064]:
+                      - link "M.bin Salman" [ref=e3065] [cursor=pointer]:
+                        - /url: /community/muhammad-binsalman
+                        - img "M.bin Salman" [ref=e3067]
+                      - paragraph [ref=e3068]: Glowing AI Chat Assistant
+                      - button "19" [ref=e3069] [cursor=pointer]:
+                        - img [ref=e3070]
+                        - generic [ref=e3073]: "19"
+                - listitem [ref=e3075]:
+                  - generic [ref=e3076]:
+                    - link "Card Carousel" [ref=e3077] [cursor=pointer]:
+                      - /url: /community/components/reuno-ui/card-carousel/default
+                      - img "Card Carousel" [ref=e3078]
+                    - generic [ref=e3079]:
+                      - link "R" [ref=e3080] [cursor=pointer]:
+                        - /url: /community/reuno-ui
+                        - generic [ref=e3082]: R
+                      - paragraph [ref=e3083]: Card Carousel
+                      - button "41" [ref=e3084] [cursor=pointer]:
+                        - img [ref=e3085]
+                        - generic [ref=e3088]: "41"
+                - listitem [ref=e3090]:
+                  - generic [ref=e3091]:
+                    - link "State" [ref=e3092] [cursor=pointer]:
+                      - /url: /community/components/kavikatiyar/state/default
+                      - img "State" [ref=e3093]
+                    - generic [ref=e3094]:
+                      - link "Kavi Katiyar" [ref=e3095] [cursor=pointer]:
+                        - /url: /community/kavikatiyar
+                        - img "Kavi Katiyar" [ref=e3097]
+                      - paragraph [ref=e3098]: State
+                      - button "94" [ref=e3099] [cursor=pointer]:
+                        - img [ref=e3100]
+                        - generic [ref=e3103]: "94"
+                - listitem [ref=e3105]:
+                  - generic [ref=e3106]:
+                    - link "Team Access Card" [ref=e3107] [cursor=pointer]:
+                      - /url: /community/components/ruixenui/team-access-card/default
+                      - img "Team Access Card" [ref=e3108]
+                    - generic [ref=e3109]:
+                      - link "Ruixen UI" [ref=e3110] [cursor=pointer]:
+                        - /url: /community/ruixenui
+                        - img "Ruixen UI" [ref=e3112]
+                      - paragraph [ref=e3113]: Team Access Card
+                      - button "101" [ref=e3114] [cursor=pointer]:
+                        - img [ref=e3115]
+                        - generic [ref=e3118]: "101"
+                - listitem [ref=e3120]:
+                  - generic [ref=e3121]:
+                    - link "Zoom Parallax" [ref=e3122] [cursor=pointer]:
+                      - /url: /community/components/efferd/zoom-parallax/default
+                      - img "Zoom Parallax" [ref=e3123]
+                    - generic [ref=e3124]:
+                      - link "Efferd" [ref=e3125] [cursor=pointer]:
+                        - /url: /community/efferd
+                        - img "Efferd" [ref=e3127]
+                      - paragraph [ref=e3128]: Zoom Parallax
+                      - button "8" [ref=e3129] [cursor=pointer]:
+                        - img [ref=e3130]
+                        - generic [ref=e3133]: "8"
+                - generic [ref=e3136]: Similar components
+    - region "Notifications alt+T"
+  - alert [ref=e3138]
