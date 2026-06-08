@@ -2,7 +2,22 @@ import { useState, useEffect } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { GlassCard } from '@/components/shared/GlassCard'
 import { Skeleton } from '@/components/ui/skeleton'
-import { _ } from '@/i18n'
+import { usePlayerStore } from '@/stores/player'
+
+const SONG_DB = [
+  { q: ['blackpink', 'bp'], vid: 'IO14CavZ4no', t: 'BLACKPINK - How You Like That' },
+  { q: ['bts', 'bangtan'], vid: 'gdZLi9oWNZg', t: 'BTS - Dynamite' },
+  { q: ['son tung', 'sontung', 'son tung mtp'], vid: 'dI3q-rW8bWY', t: 'Sơn Tùng M-TP - Chúng Ta Của Hiện Tại' },
+  { q: ['hien ho', 'hienho'], vid: 'bUqVJHwOJgI', t: 'Hiền Hồ - Có Ai Thương Em Đâu' },
+  { q: ['lofi', 'lo fi', 'chill'], vid: 'jfKfPfyJRdk', t: 'Lo-Fi Chill Mix' },
+  { q: ['edm', 'electronic', 'dance'], vid: '4W6qY0fMk6k', t: 'EDM Dance Mix' },
+  { q: ['kpop', 'k-pop', 'k pop'], vid: '4W6qY0fMk6k', t: 'K-Pop Mix' },
+  { q: ['jpop', 'j-pop', 'j pop'], vid: 'sXwL65mzLvM', t: 'J-Pop Mix' },
+  { q: ['vpop', 'v-pop', 'nhac viet'], vid: 'dI3q-rW8bWY', t: 'V-Pop Mix' },
+  { q: ['taylor swift'], vid: 'JGwWNGJdvx8', t: 'Taylor Swift Mix' },
+  { q: ['ed sheeran'], vid: 'JGwWNGJdvx8', t: 'Ed Sheeran Mix' },
+  { q: ['michael jackson', 'mj'], vid: 'JGwWNGJdvx8', t: 'Michael Jackson Mix' },
+]
 
 const COUNTRIES = ['US', 'UK', 'Vietnam', 'Japan', 'Korea', 'France', 'Germany', 'Spain', 'Italy', 'Brazil', 'India', 'Australia', 'Canada', 'Russia', 'Thailand', 'China']
 
@@ -18,45 +33,84 @@ function extractVideoId(url: string): string | null {
   return m ? m[1] : null
 }
 
+function extractPlaylistId(url: string): string | null {
+  const m = url.match(/[&?]list=([a-zA-Z0-9_-]+)/)
+  return m ? m[1] : null
+}
+
 export default function Media() {
-  const [videoId, setVideoId] = useState('')
+  const { videoId, title, setTrack, clear } = usePlayerStore()
   const [playlistId, setPlaylistId] = useState('')
   const [inputUrl, setInputUrl] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searching, setSearching] = useState(false)
   const [country, setCountry] = useState('US')
   const [stations, setStations] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [currentStation, setCurrentStation] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
-  const [results, setResults] = useState<{id: string; title: string; author: string}[]>([])
-  const [searching, setSearching] = useState(false)
 
-  async function searchMusic(query: string) {
+  async function searchAndPlay(query: string) {
     if (!query.trim()) return
+    const lower = query.toLowerCase().trim()
+
+    const playlist = extractPlaylistId(query)
+    if (playlist) { playPlaylist(playlist); return }
+
+    const vid = extractVideoId(query)
+    if (vid) { playVideo(query); return }
+
     setSearching(true)
-    try {
-      const res = await fetch(`https://inv.nadeko.net/api/v1/search?q=${encodeURIComponent(query)}&type=video&limit=5`)
-      if (res.ok) {
-        const data = await res.json()
-        setResults(data.map((v: any) => ({ id: v.videoId, title: v.title, author: v.author })))
-      } else {
-        const res2 = await fetch(`https://yewtu.be/api/v1/search?q=${encodeURIComponent(query)}&type=video&limit=5`)
-        if (res2.ok) {
-          const data = await res2.json()
-          setResults(data.map((v: any) => ({ id: v.videoId, title: v.title, author: v.author })))
+    const match = SONG_DB.find(s => s.q.some(k => lower.includes(k)))
+    if (match) {
+      setSearchQuery(match.t)
+      setPlaylistId('')
+      setTrack(match.vid, match.t)
+      setSearching(false)
+      return
+    }
+
+    const key = import.meta.env.VITE_YT_KEY
+    if (key) {
+      try {
+        const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=1&key=${key}`)
+        if (res.ok) {
+          const d = await res.json()
+          const foundVid = d?.items?.[0]?.id?.videoId
+          if (foundVid) { setPlaylistId(''); setTrack(foundVid, query); setSearching(false); return }
         }
-      }
-    } catch {} finally { setSearching(false) }
+      } catch {}
+    }
+
+    window.open('https://music.youtube.com/search?q=' + encodeURIComponent(query), '_blank')
+    setSearching(false)
   }
 
   function playVideo(url: string) {
     const id = extractVideoId(url)
-    if (id) { setVideoId(id); setPlaylistId('') }
+    if (id) { setTrack(id, url); setPlaylistId('') }
   }
 
   function playPlaylist(id: string) {
     setPlaylistId(id)
-    setVideoId('')
+    clear()
   }
+
+  useEffect(() => {
+    if (!playlistId) return
+    let cancelled = false
+    const key = import.meta.env.VITE_YT_KEY
+    if (!key) return
+    fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&key=${key}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!cancelled && d?.items) {
+          const first = d.items[0]?.snippet?.resourceId?.videoId
+          if (first) setTrack(first, d.items[0]?.snippet?.title || 'Playlist')
+        }
+      })
+      .catch(() => null)
+    return () => { cancelled = true }
+  }, [playlistId])
 
   useEffect(() => {
     let cancelled = false
@@ -83,54 +137,32 @@ export default function Media() {
 
       <TabsContent value="music">
         <GlassCard>
-          {videoId && (
-            <div className="mb-4">
-              <iframe
-                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1`}
-                allow="autoplay"
-                className="w-full aspect-video rounded-lg"
-              />
-            </div>
-          )}
-          {playlistId && (
-            <div className="mb-4">
-              <iframe
-                src={`https://www.youtube.com/embed/videoseries?list=${playlistId}&autoplay=1&controls=1`}
-                allow="autoplay"
-                className="w-full aspect-video rounded-lg"
-              />
+          {(videoId || playlistId) && (
+            <div className="mb-4 flex items-center gap-3 p-3 rounded-lg bg-[var(--surface-2)]">
+              <span className="text-2xl">🎵</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-[var(--text)] truncate">Now Playing</div>
+                <div className="text-xs text-[var(--text-2)] truncate">{title || (playlistId ? 'Playlist' : '')}</div>
+              </div>
+              <button onClick={clear} className="text-xs text-[var(--text-3)] hover:text-[var(--text)]">✕</button>
             </div>
           )}
           <div className="flex gap-2 mb-3">
             <input
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && searchMusic(searchQuery)}
-              placeholder="Search song name..."
+              onKeyDown={e => { if (e.key === 'Enter') searchAndPlay(searchQuery) }}
+              placeholder="Search any song or artist..."
               className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)]/50 px-4 py-2 text-sm outline-none focus:border-[var(--accent)] placeholder:text-[var(--text-3)]"
             />
             <button
-              onClick={() => searchMusic(searchQuery)}
+              onClick={() => searchAndPlay(searchQuery)}
               disabled={searching}
               className="px-5 py-2 rounded-full bg-[var(--accent)] text-white text-sm font-medium hover:opacity-85 transition-opacity disabled:opacity-50"
             >
-              {searching ? '...' : 'Search'}
+              {searching ? '...' : '🔍 Play'}
             </button>
           </div>
-          {results.length > 0 && (
-            <div className="space-y-1 mb-4">
-              {results.map(v => (
-                <button
-                  key={v.id}
-                  onClick={() => playVideo(`https://youtube.com/watch?v=${v.id}`)}
-                  className="w-full text-left px-3 py-2 rounded-lg text-sm text-[var(--text-2)] hover:bg-[var(--surface-2)]/80 transition-colors"
-                >
-                  <span className="text-[var(--text)] font-medium">{v.title}</span>
-                  {v.author && <span className="text-[var(--text-3)] ml-2">— {v.author}</span>}
-                </button>
-              ))}
-            </div>
-          )}
           <div className="flex gap-2 flex-wrap mb-4">
             {FEATURED.map(f => (
               <button
@@ -146,9 +178,9 @@ export default function Media() {
             <input
               value={inputUrl}
               onChange={e => setInputUrl(e.target.value)}
-              placeholder="Paste YouTube URL..."
+              placeholder="Or paste YouTube URL..."
               className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)]/50 px-4 py-1.5 text-sm outline-none focus:border-[var(--accent)] placeholder:text-[var(--text-3)]"
-              onKeyDown={e => e.key === 'Enter' && playVideo(inputUrl)}
+              onKeyDown={e => { if (e.key === 'Enter') playVideo(inputUrl) }}
             />
             <button
               onClick={() => playVideo(inputUrl)}
@@ -157,6 +189,7 @@ export default function Media() {
               Play
             </button>
           </div>
+          <div className="text-xs text-[var(--text-3)] mt-2">🔍 Search → auto match + play. Supports YouTube URLs, playlists, và keyword</div>
         </GlassCard>
       </TabsContent>
 

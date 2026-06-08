@@ -30,8 +30,14 @@ function getUrl(period: Period, type: 'movie' | 'tv' = 'movie'): string {
   const key = apiKey()
   switch (period) {
     case 'week':
-    case 'month':
-      return `${API_BASE}/trending/${type}/${period}?api_key=${key}&language=en-US`
+      return `${API_BASE}/trending/${type}/week?api_key=${key}&language=en-US`
+    case 'month': {
+      const d = new Date()
+      const from = new Date(d.getFullYear(), d.getMonth() - 1, d.getDate()).toISOString().slice(0, 10)
+      const to = d.toISOString().slice(0, 10)
+      const dateField = type === 'tv' ? 'first_air_date' : 'release_date'
+      return `${API_BASE}/discover/${type}?api_key=${key}&language=en-US&sort_by=popularity.desc&${dateField}.gte=${from}&${dateField}.lte=${to}&vote_count.gte=50`
+    }
     case 'top_rated':
       return `${API_BASE}/${type}/top_rated?api_key=${key}&language=en-US`
   }
@@ -84,11 +90,12 @@ export default function Movies() {
 
     async function load() {
       try {
-        const res = await fetch(getUrl(period, mediaType))
-        if (!res.ok) throw new Error()
-        const json = await res.json()
+        const pages = await Promise.all([1, 2, 3, 4, 5].map(p =>
+          fetch(getUrl(period, mediaType) + `&page=${p}`).then(r => r.ok ? r.json() : { results: [] })
+        ))
         if (!cancelled) {
-          setMovies((json.results ?? []).map((r: any) => normalizeItem(r, mediaType)))
+          const all = pages.flatMap(p => p.results ?? []).map((r: any) => normalizeItem(r, mediaType))
+          setMovies(all)
           setLoading(false)
         }
       } catch {
@@ -151,9 +158,9 @@ export default function Movies() {
       </div>
 
       {loading && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <GlassCard key={i} className="p-0 overflow-hidden">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <GlassCard key={i} className="p-0 overflow-hidden">
               <Skeleton className="aspect-[2/3] w-full rounded-none" />
               <div className="p-3 space-y-2">
                 <Skeleton className="h-4 w-3/4" />
@@ -180,7 +187,7 @@ export default function Movies() {
               <p className="text-[var(--text-2)]">{_('nothingSaved')}</p>
             </GlassCard>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
               {movies.map(movie => {
                 const saved = isInWatchlist(movie.id)
                 return (
@@ -214,11 +221,11 @@ export default function Movies() {
                         {saved ? '✓' : '+'}
                       </button>
                     </div>
-                    <div className="bg-[var(--surface)]/95 p-3">
-                      <h3 className="text-sm font-medium text-[var(--text)] truncate">{movie.title}</h3>
-                      <div className="flex items-center justify-between mt-1">
-                        <span className="text-xs text-[var(--text-2)]">{getYear(movie.release_date)}</span>
-                        <span className="text-xs text-[var(--accent)]">★ {movie.vote_average.toFixed(1)}</span>
+                    <div className="bg-[var(--surface)]/95 p-2">
+                      <h3 className="text-xs font-medium text-[var(--text)] truncate">{movie.title}</h3>
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className="text-[10px] text-[var(--text-2)]">{getYear(movie.release_date)}</span>
+                        <span className="text-[10px] text-[var(--accent)]">★ {movie.vote_average.toFixed(1)}</span>
                       </div>
                     </div>
                   </GlassCard>
@@ -230,7 +237,7 @@ export default function Movies() {
       )}
 
       <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
-        <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto bg-[var(--surface)]">
           {detailLoading ? (
             <div className="space-y-4 p-2">
               <Skeleton className="h-6 w-3/4" />
