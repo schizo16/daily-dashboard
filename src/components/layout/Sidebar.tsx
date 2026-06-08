@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 
 const links = [
-  { to: '/', icon: '📡', label: 'Radar' },
+  { to: '/', icon: '📡', label: 'Trang chủ' },
   { to: '/movies', icon: '🎬', label: 'Movies' },
   { to: '/games', icon: '🎮', label: 'Games' },
   { to: '/watchlist', icon: '🔖', label: 'Saved' },
@@ -13,10 +13,10 @@ const links = [
 export function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 z-30 flex h-full w-60 flex-col border-r border-[var(--border)] bg-[var(--surface)]/60 backdrop-blur-2xl">
-      <div className="flex items-center gap-2 px-5 pt-5 pb-6">
+      <a href="/" className="flex items-center gap-2 px-5 pt-5 pb-6 no-underline text-[var(--text)]">
         <span className="text-lg">◆</span>
         <span className="font-semibold tracking-tight">Atlas</span>
-      </div>
+      </a>
       <nav className="flex flex-1 flex-col gap-1 px-3">
         {links.map(({ to, icon }) => (
           <NavLink
