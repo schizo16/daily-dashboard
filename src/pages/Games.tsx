@@ -432,7 +432,7 @@ function MovieQuiz() {
 
 // --- Data Hooks ---
 
-function useSteamDeals() {
+function useSteamDeals(page: number) {
   const [deals, setDeals] = useState<SteamDealData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -442,13 +442,13 @@ function useSteamDeals() {
     setLoading(true)
     setError(false)
 
-    fetch('https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=10&sortBy=Savings&steamRating=60&pageNumber=1')
+    fetch(`https://www.cheapshark.com/api/1.0/deals?storeID=1&pageSize=10&sortBy=Savings&steamRating=60&pageNumber=${page}`)
       .then(res => { if (!res.ok) throw new Error(); return res.json() })
       .then(data => { if (!cancelled) { setDeals(data); setLoading(false) } })
       .catch(() => { if (!cancelled) { setError(true); setLoading(false) } })
 
     return () => { cancelled = true }
-  }, [])
+  }, [page])
 
   return { deals, loading, error }
 }
@@ -477,7 +477,8 @@ function useRedditPosts(subreddit: string) {
 // --- Sub-components ---
 
 function SteamDealsSection() {
-  const { deals, loading, error } = useSteamDeals()
+  const [page, setPage] = useState(1)
+  const { deals, loading, error } = useSteamDeals(page)
   const [retryKey, setRetryKey] = useState(0)
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
 
@@ -516,59 +517,66 @@ function SteamDealsSection() {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-      {deals.map((deal) => {
-        const appId = deal.steamAppID
-        const imgSrc = appId
-          ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_sm_120.jpg`
-          : deal.thumb
-        const savingsPct = Math.round(parseFloat(deal.savings))
-        const dealId = deal.steamAppID || deal.title
-        const showPlaceholder = !imgSrc || failedImages.has(dealId)
+    <>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {deals.map((deal) => {
+          const appId = deal.steamAppID
+          const imgSrc = appId
+            ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_sm_120.jpg`
+            : deal.thumb
+          const savingsPct = Math.round(parseFloat(deal.savings))
+          const dealId = deal.steamAppID || deal.title
+          const showPlaceholder = !imgSrc || failedImages.has(dealId)
 
-        return (
-          <GlassCard key={dealId} className="p-0 overflow-hidden">
-            <a
-              href={`https://www.cheapshark.com/deal/${deal.dealID}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-            >
-              {showPlaceholder ? (
-                <div className="w-full h-32 bg-[var(--surface-2)] flex items-center justify-center text-[var(--text-3)] text-xs">
-                  🎮
-                </div>
-              ) : (
-                <img
-                  src={imgSrc}
-                  alt={deal.title}
-                  className="w-full aspect-[3/2] object-cover"
-                  loading="lazy"
-                  onError={() => handleImageError(dealId)}
-                />
-              )}
-              <div className="p-3">
-                <h3 className="text-sm font-medium text-[var(--text)] truncate">{deal.title}</h3>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-sm font-semibold text-[var(--accent)]">${deal.salePrice}</span>
-                  {deal.normalPrice !== deal.salePrice && (
-                    <span className="text-xs text-[var(--text-3)] line-through">${deal.normalPrice}</span>
-                  )}
-                  <span className={`text-xs font-medium ${savingsPct > 50 ? 'text-green-400' : 'text-green-500'}`}>
-                    -{savingsPct}%
-                  </span>
-                </div>
-                {deal.steamRatingPercent && (
-                  <div className="mt-1 flex items-center gap-1">
-                    <span className="text-[10px] text-[var(--text-3)]">★ {deal.steamRatingPercent}%</span>
+          return (
+            <GlassCard key={dealId} className="p-0 overflow-hidden">
+              <a
+                href={`https://www.cheapshark.com/deal/${deal.dealID}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                {showPlaceholder ? (
+                  <div className="w-full h-32 bg-[var(--surface-2)] flex items-center justify-center text-[var(--text-3)] text-xs">
+                    🎮
                   </div>
+                ) : (
+                  <img
+                    src={imgSrc}
+                    alt={deal.title}
+                    className="w-full aspect-[3/2] object-cover"
+                    loading="lazy"
+                    onError={() => handleImageError(dealId)}
+                  />
                 )}
-              </div>
-            </a>
-          </GlassCard>
-        )
-      })}
-    </div>
+                <div className="p-3">
+                  <h3 className="text-sm font-medium text-[var(--text)] truncate">{deal.title}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-sm font-semibold text-[var(--accent)]">${deal.salePrice}</span>
+                    {deal.normalPrice !== deal.salePrice && (
+                      <span className="text-xs text-[var(--text-3)] line-through">${deal.normalPrice}</span>
+                    )}
+                    <span className={`text-xs font-medium ${savingsPct > 50 ? 'text-green-400' : 'text-green-500'}`}>
+                      -{savingsPct}%
+                    </span>
+                  </div>
+                  {deal.steamRatingPercent && (
+                    <div className="mt-1 flex items-center gap-1">
+                      <span className="text-[10px] text-[var(--text-3)]">★ {deal.steamRatingPercent}%</span>
+                    </div>
+                  )}
+                </div>
+              </a>
+            </GlassCard>
+          )
+        })}
+      </div>
+      <div className="flex items-center justify-center gap-2 mt-4">
+        <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} className="px-3 py-1 rounded text-xs font-mono border border-[var(--border)] text-[var(--text-2)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-default transition-all">←</button>
+        <span className="text-xs text-[var(--text-3)] font-mono">{page}</span>
+        <button onClick={() => setPage(p => p + 1)} className="px-3 py-1 rounded text-xs font-mono border border-[var(--border)] text-[var(--text-2)] hover:bg-[var(--surface-2)] transition-all">→</button>
+      </div>
+    </>
   )
 }
 

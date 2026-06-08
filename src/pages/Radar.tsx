@@ -134,12 +134,15 @@ const GITHUB_TOPICS = [
 function GithubTab() {
   const [period, setPeriod] = useState('weekly')
   const [topic, setTopic] = useState('')
+  const [page, setPage] = useState(1)
   const p = GITHUB_PERIODS.find(x => x.id === period) || GITHUB_PERIODS[1]
   const since = new Date(Date.now() - p.days * 86400000).toISOString().slice(0, 10)
   const q = `created:>${since}${topic ? ` topic:${topic}` : ''}`
   const { data, loading, error, retry } = useFetch<any>(
-    `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=10`
+    `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=10&page=${page}`
   )
+
+  useEffect(() => { setPage(1) }, [period, topic])
 
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
@@ -150,6 +153,8 @@ function GithubTab() {
     url: r.html_url,
     lang: r.language,
   }))
+  const total = data?.total_count || 0
+  const totalPages = Math.min(Math.ceil(total / 10), 20)
 
   return (
     <GlassCard>
@@ -195,6 +200,13 @@ function GithubTab() {
           meta={`★ ${formatCount(item.stars)}${item.lang ? ' · ' + item.lang : ''}`}
         />
       ))}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-4 pt-3 border-t border-[var(--border)]">
+          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} className="px-3 py-1 rounded text-xs font-mono border border-[var(--border)] text-[var(--text-2)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-default transition-all">←</button>
+          <span className="text-xs text-[var(--text-3)] font-mono">{page} / {totalPages}</span>
+          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages} className="px-3 py-1 rounded text-xs font-mono border border-[var(--border)] text-[var(--text-2)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-default transition-all">→</button>
+        </div>
+      )}
     </GlassCard>
   )
 }

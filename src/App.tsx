@@ -24,8 +24,8 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Shell />}>
-          <Route index element={<AnimatedPage><Radar /></AnimatedPage>} />
-          <Route path="home" element={<AnimatedPage><Home /></AnimatedPage>} />
+          <Route index element={<AnimatedPage><Home /></AnimatedPage>} />
+          <Route path="radar" element={<AnimatedPage><Radar /></AnimatedPage>} />
           <Route path="movies" element={<AnimatedPage><Movies /></AnimatedPage>} />
           <Route path="games" element={<AnimatedPage><Games /></AnimatedPage>} />
           <Route path="watchlist" element={<AnimatedPage><Watchlist /></AnimatedPage>} />

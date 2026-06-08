@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 
 const links = [
-  { to: '/', icon: '📡', label: 'Trang chủ' },
+  { to: '/radar', icon: '📡', label: 'Radar' },
   { to: '/movies', icon: '🎬', label: 'Movies' },
   { to: '/games', icon: '🎮', label: 'Games' },
   { to: '/watchlist', icon: '🔖', label: 'Saved' },

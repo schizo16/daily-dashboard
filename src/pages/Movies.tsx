@@ -26,20 +26,20 @@ function apiKey() {
   return import.meta.env.VITE_TMDB_KEY || ''
 }
 
-function getUrl(period: Period, type: 'movie' | 'tv' = 'movie'): string {
+function getUrl(period: Period, type: 'movie' | 'tv' = 'movie', page = 1): string {
   const key = apiKey()
   switch (period) {
     case 'week':
-      return `${API_BASE}/trending/${type}/week?api_key=${key}&language=en-US`
+      return `${API_BASE}/trending/${type}/week?api_key=${key}&language=en-US&page=${page}`
     case 'month': {
       const d = new Date()
       const from = new Date(d.getFullYear(), d.getMonth() - 1, d.getDate()).toISOString().slice(0, 10)
       const to = d.toISOString().slice(0, 10)
       const dateField = type === 'tv' ? 'first_air_date' : 'release_date'
-      return `${API_BASE}/discover/${type}?api_key=${key}&language=en-US&sort_by=popularity.desc&${dateField}.gte=${from}&${dateField}.lte=${to}&vote_count.gte=50`
+      return `${API_BASE}/discover/${type}?api_key=${key}&language=en-US&sort_by=popularity.desc&${dateField}.gte=${from}&${dateField}.lte=${to}&vote_count.gte=50&page=${page}`
     }
     case 'top_rated':
-      return `${API_BASE}/${type}/top_rated?api_key=${key}&language=en-US`
+      return `${API_BASE}/${type}/top_rated?api_key=${key}&language=en-US&page=${page}`
   }
 }
 
@@ -78,6 +78,7 @@ export default function Movies() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [retryKey, setRetryKey] = useState(0)
+  const [page, setPage] = useState(1)
   const [detailMovie, setDetailMovie] = useState<MovieDetail | null>(null)
   const [detailOpen, setDetailOpen] = useState(false)
   const [detailLoading, setDetailLoading] = useState(false)
@@ -90,12 +91,11 @@ export default function Movies() {
 
     async function load() {
       try {
-        const pages = await Promise.all([1, 2, 3, 4, 5].map(p =>
-          fetch(getUrl(period, mediaType) + `&page=${p}`).then(r => r.ok ? r.json() : { results: [] })
-        ))
+        const res = await fetch(getUrl(period, mediaType, page))
+        if (!res.ok) throw new Error()
+        const json = await res.json()
         if (!cancelled) {
-          const all = pages.flatMap(p => p.results ?? []).map((r: any) => normalizeItem(r, mediaType))
-          setMovies(all)
+          setMovies((json.results ?? []).map((r: any) => normalizeItem(r, mediaType)))
           setLoading(false)
         }
       } catch {
@@ -108,7 +108,7 @@ export default function Movies() {
 
     load()
     return () => { cancelled = true }
-  }, [period, mediaType, retryKey])
+  }, [period, mediaType, page, retryKey])
 
   function openDetail(movie: Movie, type: 'movie' | 'tv') {
     setDetailOpen(true)
@@ -233,6 +233,11 @@ export default function Movies() {
               })}
             </div>
           )}
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1} className="px-3 py-1 rounded text-xs font-mono border border-[var(--border)] text-[var(--text-2)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:cursor-default transition-all">←</button>
+            <span className="text-xs text-[var(--text-3)] font-mono">{page}</span>
+            <button onClick={() => setPage(p => p + 1)} className="px-3 py-1 rounded text-xs font-mono border border-[var(--border)] text-[var(--text-2)] hover:bg-[var(--surface-2)] transition-all">→</button>
+          </div>
         </>
       )}
 
