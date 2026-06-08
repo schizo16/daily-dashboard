@@ -16,6 +16,7 @@ interface SteamDealData {
   steamRatingPercent: string
   thumb: string
   steamAppID: string
+  dealID: string
 }
 
 interface RedditChild {
@@ -478,6 +479,11 @@ function useRedditPosts(subreddit: string) {
 function SteamDealsSection() {
   const { deals, loading, error } = useSteamDeals()
   const [retryKey, setRetryKey] = useState(0)
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
+
+  function handleImageError(id: string) {
+    setFailedImages(prev => new Set(prev).add(id))
+  }
 
   if (loading) {
     return (
@@ -516,37 +522,49 @@ function SteamDealsSection() {
         const imgSrc = appId
           ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/capsule_sm_120.jpg`
           : deal.thumb
-        const savings = parseFloat(deal.savings).toFixed(1)
+        const savingsPct = Math.round(parseFloat(deal.savings))
+        const dealId = deal.steamAppID || deal.title
+        const showPlaceholder = !imgSrc || failedImages.has(dealId)
 
         return (
-          <GlassCard key={deal.steamAppID || deal.title} className="p-0 overflow-hidden">
-            {imgSrc ? (
-              <img
-                src={imgSrc}
-                alt={deal.title}
-                className="w-full aspect-[3/2] object-cover"
-                loading="lazy"
-              />
-            ) : (
-              <div className="w-full aspect-[3/2] bg-[var(--surface-2)] flex items-center justify-center text-[var(--text-3)] text-xs">
-                {deal.title?.[0] || '?'}
-              </div>
-            )}
-            <div className="p-3">
-              <h3 className="text-sm font-medium text-[var(--text)] truncate">{deal.title}</h3>
-              <div className="flex items-center justify-between mt-1">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-[var(--accent)] font-medium">${deal.salePrice}</span>
-                  <span className="text-xs text-[var(--text-3)] line-through">${deal.normalPrice}</span>
+          <GlassCard key={dealId} className="p-0 overflow-hidden">
+            <a
+              href={`https://www.cheapshark.com/deal/${deal.dealID}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              {showPlaceholder ? (
+                <div className="w-full h-32 bg-[var(--surface-2)] flex items-center justify-center text-[var(--text-3)] text-xs">
+                  🎮
                 </div>
-                <span className="text-xs text-green-500 font-medium">-{savings}%</span>
-              </div>
-              {deal.steamRatingPercent && (
-                <div className="mt-1 flex items-center gap-1">
-                  <span className="text-[10px] text-[var(--text-3)]">★ {deal.steamRatingPercent}%</span>
-                </div>
+              ) : (
+                <img
+                  src={imgSrc}
+                  alt={deal.title}
+                  className="w-full aspect-[3/2] object-cover"
+                  loading="lazy"
+                  onError={() => handleImageError(dealId)}
+                />
               )}
-            </div>
+              <div className="p-3">
+                <h3 className="text-sm font-medium text-[var(--text)] truncate">{deal.title}</h3>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm font-semibold text-[var(--accent)]">${deal.salePrice}</span>
+                  {deal.normalPrice !== deal.salePrice && (
+                    <span className="text-xs text-[var(--text-3)] line-through">${deal.normalPrice}</span>
+                  )}
+                  <span className={`text-xs font-medium ${savingsPct > 50 ? 'text-green-400' : 'text-green-500'}`}>
+                    -{savingsPct}%
+                  </span>
+                </div>
+                {deal.steamRatingPercent && (
+                  <div className="mt-1 flex items-center gap-1">
+                    <span className="text-[10px] text-[var(--text-3)]">★ {deal.steamRatingPercent}%</span>
+                  </div>
+                )}
+              </div>
+            </a>
           </GlassCard>
         )
       })}

@@ -16,9 +16,9 @@ interface MovieDetail extends Movie {
   }
 }
 
-type Period = 'week' | 'month' | 'year' | 'top_rated'
+type Period = 'week' | 'month' | 'top_rated'
 
-const periods: Period[] = ['week', 'month', 'year', 'top_rated']
+const periods: Period[] = ['week', 'month', 'top_rated']
 const API_BASE = 'https://api.themoviedb.org/3'
 const IMG_BASE = 'https://image.tmdb.org/t/p/w185'
 
@@ -26,16 +26,14 @@ function apiKey() {
   return import.meta.env.VITE_TMDB_KEY || ''
 }
 
-function getUrl(period: Period): string {
+function getUrl(period: Period, type: 'movie' | 'tv' = 'movie'): string {
   const key = apiKey()
   switch (period) {
     case 'week':
     case 'month':
-      return `${API_BASE}/trending/movie/${period}?api_key=${key}&language=en-US`
-    case 'year':
-      return `${API_BASE}/discover/movie?sort_by=vote_average.desc&vote_count.gte=200&api_key=${key}&language=en-US`
+      return `${API_BASE}/trending/${type}/${period}?api_key=${key}&language=en-US`
     case 'top_rated':
-      return `${API_BASE}/movie/top_rated?api_key=${key}&language=en-US`
+      return `${API_BASE}/${type}/top_rated?api_key=${key}&language=en-US`
   }
 }
 
@@ -57,6 +55,7 @@ function isInWatchlist(id: number): boolean {
 
 export default function Movies() {
   const [period, setPeriod] = useState<Period>('week')
+  const [mediaType, setMediaType] = useState<'movie' | 'tv'>('movie')
   const [movies, setMovies] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -73,7 +72,7 @@ export default function Movies() {
 
     async function load() {
       try {
-        const res = await fetch(getUrl(period))
+        const res = await fetch(getUrl(period, mediaType))
         if (!res.ok) throw new Error()
         const json = await res.json()
         if (!cancelled) {
@@ -90,7 +89,7 @@ export default function Movies() {
 
     load()
     return () => { cancelled = true }
-  }, [period, retryKey])
+  }, [period, mediaType, retryKey])
 
   function openDetail(movie: Movie) {
     setDetailOpen(true)
@@ -120,6 +119,10 @@ export default function Movies() {
 
   return (
     <div className="space-y-5">
+      <div className="flex gap-2 mb-3">
+        <button onClick={() => setMediaType('movie')} className={cn('px-4 py-1.5 rounded-full text-sm font-medium transition-all', mediaType === 'movie' ? 'bg-[var(--accent)] text-white' : 'border border-[var(--border)] text-[var(--text-2)]')}>Movies</button>
+        <button onClick={() => setMediaType('tv')} className={cn('px-4 py-1.5 rounded-full text-sm font-medium transition-all', mediaType === 'tv' ? 'bg-[var(--accent)] text-white' : 'border border-[var(--border)] text-[var(--text-2)]')}>TV Series</button>
+      </div>
       <div className="flex flex-wrap gap-2">
         {periods.map(p => (
           <button
@@ -134,7 +137,6 @@ export default function Movies() {
           >
             {p === 'week' && _('week')}
             {p === 'month' && _('month')}
-            {p === 'year' && _('year')}
             {p === 'top_rated' && _('topRated')}
           </button>
         ))}
@@ -204,7 +206,7 @@ export default function Movies() {
                         {saved ? '✓' : '+'}
                       </button>
                     </div>
-                    <div className="p-3">
+                    <div className="bg-[var(--surface)]/95 p-3">
                       <h3 className="text-sm font-medium text-[var(--text)] truncate">{movie.title}</h3>
                       <div className="flex items-center justify-between mt-1">
                         <span className="text-xs text-[var(--text-2)]">{getYear(movie.release_date)}</span>

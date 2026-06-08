@@ -6,9 +6,9 @@ export default function Settings() {
   const { theme, locale, toggleTheme, setLocale } = useThemeStore()
 
   const apiKeys = [
-    { label: 'VITE_TMDB_KEY', value: import.meta.env.VITE_TMDB_KEY || 'not set' },
-    { label: 'VITE_GEMINI_KEY', value: import.meta.env.VITE_GEMINI_KEY || 'not set' },
-    { label: 'VITE_YT_KEY', value: import.meta.env.VITE_YT_KEY || 'not set' },
+    { label: 'TMDB', value: import.meta.env.VITE_TMDB_KEY },
+    { label: 'Gemini', value: import.meta.env.VITE_GEMINI_KEY },
+    { label: 'YouTube', value: import.meta.env.VITE_YT_KEY },
   ]
 
   return (
@@ -54,14 +54,11 @@ export default function Settings() {
         <h2 className="font-mono text-xs text-[var(--text-3)] tracking-widest mb-4 uppercase">API Keys</h2>
         <div className="space-y-3">
           {apiKeys.map((k) => (
-            <div key={k.label}>
-              <div className="text-xs text-[var(--text-2)] mb-1">{k.label}</div>
-              <input
-                readOnly
-                value={k.value}
-                className="w-full rounded border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-mono text-[var(--text)] outline-none"
-              />
-              <div className="text-xs text-[var(--text-3)] mt-1">Set in .env file</div>
+            <div key={k.label} className="flex items-center justify-between">
+              <span className="text-sm text-[var(--text-2)]">{k.label}</span>
+              <span className={`text-xs font-mono px-2 py-0.5 rounded-full ${k.value ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-400'}`}>
+                {k.value ? 'Configured' : 'Not set'}
+              </span>
             </div>
           ))}
         </div>

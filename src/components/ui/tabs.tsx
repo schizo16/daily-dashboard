@@ -5,7 +5,7 @@ function Tabs({ className, orientation = "horizontal", ...props }: TabsPrimitive
   return (
     <TabsPrimitive.Root
       data-orientation={orientation}
-      className={cn("flex gap-2 data-horizontal:flex-col", className)}
+      className={cn("flex flex-col gap-2", className)}
       {...props}
     />
   )
@@ -14,7 +14,7 @@ function Tabs({ className, orientation = "horizontal", ...props }: TabsPrimitive
 function TabsList({ className, ...props }: TabsPrimitive.List.Props) {
   return (
     <TabsPrimitive.List
-      className={cn("flex gap-1", className)}
+      className={cn("flex gap-1 w-fit", className)}
       {...props}
     />
   )

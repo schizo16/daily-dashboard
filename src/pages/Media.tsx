@@ -26,6 +26,27 @@ export default function Media() {
   const [stations, setStations] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [currentStation, setCurrentStation] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [results, setResults] = useState<{id: string; title: string; author: string}[]>([])
+  const [searching, setSearching] = useState(false)
+
+  async function searchMusic(query: string) {
+    if (!query.trim()) return
+    setSearching(true)
+    try {
+      const res = await fetch(`https://inv.nadeko.net/api/v1/search?q=${encodeURIComponent(query)}&type=video&limit=5`)
+      if (res.ok) {
+        const data = await res.json()
+        setResults(data.map((v: any) => ({ id: v.videoId, title: v.title, author: v.author })))
+      } else {
+        const res2 = await fetch(`https://yewtu.be/api/v1/search?q=${encodeURIComponent(query)}&type=video&limit=5`)
+        if (res2.ok) {
+          const data = await res2.json()
+          setResults(data.map((v: any) => ({ id: v.videoId, title: v.title, author: v.author })))
+        }
+      }
+    } catch {} finally { setSearching(false) }
+  }
 
   function playVideo(url: string) {
     const id = extractVideoId(url)
@@ -78,6 +99,36 @@ export default function Media() {
                 allow="autoplay"
                 className="w-full aspect-video rounded-lg"
               />
+            </div>
+          )}
+          <div className="flex gap-2 mb-3">
+            <input
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && searchMusic(searchQuery)}
+              placeholder="Search song name..."
+              className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)]/50 px-4 py-2 text-sm outline-none focus:border-[var(--accent)] placeholder:text-[var(--text-3)]"
+            />
+            <button
+              onClick={() => searchMusic(searchQuery)}
+              disabled={searching}
+              className="px-5 py-2 rounded-full bg-[var(--accent)] text-white text-sm font-medium hover:opacity-85 transition-opacity disabled:opacity-50"
+            >
+              {searching ? '...' : 'Search'}
+            </button>
+          </div>
+          {results.length > 0 && (
+            <div className="space-y-1 mb-4">
+              {results.map(v => (
+                <button
+                  key={v.id}
+                  onClick={() => playVideo(`https://youtube.com/watch?v=${v.id}`)}
+                  className="w-full text-left px-3 py-2 rounded-lg text-sm text-[var(--text-2)] hover:bg-[var(--surface-2)]/80 transition-colors"
+                >
+                  <span className="text-[var(--text)] font-medium">{v.title}</span>
+                  {v.author && <span className="text-[var(--text-3)] ml-2">— {v.author}</span>}
+                </button>
+              ))}
             </div>
           )}
           <div className="flex gap-2 flex-wrap mb-4">
