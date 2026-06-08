@@ -21,7 +21,7 @@ function AnimatedPage({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/daily-dashboard">
       <Routes>
         <Route element={<Shell />}>
           <Route index element={<AnimatedPage><Home /></AnimatedPage>} />
