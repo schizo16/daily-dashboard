@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
-import { Background3D } from '@/components/shared/Background3D'
+import { Background } from '@/components/shared/Background'
 
 export function Shell() {
   return (
     <div className="flex min-h-screen relative">
-      <Background3D />
+      <Background />
       <Sidebar />
       <div className="ml-60 flex flex-1 flex-col relative z-10">
         <TopBar />
