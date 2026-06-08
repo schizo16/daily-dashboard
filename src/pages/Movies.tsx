@@ -41,6 +41,18 @@ function getYear(date: string) {
   return date ? date.slice(0, 4) : ''
 }
 
+function normalizeItem(item: any, type: 'movie' | 'tv'): Movie {
+  return {
+    id: item.id,
+    title: type === 'tv' ? item.name : item.title,
+    poster_path: item.poster_path,
+    vote_average: item.vote_average,
+    overview: item.overview,
+    release_date: type === 'tv' ? item.first_air_date : item.release_date,
+    genre_ids: item.genre_ids || [],
+  }
+}
+
 interface WatchlistItem { id: number; title: string; poster: string; rating: number; addedAt: number; overview: string }
 
 function getWatchlist(): WatchlistItem[] {
@@ -76,7 +88,7 @@ export default function Movies() {
         if (!res.ok) throw new Error()
         const json = await res.json()
         if (!cancelled) {
-          setMovies(json.results ?? [])
+          setMovies((json.results ?? []).map((r: any) => normalizeItem(r, mediaType)))
           setLoading(false)
         }
       } catch {
@@ -91,20 +103,16 @@ export default function Movies() {
     return () => { cancelled = true }
   }, [period, mediaType, retryKey])
 
-  function openDetail(movie: Movie) {
+  function openDetail(movie: Movie, type: 'movie' | 'tv') {
     setDetailOpen(true)
     setDetailLoading(true)
     setDetailMovie(null)
 
-    fetch(`${API_BASE}/movie/${movie.id}?api_key=${apiKey()}&language=en-US&append_to_response=credits`)
+    fetch(`${API_BASE}/${type}/${movie.id}?api_key=${apiKey()}&language=en-US&append_to_response=credits`)
       .then(res => res.json())
-      .then(data => {
-        setDetailMovie(data)
-        setDetailLoading(false)
-      })
-      .catch(() => {
-        setDetailLoading(false)
-      })
+      .then(data => setDetailMovie(data))
+      .catch(() => null)
+      .finally(() => setDetailLoading(false))
   }
 
   function toggleWatchlist(movie: Movie) {
@@ -179,7 +187,7 @@ export default function Movies() {
                   <GlassCard
                     key={movie.id}
                     className="p-0 overflow-hidden cursor-pointer group"
-                    onClick={() => openDetail(movie)}
+                    onClick={() => openDetail(movie, mediaType)}
                   >
                     <div className="relative">
                       {movie.poster_path ? (

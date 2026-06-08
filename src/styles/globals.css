@@ -72,13 +72,8 @@
 
 @layer utilities {
   .glass {
-    background: rgba(128, 128, 128, 0.08);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: var(--surface);
     border: 0.5px solid var(--border);
-  }
-  .dark .glass {
-    background: rgba(128, 128, 128, 0.1);
   }
 }
 
