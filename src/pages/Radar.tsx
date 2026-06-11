@@ -138,24 +138,22 @@ function GithubTab({ keyword }: { keyword: string }) {
   const [page, setPage] = useState(1)
   const p = GITHUB_PERIODS.find(x => x.id === period) || GITHUB_PERIODS[1]
   const since = new Date(Date.now() - p.days * 86400000).toISOString().slice(0, 10)
-  const q = `created:>${since}${topic ? ` topic:${topic}` : ''}`
+  const q = `${keyword} created:>${since}${topic ? ` topic:${topic}` : ''}`.trim()
   const { data, loading, error, retry } = useFetch<any>(
     `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=10&page=${page}`
   )
 
-  useEffect(() => { setPage(1) }, [period, topic])
+  useEffect(() => { setPage(1) }, [period, topic, keyword])
 
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
-  const items = (data?.items || [])
-    .map((r: any) => ({
-      name: r.full_name,
-      stars: r.stargazers_count,
-      url: r.html_url,
-      lang: r.language,
-    }))
-    .filter(item => !keyword || item.name.toLowerCase().includes(keyword.toLowerCase()))
+  const items = (data?.items || []).map((r: any) => ({
+    name: r.full_name,
+    stars: r.stargazers_count,
+    url: r.html_url,
+    lang: r.language,
+  }))
   const total = data?.total_count || 0
   const totalPages = Math.min(Math.ceil(total / 10), 20)
 
