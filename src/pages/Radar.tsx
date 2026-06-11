@@ -4,6 +4,7 @@ import { Entry } from '@/components/shared/Entry'
 import { GlassCard } from '@/components/shared/GlassCard'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Input } from '@/components/ui/input'
 
 function useFetch<T>(url: string) {
   const [data, setData] = useState<T | null>(null)
@@ -131,7 +132,7 @@ const GITHUB_TOPICS = [
   { id: 'devops', label: 'DevOps' },
 ]
 
-function GithubTab() {
+function GithubTab({ keyword }: { keyword: string }) {
   const [period, setPeriod] = useState('weekly')
   const [topic, setTopic] = useState('')
   const [page, setPage] = useState(1)
@@ -147,12 +148,14 @@ function GithubTab() {
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
-  const items = (data?.items || []).map((r: any) => ({
-    name: r.full_name,
-    stars: r.stargazers_count,
-    url: r.html_url,
-    lang: r.language,
-  }))
+  const items = (data?.items || [])
+    .map((r: any) => ({
+      name: r.full_name,
+      stars: r.stargazers_count,
+      url: r.html_url,
+      lang: r.language,
+    }))
+    .filter(item => !keyword || item.name.toLowerCase().includes(keyword.toLowerCase()))
   const total = data?.total_count || 0
   const totalPages = Math.min(Math.ceil(total / 10), 20)
 
@@ -211,7 +214,7 @@ function GithubTab() {
   )
 }
 
-function AITab() {
+function AITab({ keyword }: { keyword: string }) {
   const { data, loading, error, retry } = useFetch<any>(
     'https://huggingface.co/api/models?sort=downloads&direction=-1&limit=10'
   )
@@ -219,11 +222,13 @@ function AITab() {
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
-  const items = (data || []).map((m: any) => ({
-    name: m.modelId,
-    downloads: m.downloads,
-    task: m.pipeline_tag,
-  }))
+  const items = (data || [])
+    .map((m: any) => ({
+      name: m.modelId,
+      downloads: m.downloads,
+      task: m.pipeline_tag,
+    }))
+    .filter(item => !keyword || item.name.toLowerCase().includes(keyword.toLowerCase()))
 
   return (
     <GlassCard>
@@ -240,16 +245,20 @@ function AITab() {
   )
 }
 
-function HNTab() {
+function HNTab({ keyword }: { keyword: string }) {
   const { data: items, loading, error, retry } = useHN()
 
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
+  const filtered = items.filter(
+    (item: any) => !keyword || item.title?.toLowerCase().includes(keyword.toLowerCase())
+  )
+
   return (
     <GlassCard>
       <h2 className="text-lg font-bold mb-2">{_('hackernews')}</h2>
-      {items.map((item: any) => (
+      {filtered.map((item: any) => (
         <Entry
           key={item.id}
           icon="📰"
@@ -262,16 +271,20 @@ function HNTab() {
   )
 }
 
-function TechTab() {
+function TechTab({ keyword }: { keyword: string }) {
   const { data: items, loading, error, retry } = useReddit()
 
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
+  const filtered = items.filter(
+    (item: any) => !keyword || item.title?.toLowerCase().includes(keyword.toLowerCase())
+  )
+
   return (
     <GlassCard>
       <h2 className="text-lg font-bold mb-2">{_('techNews')}</h2>
-      {items.map((item: any, i: number) => (
+      {filtered.map((item: any, i: number) => (
         <Entry
           key={item.url || item.title || i}
           icon="📡"
@@ -285,8 +298,15 @@ function TechTab() {
 }
 
 export default function Radar() {
+  const [keyword, setKeyword] = useState('')
+
   return (
     <div className="space-y-5">
+      <Input
+        placeholder={_('searchPlaceholder')}
+        value={keyword}
+        onChange={e => setKeyword(e.target.value)}
+      />
       <Tabs defaultValue="github">
         <TabsList className="glass mb-4">
           <TabsTrigger value="github">GitHub</TabsTrigger>
@@ -294,10 +314,10 @@ export default function Radar() {
           <TabsTrigger value="hn">HN</TabsTrigger>
           <TabsTrigger value="tech">Tech News</TabsTrigger>
         </TabsList>
-        <TabsContent value="github"><GithubTab /></TabsContent>
-        <TabsContent value="ai"><AITab /></TabsContent>
-        <TabsContent value="hn"><HNTab /></TabsContent>
-        <TabsContent value="tech"><TechTab /></TabsContent>
+        <TabsContent value="github"><GithubTab keyword={keyword} /></TabsContent>
+        <TabsContent value="ai"><AITab keyword={keyword} /></TabsContent>
+        <TabsContent value="hn"><HNTab keyword={keyword} /></TabsContent>
+        <TabsContent value="tech"><TechTab keyword={keyword} /></TabsContent>
       </Tabs>
     </div>
   )
