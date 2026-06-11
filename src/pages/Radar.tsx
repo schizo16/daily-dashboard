@@ -132,7 +132,8 @@ const GITHUB_TOPICS = [
   { id: 'devops', label: 'DevOps' },
 ]
 
-function GithubTab({ keyword }: { keyword: string }) {
+function GithubTab() {
+  const [keyword, setKeyword] = useState('')
   const [period, setPeriod] = useState('weekly')
   const [topic, setTopic] = useState('')
   const [page, setPage] = useState(1)
@@ -177,6 +178,12 @@ function GithubTab({ keyword }: { keyword: string }) {
           ))}
         </div>
       </div>
+      <Input
+        placeholder={_('searchPlaceholder')}
+        value={keyword}
+        onChange={e => setKeyword(e.target.value)}
+        className="mb-3"
+      />
       <div className="flex gap-1 mb-3 flex-wrap">
         {GITHUB_TOPICS.map(x => (
           <button
@@ -212,7 +219,7 @@ function GithubTab({ keyword }: { keyword: string }) {
   )
 }
 
-function AITab({ keyword }: { keyword: string }) {
+function AITab() {
   const { data, loading, error, retry } = useFetch<any>(
     'https://huggingface.co/api/models?sort=downloads&direction=-1&limit=10'
   )
@@ -220,13 +227,11 @@ function AITab({ keyword }: { keyword: string }) {
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
-  const items = (data || [])
-    .map((m: any) => ({
-      name: m.modelId,
-      downloads: m.downloads,
-      task: m.pipeline_tag,
-    }))
-    .filter(item => !keyword || item.name.toLowerCase().includes(keyword.toLowerCase()))
+  const items = (data || []).map((m: any) => ({
+    name: m.modelId,
+    downloads: m.downloads,
+    task: m.pipeline_tag,
+  }))
 
   return (
     <GlassCard>
@@ -243,20 +248,16 @@ function AITab({ keyword }: { keyword: string }) {
   )
 }
 
-function HNTab({ keyword }: { keyword: string }) {
+function HNTab() {
   const { data: items, loading, error, retry } = useHN()
 
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
-  const filtered = items.filter(
-    (item: any) => !keyword || item.title?.toLowerCase().includes(keyword.toLowerCase())
-  )
-
   return (
     <GlassCard>
       <h2 className="text-lg font-bold mb-2">{_('hackernews')}</h2>
-      {filtered.map((item: any) => (
+      {items.map((item: any) => (
         <Entry
           key={item.id}
           icon="📰"
@@ -269,20 +270,16 @@ function HNTab({ keyword }: { keyword: string }) {
   )
 }
 
-function TechTab({ keyword }: { keyword: string }) {
+function TechTab() {
   const { data: items, loading, error, retry } = useReddit()
 
   if (loading) return <LoadingItems />
   if (error) return <ErrorState retry={retry} />
 
-  const filtered = items.filter(
-    (item: any) => !keyword || item.title?.toLowerCase().includes(keyword.toLowerCase())
-  )
-
   return (
     <GlassCard>
       <h2 className="text-lg font-bold mb-2">{_('techNews')}</h2>
-      {filtered.map((item: any, i: number) => (
+      {items.map((item: any, i: number) => (
         <Entry
           key={item.url || item.title || i}
           icon="📡"
@@ -296,15 +293,8 @@ function TechTab({ keyword }: { keyword: string }) {
 }
 
 export default function Radar() {
-  const [keyword, setKeyword] = useState('')
-
   return (
     <div className="space-y-5">
-      <Input
-        placeholder={_('searchPlaceholder')}
-        value={keyword}
-        onChange={e => setKeyword(e.target.value)}
-      />
       <Tabs defaultValue="github">
         <TabsList className="glass mb-4">
           <TabsTrigger value="github">GitHub</TabsTrigger>
@@ -312,10 +302,10 @@ export default function Radar() {
           <TabsTrigger value="hn">HN</TabsTrigger>
           <TabsTrigger value="tech">Tech News</TabsTrigger>
         </TabsList>
-        <TabsContent value="github"><GithubTab keyword={keyword} /></TabsContent>
-        <TabsContent value="ai"><AITab keyword={keyword} /></TabsContent>
-        <TabsContent value="hn"><HNTab keyword={keyword} /></TabsContent>
-        <TabsContent value="tech"><TechTab keyword={keyword} /></TabsContent>
+        <TabsContent value="github"><GithubTab /></TabsContent>
+        <TabsContent value="ai"><AITab /></TabsContent>
+        <TabsContent value="hn"><HNTab /></TabsContent>
+        <TabsContent value="tech"><TechTab /></TabsContent>
       </Tabs>
     </div>
   )
